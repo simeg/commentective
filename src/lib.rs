@@ -1,13 +1,13 @@
+use language::java;
+use language::javascript;
+use language::FileTypes;
 use language::FindResult;
 use language::Language;
 use std::ffi::OsStr;
 use std::ffi::OsString;
-use std::fs::File;
 use std::io::Error;
 use std::io::ErrorKind;
 use std::path::Path;
-use utils::path::filename;
-use language::FileType;
 
 pub mod language;
 pub mod utils;
@@ -15,11 +15,11 @@ pub mod utils;
 pub fn run(paths: Vec<&Path>) -> Vec<Result<FindResult, Error>> {
     paths
         .into_iter()
-        .map(|path| resolve_type(path).and_then(|language| language.find()))
+        .map(|path| resolve_type(path))
         .collect::<Vec<Result<FindResult, Error>>>()
 }
 
-pub fn resolve_type(p: &Path) -> Result<FileType, Error> {
+pub fn resolve_type(p: &Path) -> Result<FindResult, Error> {
     let unsupported_err = Err(Error::new(
         ErrorKind::NotFound,
         "Unsupported file extension",
@@ -29,13 +29,18 @@ pub fn resolve_type(p: &Path) -> Result<FileType, Error> {
         Some(_ext) => match _ext.to_str() {
             None => panic!("Could convert OsStr -> str"),
             Some(extension) => match extension.as_ref() {
-                "js" => Ok(language::FileType {
-                    maybe_file: File::open(p),
-                    file_name: filename(p)?,
-                }),
+                "js" => Ok(run_source(FileTypes::JavaScript, p)?),
+                "java" => Ok(run_source(FileTypes::Java, p)?),
                 _ => unsupported_err,
             },
         },
+    }
+}
+
+fn run_source(file_type: FileTypes, p: &Path) -> Result<FindResult, Error> {
+    match file_type {
+        FileTypes::JavaScript => javascript::source(p).find(),
+        FileTypes::Java => java::source(p).find(),
     }
 }
 

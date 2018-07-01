@@ -9,19 +9,19 @@ use std::path::Path;
 use std::vec::Vec;
 use utils::path::filename;
 
-pub struct Js {
+pub struct Java {
     pub maybe_file: Result<File, Error>,
     pub file_name: String,
 }
 
-pub fn source(p: &Path) -> Js {
-    Js {
+pub fn source(p: &Path) -> Java {
+    Java {
         maybe_file: File::open(p),
         file_name: filename(p).unwrap(),
     }
 }
 
-impl language::Language for Js {
+impl language::Language for Java {
     #[inline]
     fn find(&self) -> Result<language::FindResult, Error> {
         let mut counter = 1; // Lines begin on index 1
@@ -52,25 +52,26 @@ impl language::Language for Js {
 }
 
 fn is_comment(line: String) -> bool {
-    let first_two_chars = &line.trim().get(0..2);
-    return match first_two_chars {
-        &None => false,
-        &Some(chars) => {
-            return match chars {
-                "//" => true,
-                "/*" => true,
-                _ => {
-                    return match &chars.get(0..1) {
-                        None => false,
-                        Some(first_char) => {
-                            return match first_char {
-                                &"*" => true,
-                                _ => false,
-                            };
-                        }
-                    };
-                }
-            };
-        }
-    };
+    false
+    //    let first_two_chars = &line.trim().get(0..2);
+    //    return match first_two_chars {
+    //        &None => false,
+    //        &Some(chars) => {
+    //            return match chars {
+    //                "//" => true,
+    //                "/*" => true,
+    //                _ => {
+    //                    return match &chars.get(0..1) {
+    //                        None => false,
+    //                        Some(first_char) => {
+    //                            return match first_char {
+    //                                &"*" => true,
+    //                                _ => false,
+    //                            };
+    //                        }
+    //                    };
+    //                }
+    //            };
+    //        }
+    //    };
 }

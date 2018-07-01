@@ -23,9 +23,7 @@ fn main() {
         .get_matches();
 
     let values: Values = matches.values_of("FILES").unwrap();
-    let paths: Vec<&Path> = values
-        .map(|file| Path::new(file))
-        .collect::<Vec<&Path>>();
+    let paths: Vec<&Path> = values.map(|file| Path::new(file)).collect::<Vec<&Path>>();
 
     for i in detector::run(paths) {
         println!("{:?}", i);
