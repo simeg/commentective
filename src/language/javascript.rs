@@ -1,16 +1,11 @@
 use language;
 use language::FindResult;
-use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
 use std::io::Error;
 use std::io::ErrorKind;
 use std::vec::Vec;
-
-pub struct FileType {
-    pub maybe_file: Result<File, Error>,
-    pub file_name: String,
-}
+use language::FileType;
 
 impl language::Language for FileType {
     #[inline]

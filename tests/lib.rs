@@ -17,7 +17,7 @@ mod tests {
     #[test]
     fn js_find_with_value() {
         let path = Path::new("tests/resources/js-with-comments.js");
-        let result = l::javascript::FileType {
+        let result = l::FileType {
             maybe_file: File::open(path),
             file_name: String::from("irrelevant-name"),
         }.find();
@@ -28,7 +28,7 @@ mod tests {
     #[test]
     fn js_find_with_err() {
         let path = Path::new("tests/resources/js-without-comments.js");
-        let result = l::javascript::FileType {
+        let result = l::FileType {
             maybe_file: File::open(path),
             file_name: String::from("irrelevant-name"),
         }.find();
