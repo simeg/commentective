@@ -33,4 +33,4 @@ run:
 	@RUST_BACKTRACE=1 $(CARGO) run
 
 test:
-	@$(CARGO) test
+	@$(CARGO) test -- --nocapture
