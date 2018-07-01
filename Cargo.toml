@@ -1,6 +1,15 @@
 [package]
-name = "find-commented-code"
-version = "0.1.0"
+name = "detector"
+version = "1.0.0"
 authors = ["Simon Egersand <s.egersand@gmail.com>"]
+description = "CLI tool to detect your comments and commented out code"
+license = "MIT"
+exclude = [
+    ""
+]
 
 [dependencies]
+clap = "2.32.0"
+docopt = "1.0.0"
+serde = "1.0"
+serde_derive = "1.0"
