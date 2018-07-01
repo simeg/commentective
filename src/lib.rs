@@ -1,5 +1,3 @@
-use language::javascript;
-use language::javascript::FileType;
 use language::FindResult;
 use language::Language;
 use std::ffi::OsStr;
@@ -9,6 +7,7 @@ use std::io::Error;
 use std::io::ErrorKind;
 use std::path::Path;
 use utils::path::filename;
+use language::FileType;
 
 pub mod language;
 pub mod utils;
@@ -30,7 +29,7 @@ pub fn resolve_type(p: &Path) -> Result<FileType, Error> {
         Some(_ext) => match _ext.to_str() {
             None => panic!("Could convert OsStr -> str"),
             Some(extension) => match extension.as_ref() {
-                "js" => Ok(javascript::FileType {
+                "js" => Ok(language::FileType {
                     maybe_file: File::open(p),
                     file_name: filename(p)?,
                 }),
