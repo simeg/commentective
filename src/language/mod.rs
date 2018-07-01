@@ -1,5 +1,3 @@
-use std::fs::File;
-use std::io::BufReader;
 use std::io::Error;
 
 pub mod javascript;
@@ -9,9 +7,10 @@ pub enum SupportedLanguages {
 }
 
 pub trait Language {
-    fn find(file: File) -> Result<Comments, Error>;
+    fn find(&self) -> Result<FindResult, Error>;
 }
 
-pub struct Comments {
+#[derive(Debug)]
+pub struct FindResult {
     pub lines: Vec<u32>,
 }

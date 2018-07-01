@@ -4,6 +4,7 @@ extern crate serde_derive;
 extern crate detector;
 
 use docopt::Docopt;
+use std::path::Path;
 
 //const VERSION: &'static str = "1.0";
 
@@ -22,9 +23,10 @@ pub struct Args {
 }
 
 fn main() {
-    let args: Args = Docopt::new(DOCOPT)
+    let _args: Args = Docopt::new(DOCOPT)
         .and_then(|d| d.deserialize())
         .unwrap_or_else(|e| e.exit());
 
-    detector::run_lib();
+    let path = Path::new("example-js.js");
+    let _ = detector::run(path);
 }

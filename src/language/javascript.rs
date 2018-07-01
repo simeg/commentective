@@ -1,35 +1,40 @@
 use language;
-use language::Comments;
+use language::FindResult;
 use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
 use std::io::Error;
+use std::io::ErrorKind;
 use std::vec::Vec;
 
-pub struct JavaScript();
+pub struct Struct {
+    pub file: Result<File, Error>,
+}
 
-//#[inline]
-//pub fn source(file: File) -> Result<JavaScript, ()> {}
-
-impl language::Language for JavaScript {
+impl language::Language for Struct {
     #[inline]
-    fn find(file: File) -> Result<language::Comments, Error> {
+    fn find(&self) -> Result<language::FindResult, Error> {
         let mut counter = 1; // Lines begin on index 1
-        let mut comments = Vec::new();
+        let mut comments = Vec::<u32>::new();
 
-        for line in BufReader::new(file).lines() {
-            match line {
-                Ok(l) => {
-                    if is_comment(l) {
-                        comments.push(counter);
+        match self.file {
+            Ok(ref file) => {
+                for line in BufReader::new(file).lines() {
+                    match line {
+                        Ok(l) => {
+                            if is_comment(l) {
+                                comments.push(counter);
+                            }
+                        }
+                        Err(_) => panic!("Could not read line"),
                     }
+                    counter = counter + 1;
                 }
-                Err(_) => panic!("Could not read line"),
-            }
-            counter = counter + 1;
-        }
 
-        Ok(Comments { lines: comments })
+                Ok(FindResult { lines: comments })
+            }
+            Err(_) => Err(Error::new(ErrorKind::InvalidInput, "Could not parse file")),
+        }
     }
 }
 
