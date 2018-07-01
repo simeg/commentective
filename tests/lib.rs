@@ -37,6 +37,28 @@ mod tests {
     }
 
     #[test]
+    fn java_find_with_value() {
+        let path = Path::new("tests/resources/java-with-comments.java");
+        let result = l::java::Java {
+            maybe_file: File::open(path),
+            file_name: String::from("irrelevant-name"),
+        }.find();
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap().lines.len(), 7);
+    }
+
+    #[test]
+    fn java_find_with_err() {
+        let path = Path::new("tests/resources/java-without-comments.java");
+        let result = l::java::Java {
+            maybe_file: File::open(path),
+            file_name: String::from("irrelevant-name"),
+        }.find();
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap().lines.len(), 0);
+    }
+
+    #[test]
     fn resolve_type_with_value() {
         let path = Path::new("tests/resources/js-with-comments.js");
         let result = detector::resolve_type(path);

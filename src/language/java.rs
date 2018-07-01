@@ -52,26 +52,35 @@ impl language::Language for Java {
 }
 
 fn is_comment(line: String) -> bool {
-    false
-    //    let first_two_chars = &line.trim().get(0..2);
-    //    return match first_two_chars {
-    //        &None => false,
-    //        &Some(chars) => {
-    //            return match chars {
-    //                "//" => true,
-    //                "/*" => true,
-    //                _ => {
-    //                    return match &chars.get(0..1) {
-    //                        None => false,
-    //                        Some(first_char) => {
-    //                            return match first_char {
-    //                                &"*" => true,
-    //                                _ => false,
-    //                            };
-    //                        }
-    //                    };
-    //                }
-    //            };
-    //        }
-    //    };
+    // TODO: Make code prettier
+    let first_two_chars = &line.trim().get(0..2);
+    let first_three_chars = &line.trim().get(0..3);
+    let three_char_result = match first_three_chars {
+        &None => false,
+        &Some(chars) => match chars {
+            "/**" => true,
+            _ => false,
+        },
+    };
+    if three_char_result == true {
+        return true;
+    }
+    match first_two_chars {
+        &None => false,
+        &Some(chars) => match chars {
+            "//" => true,
+            "/*" => true,
+            _ => {
+                return match &chars.get(0..1) {
+                    None => false,
+                    Some(first_char) => {
+                        return match first_char {
+                            &"*" => true,
+                            _ => false,
+                        };
+                    }
+                };
+            }
+        },
+    }
 }
