@@ -1,31 +1,28 @@
-extern crate docopt;
-#[macro_use]
-extern crate serde_derive;
+extern crate clap;
 extern crate detector;
 
-use docopt::Docopt;
+use clap::App;
+use clap::Arg;
+use clap::Values;
+use detector::exists_on_filesystem;
 use std::path::Path;
 
-//const VERSION: &'static str = "1.0";
-
-#[cfg_attr(rustfmt, rustfmt_skip)]
-const DOCOPT: &'static str = concat!("
-detector
-
-Usage:
-  detector
-
-");
-
-#[derive(Debug, Deserialize)]
-pub struct Args {
-    //    pub arg_file: Vec<String>,
-}
-
 fn main() {
-    let _args: Args = Docopt::new(DOCOPT)
-        .and_then(|d| d.deserialize())
-        .unwrap_or_else(|e| e.exit());
+    let matches = App::new("Detector")
+        .version("1.0.0")
+        .author("Simon Egersand <s.egersand@gmail.com>")
+        .about("TODO")
+        .arg(
+            Arg::with_name("FILE")
+                .help("File to analyze")
+                .required(true)
+                .multiple(true)
+                .validator_os(exists_on_filesystem)
+                .index(1),
+        )
+        .get_matches();
+
+    let args_input: Values = matches.values_of("FILE").unwrap();
 
     let path = Path::new("example-js.js");
     let _ = detector::run(path);

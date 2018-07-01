@@ -10,6 +10,3 @@ exclude = [
 
 [dependencies]
 clap = "2.32.0"
-docopt = "1.0.0"
-serde = "1.0"
-serde_derive = "1.0"

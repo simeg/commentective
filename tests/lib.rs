@@ -1,7 +1,7 @@
 extern crate detector;
 
 #[cfg(test)]
-mod language_types {
+mod tests {
     use detector;
     use detector::language as l;
     use detector::language::Language;
@@ -29,9 +29,16 @@ mod language_types {
     }
 
     #[test]
-    fn bin_run_with_unsupported_file() {
+    fn resolve_type_with_supported_file() {
+        let path = Path::new("tests/resources/js-with-comments.js");
+        let result = detector::resolve_type(path);
+        assert!(result.is_ok());
+    }
+
+    #[test]
+    fn resolve_type_with_unsupported_file() {
         let path = Path::new("tests/resources/unsupported.arb");
-        let result = detector::run(path);
+        let result = detector::resolve_type(path);
         assert!(result.is_err());
     }
 }
