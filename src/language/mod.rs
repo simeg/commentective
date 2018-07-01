@@ -1,19 +1,17 @@
 use std::io::Error;
-use std::fs::File;
 
+pub mod java;
 pub mod javascript;
 
-pub enum _SupportedLanguages {
+pub enum FileTypes {
     JavaScript,
-}
-
-pub struct FileType {
-    pub maybe_file: Result<File, Error>,
-    pub file_name: String,
+    Java,
 }
 
 pub trait Language {
-    fn find(&self) -> Result<FindResult, Error>;
+    fn find(&self) -> Result<FindResult, Error>
+    where
+        Self: Sized;
 }
 
 #[derive(Debug)]
