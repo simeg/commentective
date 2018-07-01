@@ -7,17 +7,18 @@ use std::io::Error;
 use std::io::ErrorKind;
 use std::vec::Vec;
 
-pub struct Struct {
-    pub file: Result<File, Error>,
+pub struct FileType {
+    pub maybe_file: Result<File, Error>,
+    pub file_name: String,
 }
 
-impl language::Language for Struct {
+impl language::Language for FileType {
     #[inline]
     fn find(&self) -> Result<language::FindResult, Error> {
         let mut counter = 1; // Lines begin on index 1
         let mut comments = Vec::<u32>::new();
 
-        match self.file {
+        match self.maybe_file {
             Ok(ref file) => {
                 for line in BufReader::new(file).lines() {
                     match line {
@@ -31,7 +32,10 @@ impl language::Language for Struct {
                     counter = counter + 1;
                 }
 
-                Ok(FindResult { lines: comments })
+                Ok(FindResult {
+                    file_name: self.file_name.to_owned(),
+                    lines: comments,
+                })
             }
             Err(_) => Err(Error::new(ErrorKind::InvalidInput, "Could not parse file")),
         }

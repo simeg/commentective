@@ -2,7 +2,7 @@ use std::io::Error;
 
 pub mod javascript;
 
-pub enum SupportedLanguages {
+pub enum _SupportedLanguages {
     JavaScript,
 }
 
@@ -12,5 +12,6 @@ pub trait Language {
 
 #[derive(Debug)]
 pub struct FindResult {
+    pub file_name: String,
     pub lines: Vec<u32>,
 }
