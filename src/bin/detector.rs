@@ -13,8 +13,8 @@ fn main() {
         .author("Simon Egersand <s.egersand@gmail.com>")
         .about("TODO")
         .arg(
-            Arg::with_name("FILE")
-                .help("File to analyze")
+            Arg::with_name("FILES")
+                .help("Files to analyze")
                 .required(true)
                 .multiple(true)
                 .validator_os(exists_on_filesystem)
@@ -22,8 +22,12 @@ fn main() {
         )
         .get_matches();
 
-    let args_input: Values = matches.values_of("FILE").unwrap();
+    let values: Values = matches.values_of("FILES").unwrap();
+    let paths: Vec<&Path> = values
+        .map(|file| Path::new(file))
+        .collect::<Vec<&Path>>();
 
-    let path = Path::new("example-js.js");
-    let _ = detector::run(path);
+    for i in detector::run(paths) {
+        println!("{:?}", i);
+    }
 }

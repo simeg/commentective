@@ -11,8 +11,11 @@ use std::path::Path;
 
 pub mod language;
 
-pub fn run(path: &Path) -> Result<FindResult, Error> {
-    resolve_type(path).and_then(|language| language.find())
+pub fn run(paths: Vec<&Path>) -> Vec<Result<FindResult, Error>> {
+    paths
+        .into_iter()
+        .map(|path| resolve_type(path).and_then(|language| language.find()))
+        .collect::<Vec<Result<FindResult, Error>>>()
 }
 
 pub fn resolve_type(p: &Path) -> Result<Struct, Error> {
