@@ -5,6 +5,8 @@ rust:
   - beta
   - nightly
 
+script: make ci
+
 matrix:
   allow_failures:
     - rust: nightly
