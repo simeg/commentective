@@ -24,8 +24,8 @@ mod tests {
         }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
-        assert_eq!(lines.len(), 8);
-        assert_eq!(lines, [3, 11, 12, 13, 15, 16, 17, 19]);
+        assert_eq!(lines.len(), 7);
+        assert_eq!(lines, [1, 3, 4, 5, 7, 8, 9]);
     }
 
     #[test]

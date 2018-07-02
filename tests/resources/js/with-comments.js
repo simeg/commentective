@@ -1,19 +1,9 @@
-import myImport from 'myImport';
+// Regular comment
 
-// Comment
-
-const myVar = '2';
-const myVar2 = {
-  key1: true,
-  key2: ['a', 'b'],
-};
-
-/*
- * Comment
- */
+var myVar = '2'; // Inline comment
+var myVar = '2'; //Inline comment without proceeding space
+var myVar = '2';//Inline comment attached to code
 
  /*
  * Comment
  */
-
-// Comment
