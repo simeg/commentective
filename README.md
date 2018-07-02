@@ -5,3 +5,4 @@ Find commented out code and comments in your project
 | ---------- | --------- |
 | JavaScript |     ✔️    |
 | Java       |     ✔️    |
+| Rust       |     ✔️    |
