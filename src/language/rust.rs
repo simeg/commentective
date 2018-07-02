@@ -52,12 +52,13 @@ impl language::Language for Rust {
 }
 
 fn is_comment(line: String) -> bool {
-    let first_two_chars = &line.trim().get(0..2);
-    match first_two_chars {
-        &None => false,
-        &Some(chars) => match chars {
-            "//" => true,
-            _ => false,
-        },
-    }
+    line.split_whitespace()
+        .into_iter()
+        .fold(false, |acc, word| {
+            if acc == true {
+                true
+            } else {
+                word.contains("//")
+            }
+        })
 }
