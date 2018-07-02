@@ -16,7 +16,7 @@ pub trait Language {
         Self: Sized;
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub struct FindResult {
     pub file_name: String,
     pub lines: Vec<u32>,
