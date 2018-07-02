@@ -23,7 +23,9 @@ mod tests {
             file_name: String::from("irrelevant-name"),
         }.find();
         assert!(result.is_ok());
-        assert_eq!(result.unwrap().lines.len(), 8);
+        let lines = result.unwrap().lines;
+        assert_eq!(lines.len(), 8);
+        assert_eq!(lines, [3, 11, 12, 13, 15, 16, 17, 19]);
     }
 
     #[test]
@@ -45,7 +47,9 @@ mod tests {
             file_name: String::from("irrelevant-name"),
         }.find();
         assert!(result.is_ok());
-        assert_eq!(result.unwrap().lines.len(), 7);
+        let lines = result.unwrap().lines;
+        assert_eq!(lines.len(), 7);
+        assert_eq!(lines, [5, 8, 9, 10, 12, 13, 14]);
     }
 
     #[test]
@@ -67,7 +71,9 @@ mod tests {
             file_name: String::from("irrelevant-name"),
         }.find();
         assert!(result.is_ok());
-        assert_eq!(result.unwrap().lines.len(), 2);
+        let lines = result.unwrap().lines;
+        assert_eq!(lines.len(), 4);
+        assert_eq!(lines, [1, 4, 5, 6]);
     }
 
     #[test]
