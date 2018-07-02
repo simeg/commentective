@@ -11,7 +11,7 @@ fn main() {
     let matches = App::new("Detector")
         .version("1.0.0")
         .author("Simon Egersand <s.egersand@gmail.com>")
-        .about("TODO")
+        .about("CLI tool to find comments and commented out code")
         .arg(
             Arg::with_name("FILES")
                 .help("Files to analyze")
