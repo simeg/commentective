@@ -8,6 +8,7 @@ use std::io::ErrorKind;
 use std::path::Path;
 use std::vec::Vec;
 use utils::path::filename;
+use utils::string::string_contains_any_of;
 
 pub struct Java {
     pub maybe_file: Result<File, Error>,
@@ -52,35 +53,5 @@ impl language::Language for Java {
 }
 
 fn is_comment(line: String) -> bool {
-    // TODO: Make code prettier
-    let first_two_chars = &line.trim().get(0..2);
-    let first_three_chars = &line.trim().get(0..3);
-    let three_char_result = match first_three_chars {
-        &None => false,
-        &Some(chars) => match chars {
-            "/**" => true,
-            _ => false,
-        },
-    };
-    if three_char_result == true {
-        return true;
-    }
-    match first_two_chars {
-        &None => false,
-        &Some(chars) => match chars {
-            "//" => true,
-            "/*" => true,
-            _ => {
-                return match &chars.get(0..1) {
-                    None => false,
-                    Some(first_char) => {
-                        return match first_char {
-                            &"*" => true,
-                            _ => false,
-                        };
-                    }
-                };
-            }
-        },
-    }
+    string_contains_any_of(line, vec!["//", "/*", "*", "/*"])
 }

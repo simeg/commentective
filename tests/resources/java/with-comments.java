@@ -1,16 +1,20 @@
 package resources.java;
 
-public class Main {
+class Foo {
 
-  // Comment
+  String foo = "foo"; // Inline comment
+  String bar = "bar"; //Inline comment without proceeding whitespace
+  String xyz = "xyz";//Inline comment attached to code
 
+  // Regular
+
+  /**
+   * JavaDoc like comment
+   */
+
+  /*
+   * Block comment
+   */
   public static void main(String[] args) {
-    /**
-     * irrelevant code
-     */
-
-    /*
-     * irrelevant code
-     */
   }
 }

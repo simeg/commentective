@@ -19,3 +19,16 @@ pub mod path {
         }
     }
 }
+
+pub mod string {
+    pub fn string_contains_any_of(input: String, matches: Vec<&str>) -> bool {
+        for pattern in matches {
+            if input.contains(pattern) {
+                return true;
+            } else {
+                continue;
+            }
+        }
+        false
+    }
+}
