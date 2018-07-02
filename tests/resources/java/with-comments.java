@@ -1,3 +1,5 @@
+package resources.java;
+
 public class Main {
 
   // Comment

@@ -1,5 +1,6 @@
 use language::java;
 use language::javascript;
+use language::rust;
 use language::FileTypes;
 use language::FindResult;
 use language::Language;
@@ -31,6 +32,7 @@ pub fn resolve_type(p: &Path) -> Result<FindResult, Error> {
             Some(extension) => match extension.as_ref() {
                 "js" => Ok(run_source(FileTypes::JavaScript, p)?),
                 "java" => Ok(run_source(FileTypes::Java, p)?),
+                "rs" => Ok(run_source(FileTypes::Rust, p)?),
                 _ => unsupported_err,
             },
         },
@@ -41,6 +43,7 @@ fn run_source(file_type: FileTypes, p: &Path) -> Result<FindResult, Error> {
     match file_type {
         FileTypes::JavaScript => javascript::source(p).find(),
         FileTypes::Java => java::source(p).find(),
+        FileTypes::Rust => rust::source(p).find(),
     }
 }
 

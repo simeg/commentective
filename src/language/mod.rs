@@ -2,10 +2,12 @@ use std::io::Error;
 
 pub mod java;
 pub mod javascript;
+pub mod rust;
 
 pub enum FileTypes {
     JavaScript,
     Java,
+    Rust,
 }
 
 pub trait Language {

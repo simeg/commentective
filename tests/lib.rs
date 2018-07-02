@@ -11,12 +11,13 @@ mod tests {
     use std::path::Path;
 
     const NON_EXISTING_FILE: &'static str = "I_DO_NOT_EXIST";
+    const EXISTING_FILE: &'static str = "tests/resources/js/with-comments.js";
     const EMPTY_FILE: &'static str = "tests/resources/empty.foo";
     const UNSUPPORTED_FILE: &'static str = "tests/resources/empty.foo";
 
     #[test]
     fn js_find_with_value() {
-        let path = Path::new("tests/resources/js-with-comments.js");
+        let path = Path::new("tests/resources/js/with-comments.js");
         let result = l::javascript::Js {
             maybe_file: File::open(path),
             file_name: String::from("irrelevant-name"),
@@ -27,7 +28,7 @@ mod tests {
 
     #[test]
     fn js_find_with_err() {
-        let path = Path::new("tests/resources/js-without-comments.js");
+        let path = Path::new("tests/resources/js/without-comments.js");
         let result = l::javascript::Js {
             maybe_file: File::open(path),
             file_name: String::from("irrelevant-name"),
@@ -38,7 +39,7 @@ mod tests {
 
     #[test]
     fn java_find_with_value() {
-        let path = Path::new("tests/resources/java-with-comments.java");
+        let path = Path::new("tests/resources/java/with-comments.java");
         let result = l::java::Java {
             maybe_file: File::open(path),
             file_name: String::from("irrelevant-name"),
@@ -49,7 +50,7 @@ mod tests {
 
     #[test]
     fn java_find_with_err() {
-        let path = Path::new("tests/resources/java-without-comments.java");
+        let path = Path::new("tests/resources/java/without-comments.java");
         let result = l::java::Java {
             maybe_file: File::open(path),
             file_name: String::from("irrelevant-name"),
@@ -59,8 +60,30 @@ mod tests {
     }
 
     #[test]
+    fn rust_find_with_value() {
+        let path = Path::new("tests/resources/rust/with-comments.rs");
+        let result = l::rust::Rust {
+            maybe_file: File::open(path),
+            file_name: String::from("irrelevant-name"),
+        }.find();
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap().lines.len(), 2);
+    }
+
+    #[test]
+    fn rust_find_with_err() {
+        let path = Path::new("tests/resources/rust/without-comments.rs");
+        let result = l::rust::Rust {
+            maybe_file: File::open(path),
+            file_name: String::from("irrelevant-name"),
+        }.find();
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap().lines.len(), 0);
+    }
+
+    #[test]
     fn resolve_type_with_value() {
-        let path = Path::new("tests/resources/js-with-comments.js");
+        let path = Path::new(EXISTING_FILE);
         let result = detector::resolve_type(path);
         assert!(result.is_ok());
     }
