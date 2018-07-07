@@ -6,6 +6,7 @@ mod tests {
     use detector::language as l;
     use detector::language::Language;
     use detector::utils;
+    use detector::utils::string::s;
     use std::ffi::OsStr;
     use std::fs::File;
     use std::path::Path;
@@ -44,12 +45,13 @@ mod tests {
         let path = Path::new("tests/resources/java/with-comments.java");
         let result = l::java::Java {
             maybe_file: File::open(path),
-            file_name: String::from("irrelevant-name"),
+            file_name: s("irrelevant-name"),
+            multi_opts: l::java::multi_opts(),
         }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
-        assert_eq!(lines.len(), 10);
-        assert_eq!(lines, [5, 6, 7, 9, 11, 12, 13, 15, 16, 17]);
+        assert_eq!(lines.len(), 13);
+        assert_eq!(lines, [5, 6, 7, 9, 11, 12, 13, 15, 16, 17, 19, 20, 21]);
     }
 
     #[test]
@@ -57,7 +59,8 @@ mod tests {
         let path = Path::new("tests/resources/java/without-comments.java");
         let result = l::java::Java {
             maybe_file: File::open(path),
-            file_name: String::from("irrelevant-name"),
+            file_name: s("irrelevant-name"),
+            multi_opts: l::java::multi_opts(),
         }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);

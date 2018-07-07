@@ -52,6 +52,7 @@ pub mod comments {
     use std::io::BufRead;
     use std::io::BufReader;
     use utils::list::in_list;
+    use utils::string::s;
 
     #[derive(Debug)]
     pub struct Line {
@@ -74,12 +75,12 @@ pub mod comments {
         let mut is_multi = false;
 
         for line in file_to_lines(file) {
-            if is_single_line_comment(&line.content) {
+            if is_single_line_comment(&s(line.content.trim())) {
                 comments.push(line.index);
-            } else if in_list(&line.content, multi_opts.starts.clone()) {
+            } else if in_list(&s(line.content.trim()), multi_opts.starts.clone()) {
                 is_multi = true;
                 comments.push(line.index);
-            } else if in_list(&line.content, multi_opts.ends.clone()) {
+            } else if in_list(&s(line.content.trim()), multi_opts.ends.clone()) {
                 is_multi = false;
                 comments.push(line.index);
             } else {

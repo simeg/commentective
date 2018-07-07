@@ -50,5 +50,5 @@ impl language::Language for CSharp {
 }
 
 fn is_single_line_comment(line: &str) -> bool {
-    string_contains_any_of(String::from(line), vec!["//"])
+    string_contains_any_of(s(line), vec!["//"])
 }
