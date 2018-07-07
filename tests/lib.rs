@@ -72,11 +72,12 @@ mod tests {
         let result = l::rust::Rust {
             maybe_file: File::open(path),
             file_name: String::from("irrelevant-name"),
+            multi_opts: l::rust::multi_opts(),
         }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
-        assert_eq!(lines.len(), 4);
-        assert_eq!(lines, [1, 4, 5, 6]);
+        assert_eq!(lines.len(), 7);
+        assert_eq!(lines, [1, 4, 5, 6, 9, 10, 11]);
     }
 
     #[test]
@@ -85,6 +86,7 @@ mod tests {
         let result = l::rust::Rust {
             maybe_file: File::open(path),
             file_name: String::from("irrelevant-name"),
+            multi_opts: l::rust::multi_opts(),
         }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);

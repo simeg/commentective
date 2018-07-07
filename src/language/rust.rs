@@ -1,46 +1,42 @@
 use language;
 use language::FindResult;
 use std::fs::File;
-use std::io::BufRead;
-use std::io::BufReader;
 use std::io::Error;
 use std::io::ErrorKind;
 use std::path::Path;
-use std::vec::Vec;
+use utils::comments::find_comments;
+use utils::comments::MultiCommentOpts;
 use utils::path::filename;
+use utils::string::s;
+use utils::string::string_contains_any_of;
 
 pub struct Rust {
     pub maybe_file: Result<File, Error>,
     pub file_name: String,
+    pub multi_opts: MultiCommentOpts,
 }
 
 pub fn source(p: &Path) -> Rust {
     Rust {
         maybe_file: File::open(p),
         file_name: filename(p).unwrap(),
+        multi_opts: multi_opts(),
+    }
+}
+
+pub fn multi_opts() -> MultiCommentOpts {
+    MultiCommentOpts {
+        starts: vec![s("/*")],
+        ends: vec![s("*/")],
     }
 }
 
 impl language::Language for Rust {
     #[inline]
     fn find(&self) -> Result<language::FindResult, Error> {
-        let mut counter = 1; // Lines begin on index 1
-        let mut comments = Vec::<u32>::new();
-
         match self.maybe_file {
             Ok(ref file) => {
-                for line in BufReader::new(file).lines() {
-                    match line {
-                        Ok(l) => {
-                            if is_comment(l) {
-                                comments.push(counter);
-                            }
-                        }
-                        Err(_) => panic!("Could not read line"),
-                    }
-                    counter = counter + 1;
-                }
-
+                let comments = find_comments(file, &self.multi_opts, &is_single_line_comment);
                 Ok(FindResult {
                     file_name: self.file_name.to_owned(),
                     lines: comments,
@@ -51,14 +47,6 @@ impl language::Language for Rust {
     }
 }
 
-fn is_comment(line: String) -> bool {
-    line.split_whitespace()
-        .into_iter()
-        .fold(false, |acc, word| {
-            if acc == true {
-                true
-            } else {
-                word.contains("//")
-            }
-        })
+fn is_single_line_comment(line: &str) -> bool {
+    string_contains_any_of(s(line), vec!["//"])
 }
