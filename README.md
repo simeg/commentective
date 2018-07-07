@@ -1,5 +1,6 @@
 # detector [![Build Status](https://travis-ci.com/simeg/detector.svg?token=N26ztkyW6iXxAQwi2QWe&branch=master)](https://travis-ci.com/simeg/detector)
-Find commented out code and comments in your project
+Find commented out code and comments in your project. Note that this tool
+assumes that your code is syntactically correct.
 
 |  Language  | Supported |
 | ---------- | --------- |
@@ -7,3 +8,22 @@ Find commented out code and comments in your project
 | Java       |     ✔️    |
 | Rust       |     ✔️    |
 | Python     |     ✔️    |
+| Bash/Shell |     X     |
+| C          |     X     |
+| C#         |     X     |
+| C++        |     X     |
+| PHP        |     X     |
+| Ruby       |     X     |
+| Go         |     X     |
+| Scala      |     X     |
+| CSS        |     X     |
+| HTML       |     X     |
+
+# Usage
+`detector` is language agnostic, meaning you don't need to tell it what
+language your files are written in. It will look at the extension of the
+files and act accordingly.
+
+```bash
+$ detector [FILES]
+```
