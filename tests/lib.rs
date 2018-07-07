@@ -3,17 +3,24 @@ extern crate detector;
 #[cfg(test)]
 mod tests {
     use detector::language as l;
+    use detector::language::bash::Bash;
+    use detector::language::csharp::CSharp;
+    use detector::language::java::Java;
+    use detector::language::javascript::Js;
+    use detector::language::php::PHP;
+    use detector::language::python::Python;
+    use detector::language::rust::Rust;
     use detector::language::Language;
     use detector::utils::string::s;
     use std::fs::File;
     use std::path::Path;
 
     #[test]
-    fn js_find_with_value() {
+    fn javascript_find_with_value() {
         let path = Path::new("tests/resources/js/with-comments.js");
-        let result = l::javascript::Js {
+        let result = Js {
             maybe_file: File::open(path),
-            file_name: String::from("irrelevant-name"),
+            file_name: s("irrelevant-name"),
             multi_opts: l::javascript::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -23,11 +30,11 @@ mod tests {
     }
 
     #[test]
-    fn js_find_with_err() {
+    fn javascript_find_with_err() {
         let path = Path::new("tests/resources/js/without-comments.js");
-        let result = l::javascript::Js {
+        let result = Js {
             maybe_file: File::open(path),
-            file_name: String::from("irrelevant-name"),
+            file_name: s("irrelevant-name"),
             multi_opts: l::javascript::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -37,7 +44,7 @@ mod tests {
     #[test]
     fn java_find_with_value() {
         let path = Path::new("tests/resources/java/with-comments.java");
-        let result = l::java::Java {
+        let result = Java {
             maybe_file: File::open(path),
             file_name: s("irrelevant-name"),
             multi_opts: l::java::multi_opts(),
@@ -54,7 +61,7 @@ mod tests {
     #[test]
     fn java_find_with_err() {
         let path = Path::new("tests/resources/java/without-comments.java");
-        let result = l::java::Java {
+        let result = Java {
             maybe_file: File::open(path),
             file_name: s("irrelevant-name"),
             multi_opts: l::java::multi_opts(),
@@ -66,9 +73,9 @@ mod tests {
     #[test]
     fn rust_find_with_value() {
         let path = Path::new("tests/resources/rust/with-comments.rs");
-        let result = l::rust::Rust {
+        let result = Rust {
             maybe_file: File::open(path),
-            file_name: String::from("irrelevant-name"),
+            file_name: s("irrelevant-name"),
             multi_opts: l::rust::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -80,9 +87,9 @@ mod tests {
     #[test]
     fn rust_find_with_err() {
         let path = Path::new("tests/resources/rust/without-comments.rs");
-        let result = l::rust::Rust {
+        let result = Rust {
             maybe_file: File::open(path),
-            file_name: String::from("irrelevant-name"),
+            file_name: s("irrelevant-name"),
             multi_opts: l::rust::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -92,9 +99,9 @@ mod tests {
     #[test]
     fn python_find_with_value() {
         let path = Path::new("tests/resources/python/with-comments.py");
-        let result = l::python::Python {
+        let result = Python {
             maybe_file: File::open(path),
-            file_name: String::from("irrelevant-name"),
+            file_name: s("irrelevant-name"),
         }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
@@ -105,9 +112,9 @@ mod tests {
     #[test]
     fn python_find_with_err() {
         let path = Path::new("tests/resources/python/without-comments.py");
-        let result = l::python::Python {
+        let result = Python {
             maybe_file: File::open(path),
-            file_name: String::from("irrelevant-name"),
+            file_name: s("irrelevant-name"),
         }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
@@ -116,9 +123,9 @@ mod tests {
     #[test]
     fn csharp_find_with_value() {
         let path = Path::new("tests/resources/csharp/with-comments.cs");
-        let result = l::csharp::CSharp {
+        let result = CSharp {
             maybe_file: File::open(path),
-            file_name: String::from("irrelevant-name"),
+            file_name: s("irrelevant-name"),
             multi_opts: l::csharp::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -130,9 +137,9 @@ mod tests {
     #[test]
     fn csharp_find_with_err() {
         let path = Path::new("tests/resources/csharp/without-comments.cs");
-        let result = l::csharp::CSharp {
+        let result = CSharp {
             maybe_file: File::open(path),
-            file_name: String::from("irrelevant-name"),
+            file_name: s("irrelevant-name"),
             multi_opts: l::csharp::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -142,9 +149,9 @@ mod tests {
     #[test]
     fn bash_find_with_value() {
         let path = Path::new("tests/resources/bash/with-comments.sh");
-        let result = l::bash::Bash {
+        let result = Bash {
             maybe_file: File::open(path),
-            file_name: String::from("irrelevant-name"),
+            file_name: s("irrelevant-name"),
             multi_opts: l::bash::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -156,9 +163,9 @@ mod tests {
     #[test]
     fn bash_find_with_err() {
         let path = Path::new("tests/resources/bash/without-comments.sh");
-        let result = l::bash::Bash {
+        let result = Bash {
             maybe_file: File::open(path),
-            file_name: String::from("irrelevant-name"),
+            file_name: s("irrelevant-name"),
             multi_opts: l::bash::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -168,9 +175,9 @@ mod tests {
     #[test]
     fn php_find_with_value() {
         let path = Path::new("tests/resources/php/with-comments.php");
-        let result = l::php::PHP {
+        let result = PHP {
             maybe_file: File::open(path),
-            file_name: String::from("irrelevant-name"),
+            file_name: s("irrelevant-name"),
             multi_opts: l::php::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -182,9 +189,9 @@ mod tests {
     #[test]
     fn php_find_with_err() {
         let path = Path::new("tests/resources/php/without-comments.php");
-        let result = l::php::PHP {
+        let result = PHP {
             maybe_file: File::open(path),
-            file_name: String::from("irrelevant-name"),
+            file_name: s("irrelevant-name"),
             multi_opts: l::php::multi_opts(),
         }.find();
         assert!(result.is_ok());
