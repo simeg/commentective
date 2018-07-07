@@ -2,6 +2,7 @@ use language::bash;
 use language::csharp;
 use language::java;
 use language::javascript;
+use language::php;
 use language::python;
 use language::rust;
 use language::FileTypes;
@@ -34,6 +35,7 @@ pub fn resolve_type(p: &Path) -> Result<FindResult, Error> {
                 "cs" => Ok(run_source(FileTypes::CSharp, p)?),
                 "java" => Ok(run_source(FileTypes::Java, p)?),
                 "js" => Ok(run_source(FileTypes::JavaScript, p)?),
+                "php" => Ok(run_source(FileTypes::PHP, p)?),
                 "py" => Ok(run_source(FileTypes::Python, p)?),
                 "rs" => Ok(run_source(FileTypes::Rust, p)?),
                 "sh" => Ok(run_source(FileTypes::Bash, p)?),
@@ -49,6 +51,7 @@ fn run_source(file_type: FileTypes, p: &Path) -> Result<FindResult, Error> {
         FileTypes::CSharp => csharp::source(p).find(),
         FileTypes::Java => java::source(p).find(),
         FileTypes::JavaScript => javascript::source(p).find(),
+        FileTypes::PHP => php::source(p).find(),
         FileTypes::Python => python::source(p).find(),
         FileTypes::Rust => rust::source(p).find(),
     }

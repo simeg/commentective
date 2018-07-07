@@ -10,9 +10,9 @@ assumes that your code is syntactically correct.
 | Python     |     ✔️    |
 | C#         |     ✔️    |
 | Bash/Shell |     ✔️    |
+| PHP        |     ✔️    |
 | C          |     X     |
 | C++        |     X     |
-| PHP        |     X     |
 | Ruby       |     X     |
 | Go         |     X     |
 | Scala      |     X     |

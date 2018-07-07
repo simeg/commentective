@@ -4,6 +4,7 @@ pub mod bash;
 pub mod csharp;
 pub mod java;
 pub mod javascript;
+pub mod php;
 pub mod python;
 pub mod rust;
 
@@ -12,6 +13,7 @@ pub enum FileTypes {
     CSharp,
     Java,
     JavaScript,
+    PHP,
     Python,
     Rust,
 }

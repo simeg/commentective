@@ -164,6 +164,32 @@ mod tests {
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
+
+    #[test]
+    fn php_find_with_value() {
+        let path = Path::new("tests/resources/php/with-comments.php");
+        let result = l::php::PHP {
+            maybe_file: File::open(path),
+            file_name: String::from("irrelevant-name"),
+            multi_opts: l::php::multi_opts(),
+        }.find();
+        assert!(result.is_ok());
+        let lines = result.unwrap().lines;
+        assert_eq!(lines.len(), 9);
+        assert_eq!(lines, [3, 5, 7, 9, 10, 11, 13, 14, 15]);
+    }
+
+    #[test]
+    fn php_find_with_err() {
+        let path = Path::new("tests/resources/php/without-comments.php");
+        let result = l::php::PHP {
+            maybe_file: File::open(path),
+            file_name: String::from("irrelevant-name"),
+            multi_opts: l::php::multi_opts(),
+        }.find();
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap().lines.len(), 0);
+    }
 }
 
 #[cfg(test)]
