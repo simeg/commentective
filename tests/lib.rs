@@ -209,14 +209,14 @@ mod utils {
     #[test]
     fn resolve_type_with_value() {
         let path = Path::new(EXISTING_FILE);
-        let result = detector::resolve_type(path);
+        let result = detector::resolve_type_and_run(path);
         assert!(result.is_ok());
     }
 
     #[test]
     fn resolve_type_with_err() {
         let path = Path::new(UNSUPPORTED_FILE);
-        let result = detector::resolve_type(path);
+        let result = detector::resolve_type_and_run(path);
         assert!(result.is_err());
     }
 

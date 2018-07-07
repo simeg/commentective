@@ -18,11 +18,11 @@ pub mod utils;
 pub fn run(paths: Vec<&Path>) -> Vec<Result<FindResult, Error>> {
     paths
         .into_iter()
-        .map(|path| resolve_type(path))
+        .map(|path| resolve_type_and_run(path))
         .collect::<Vec<Result<FindResult, Error>>>()
 }
 
-pub fn resolve_type(p: &Path) -> Result<FindResult, Error> {
+pub fn resolve_type_and_run(p: &Path) -> Result<FindResult, Error> {
     let unsupported_err = Err(Error::new(
         ErrorKind::NotFound,
         "Unsupported file extension",
