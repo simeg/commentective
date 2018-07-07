@@ -52,9 +52,7 @@ fn run_source(file_type: FileTypes, p: &Path) -> Result<FindResult, Error> {
 
 pub fn exists_on_filesystem(path: &OsStr) -> Result<(), OsString> {
     match path.to_str() {
-        None => Err(OsString::from(format!(
-            "Could not convert input file path -> str"
-        ))),
+        None => Err(OsString::from("Could not convert input file path -> str")),
         Some(p) => {
             if Path::new(p).exists() {
                 return Ok(());
