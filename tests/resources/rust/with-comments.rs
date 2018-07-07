@@ -9,3 +9,5 @@ fn my_func() {
 /*
  Block comment
  */
+
+/* Inline block comment */

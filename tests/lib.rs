@@ -18,8 +18,8 @@ mod tests {
         }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
-        assert_eq!(lines.len(), 10);
-        assert_eq!(lines, [1, 3, 4, 5, 7, 8, 9, 11, 12, 13]);
+        assert_eq!(lines.len(), 11);
+        assert_eq!(lines, [1, 3, 4, 5, 7, 8, 9, 11, 12, 13, 15]);
     }
 
     #[test]
@@ -44,8 +44,11 @@ mod tests {
         }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
-        assert_eq!(lines.len(), 13);
-        assert_eq!(lines, [5, 6, 7, 9, 11, 12, 13, 15, 16, 17, 19, 20, 21]);
+        assert_eq!(lines.len(), 15);
+        assert_eq!(
+            lines,
+            [5, 6, 7, 9, 11, 12, 13, 15, 16, 17, 19, 20, 21, 23, 25]
+        );
     }
 
     #[test]
@@ -70,8 +73,8 @@ mod tests {
         }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
-        assert_eq!(lines.len(), 7);
-        assert_eq!(lines, [1, 4, 5, 6, 9, 10, 11]);
+        assert_eq!(lines.len(), 8);
+        assert_eq!(lines, [1, 4, 5, 6, 9, 10, 11, 13]);
     }
 
     #[test]
@@ -120,8 +123,8 @@ mod tests {
         }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
-        assert_eq!(lines.len(), 6);
-        assert_eq!(lines, [1, 3, 5, 6, 7, 8])
+        assert_eq!(lines.len(), 7);
+        assert_eq!(lines, [1, 3, 5, 6, 7, 8, 10])
     }
 
     #[test]
@@ -168,6 +171,7 @@ mod utils {
     use detector;
     use detector::utils;
     use detector::utils::path::exists_on_filesystem;
+    use detector::utils::string::s;
     use std::ffi::OsStr;
     use std::path::Path;
 
@@ -216,5 +220,18 @@ mod utils {
         let path = Path::new(NON_EXISTING_FILE);
         let result = utils::path::filename(path);
         assert!(result.is_ok());
+    }
+
+    #[test]
+    fn utils_string_contains_all_true() {
+        let result = utils::string::string_contains_all(s("/* arbitrary */"), vec!["/*", "*/"]);
+        assert!(result);
+    }
+
+    #[test]
+    fn utils_string_contains_all_false() {
+        let result =
+            utils::string::string_contains_all(s("/* arbitrary */"), vec!["/*", "not exist"]);
+        assert!(!result);
     }
 }

@@ -19,6 +19,11 @@ class Foo {
   /*
   Block comment
    */
+
+  /* Comment */
+
+  /** Comment */
+
   public static void main(String[] args) {
   }
 }

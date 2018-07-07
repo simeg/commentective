@@ -36,7 +36,6 @@ pub mod path {
             }
         }
     }
-
 }
 
 pub mod string {
@@ -49,6 +48,15 @@ pub mod string {
             }
         }
         false
+    }
+
+    pub fn string_contains_all(input: String, matches: Vec<&str>) -> bool {
+        let found_matches = matches
+            .clone()
+            .into_iter()
+            .filter(|m| input.contains(m))
+            .collect::<Vec<&str>>();
+        found_matches.len() == matches.len()
     }
 
     pub fn s(input: &str) -> String {
