@@ -4,7 +4,7 @@ extern crate detector;
 use clap::App;
 use clap::Arg;
 use clap::Values;
-use detector::exists_on_filesystem;
+use detector::utils::path::exists_on_filesystem;
 use std::path::Path;
 
 fn main() {

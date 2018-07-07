@@ -1,4 +1,6 @@
 pub mod path {
+    use std::ffi::OsStr;
+    use std::ffi::OsString;
     use std::io::Error;
     use std::io::ErrorKind;
     use std::path::Path;
@@ -19,6 +21,22 @@ pub mod path {
             },
         }
     }
+
+    pub fn exists_on_filesystem(path: &OsStr) -> Result<(), OsString> {
+        match path.to_str() {
+            None => Err(OsString::from("Could not convert input file path -> str")),
+            Some(p) => {
+                if Path::new(p).exists() {
+                    return Ok(());
+                }
+                Err(OsString::from(format!(
+                    "Cannot verify that file exist [{}]",
+                    path.to_str().unwrap()
+                )))
+            }
+        }
+    }
+
 }
 
 pub mod string {

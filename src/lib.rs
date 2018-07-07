@@ -7,8 +7,6 @@ use language::rust;
 use language::FileTypes;
 use language::FindResult;
 use language::Language;
-use std::ffi::OsStr;
-use std::ffi::OsString;
 use std::io::Error;
 use std::io::ErrorKind;
 use std::path::Path;
@@ -53,20 +51,5 @@ fn run_source(file_type: FileTypes, p: &Path) -> Result<FindResult, Error> {
         FileTypes::JavaScript => javascript::source(p).find(),
         FileTypes::Python => python::source(p).find(),
         FileTypes::Rust => rust::source(p).find(),
-    }
-}
-
-pub fn exists_on_filesystem(path: &OsStr) -> Result<(), OsString> {
-    match path.to_str() {
-        None => Err(OsString::from("Could not convert input file path -> str")),
-        Some(p) => {
-            if Path::new(p).exists() {
-                return Ok(());
-            }
-            Err(OsString::from(format!(
-                "Cannot verify that file exist [{}]",
-                path.to_str().unwrap()
-            )))
-        }
     }
 }

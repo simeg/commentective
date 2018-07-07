@@ -167,6 +167,7 @@ mod tests {
 mod utils {
     use detector;
     use detector::utils;
+    use detector::utils::path::exists_on_filesystem;
     use std::ffi::OsStr;
     use std::path::Path;
 
@@ -192,14 +193,14 @@ mod utils {
     #[test]
     fn exists_on_filesystem_with_value() {
         let path = OsStr::new(EMPTY_FILE);
-        let result = detector::exists_on_filesystem(path);
+        let result = exists_on_filesystem(path);
         assert!(result.is_ok());
     }
 
     #[test]
     fn exists_on_filesystem_with_err() {
         let path = OsStr::new(NON_EXISTING_FILE);
-        let result = detector::exists_on_filesystem(path);
+        let result = exists_on_filesystem(path);
         assert!(result.is_err());
     }
 
