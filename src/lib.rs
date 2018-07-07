@@ -1,3 +1,4 @@
+use language::csharp;
 use language::java;
 use language::javascript;
 use language::python;
@@ -31,10 +32,11 @@ pub fn resolve_type(p: &Path) -> Result<FindResult, Error> {
         Some(_ext) => match _ext.to_str() {
             None => panic!("Could convert OsStr -> str"),
             Some(extension) => match extension.as_ref() {
-                "js" => Ok(run_source(FileTypes::JavaScript, p)?),
+                "cs" => Ok(run_source(FileTypes::CSharp, p)?),
                 "java" => Ok(run_source(FileTypes::Java, p)?),
-                "rs" => Ok(run_source(FileTypes::Rust, p)?),
+                "js" => Ok(run_source(FileTypes::JavaScript, p)?),
                 "py" => Ok(run_source(FileTypes::Python, p)?),
+                "rs" => Ok(run_source(FileTypes::Rust, p)?),
                 _ => unsupported_err,
             },
         },
@@ -43,10 +45,11 @@ pub fn resolve_type(p: &Path) -> Result<FindResult, Error> {
 
 fn run_source(file_type: FileTypes, p: &Path) -> Result<FindResult, Error> {
     match file_type {
-        FileTypes::JavaScript => javascript::source(p).find(),
+        FileTypes::CSharp => csharp::source(p).find(),
         FileTypes::Java => java::source(p).find(),
-        FileTypes::Rust => rust::source(p).find(),
+        FileTypes::JavaScript => javascript::source(p).find(),
         FileTypes::Python => python::source(p).find(),
+        FileTypes::Rust => rust::source(p).find(),
     }
 }
 
