@@ -117,6 +117,7 @@ mod tests {
         let result = l::csharp::CSharp {
             maybe_file: File::open(path),
             file_name: String::from("irrelevant-name"),
+            multi_opts: l::csharp::multi_opts(),
         }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
@@ -130,6 +131,7 @@ mod tests {
         let result = l::csharp::CSharp {
             maybe_file: File::open(path),
             file_name: String::from("irrelevant-name"),
+            multi_opts: l::csharp::multi_opts(),
         }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);

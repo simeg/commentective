@@ -59,10 +59,15 @@ pub mod comments {
         content: String,
     }
 
+    #[derive(Debug)]
+    pub struct MultiCommentOpts {
+        pub starts: Vec<String>,
+        pub ends: Vec<String>,
+    }
+
     pub fn find_comments(
-        starts: Vec<String>,
-        ends: Vec<String>,
         file: &File,
+        multi_opts: &MultiCommentOpts,
         is_single_line_comment: &Fn(&str) -> bool,
     ) -> Vec<u32> {
         let mut comments = Vec::<u32>::new();
@@ -71,10 +76,10 @@ pub mod comments {
         for line in file_to_lines(file) {
             if is_single_line_comment(&line.content) {
                 comments.push(line.index);
-            } else if in_list(&line.content, starts.clone()) {
+            } else if in_list(&line.content, multi_opts.starts.clone()) {
                 is_multi = true;
                 comments.push(line.index);
-            } else if in_list(&line.content, ends.clone()) {
+            } else if in_list(&line.content, multi_opts.ends.clone()) {
                 is_multi = false;
                 comments.push(line.index);
             } else {
