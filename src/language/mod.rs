@@ -1,5 +1,6 @@
 use std::io::Error;
 
+pub mod bash;
 pub mod csharp;
 pub mod java;
 pub mod javascript;
@@ -7,6 +8,7 @@ pub mod python;
 pub mod rust;
 
 pub enum FileTypes {
+    Bash,
     CSharp,
     Java,
     JavaScript,

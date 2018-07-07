@@ -9,7 +9,7 @@ assumes that your code is syntactically correct.
 | Rust       |     ✔️    |
 | Python     |     ✔️    |
 | C#         |     ✔️    |
-| Bash/Shell |     X     |
+| Bash/Shell |     ✔️    |
 | C          |     X     |
 | C++        |     X     |
 | PHP        |     X     |

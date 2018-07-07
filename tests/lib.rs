@@ -96,7 +96,7 @@ mod tests {
 
     #[test]
     fn python_find_with_value() {
-        let path = Path::new("tests/resources/python/with-comments.py");
+        let path = Path::new("tests/resources/python/with-comments.sh");
         let result = l::python::Python {
             maybe_file: File::open(path),
             file_name: String::from("irrelevant-name"),
@@ -109,7 +109,7 @@ mod tests {
 
     #[test]
     fn python_find_with_err() {
-        let path = Path::new("tests/resources/python/without-comments.py");
+        let path = Path::new("tests/resources/python/without-comments.sh");
         let result = l::python::Python {
             maybe_file: File::open(path),
             file_name: String::from("irrelevant-name"),
@@ -139,6 +139,32 @@ mod tests {
             maybe_file: File::open(path),
             file_name: String::from("irrelevant-name"),
             multi_opts: l::csharp::multi_opts(),
+        }.find();
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap().lines.len(), 0);
+    }
+
+    #[test]
+    fn bash_find_with_value() {
+        let path = Path::new("tests/resources/bash/with-comments.sh");
+        let result = l::bash::Bash {
+            maybe_file: File::open(path),
+            file_name: String::from("irrelevant-name"),
+            multi_opts: l::bash::multi_opts(),
+        }.find();
+        assert!(result.is_ok());
+        let lines = result.unwrap().lines;
+        assert_eq!(lines.len(), 5);
+        assert_eq!(lines, [3, 6, 7, 8, 9]);
+    }
+
+    #[test]
+    fn bash_find_with_err() {
+        let path = Path::new("tests/resources/bash/without-comments.sh");
+        let result = l::bash::Bash {
+            maybe_file: File::open(path),
+            file_name: String::from("irrelevant-name"),
+            multi_opts: l::bash::multi_opts(),
         }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);

@@ -1,3 +1,4 @@
+use language::bash;
 use language::csharp;
 use language::java;
 use language::javascript;
@@ -37,6 +38,7 @@ pub fn resolve_type(p: &Path) -> Result<FindResult, Error> {
                 "js" => Ok(run_source(FileTypes::JavaScript, p)?),
                 "py" => Ok(run_source(FileTypes::Python, p)?),
                 "rs" => Ok(run_source(FileTypes::Rust, p)?),
+                "sh" => Ok(run_source(FileTypes::Bash, p)?),
                 _ => unsupported_err,
             },
         },
@@ -45,6 +47,7 @@ pub fn resolve_type(p: &Path) -> Result<FindResult, Error> {
 
 fn run_source(file_type: FileTypes, p: &Path) -> Result<FindResult, Error> {
     match file_type {
+        FileTypes::Bash => bash::source(p).find(),
         FileTypes::CSharp => csharp::source(p).find(),
         FileTypes::Java => java::source(p).find(),
         FileTypes::JavaScript => javascript::source(p).find(),
