@@ -1,15 +1,17 @@
 use std::io::Error;
 
+pub mod csharp;
 pub mod java;
 pub mod javascript;
 pub mod python;
 pub mod rust;
 
 pub enum FileTypes {
-    JavaScript,
+    CSharp,
     Java,
-    Rust,
+    JavaScript,
     Python,
+    Rust,
 }
 
 pub trait Language {

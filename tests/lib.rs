@@ -112,6 +112,30 @@ mod tests {
     }
 
     #[test]
+    fn csharp_find_with_value() {
+        let path = Path::new("tests/resources/csharp/with-comments.cs");
+        let result = l::csharp::CSharp {
+            maybe_file: File::open(path),
+            file_name: String::from("irrelevant-name"),
+        }.find();
+        assert!(result.is_ok());
+        let lines = result.unwrap().lines;
+        assert_eq!(lines.len(), 6);
+        assert_eq!(lines, [1, 3, 5, 6, 7, 8])
+    }
+
+    #[test]
+    fn csharp_find_with_err() {
+        let path = Path::new("tests/resources/csharp/without-comments.cs");
+        let result = l::csharp::CSharp {
+            maybe_file: File::open(path),
+            file_name: String::from("irrelevant-name"),
+        }.find();
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap().lines.len(), 0);
+    }
+
+    #[test]
     fn resolve_type_with_value() {
         let path = Path::new(EXISTING_FILE);
         let result = detector::resolve_type(path);

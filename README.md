@@ -8,9 +8,9 @@ assumes that your code is syntactically correct.
 | Java       |     ✔️    |
 | Rust       |     ✔️    |
 | Python     |     ✔️    |
+| C#         |     ✔️    |
 | Bash/Shell |     X     |
 | C          |     X     |
-| C#         |     X     |
 | C++        |     X     |
 | PHP        |     X     |
 | Ruby       |     X     |
