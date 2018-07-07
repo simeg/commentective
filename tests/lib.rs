@@ -2,19 +2,11 @@ extern crate detector;
 
 #[cfg(test)]
 mod tests {
-    use detector;
     use detector::language as l;
     use detector::language::Language;
-    use detector::utils;
     use detector::utils::string::s;
-    use std::ffi::OsStr;
     use std::fs::File;
     use std::path::Path;
-
-    const NON_EXISTING_FILE: &'static str = "I_DO_NOT_EXIST";
-    const EXISTING_FILE: &'static str = "tests/resources/js/with-comments.js";
-    const EMPTY_FILE: &'static str = "tests/resources/empty.foo";
-    const UNSUPPORTED_FILE: &'static str = "tests/resources/empty.foo";
 
     #[test]
     fn js_find_with_value() {
@@ -96,7 +88,7 @@ mod tests {
 
     #[test]
     fn python_find_with_value() {
-        let path = Path::new("tests/resources/python/with-comments.sh");
+        let path = Path::new("tests/resources/python/with-comments.py");
         let result = l::python::Python {
             maybe_file: File::open(path),
             file_name: String::from("irrelevant-name"),
@@ -109,7 +101,7 @@ mod tests {
 
     #[test]
     fn python_find_with_err() {
-        let path = Path::new("tests/resources/python/without-comments.sh");
+        let path = Path::new("tests/resources/python/without-comments.py");
         let result = l::python::Python {
             maybe_file: File::open(path),
             file_name: String::from("irrelevant-name"),
@@ -169,6 +161,19 @@ mod tests {
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
+}
+
+#[cfg(test)]
+mod utils {
+    use detector;
+    use detector::utils;
+    use std::ffi::OsStr;
+    use std::path::Path;
+
+    const NON_EXISTING_FILE: &'static str = "I_DO_NOT_EXIST";
+    const EXISTING_FILE: &'static str = "tests/resources/js/with-comments.js";
+    const EMPTY_FILE: &'static str = "tests/resources/empty.foo";
+    const UNSUPPORTED_FILE: &'static str = "tests/resources/empty.foo";
 
     #[test]
     fn resolve_type_with_value() {
