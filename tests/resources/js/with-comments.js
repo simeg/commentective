@@ -5,5 +5,9 @@ var myVar = '2'; //Inline comment without proceeding space
 var myVar = '2';//Inline comment attached to code
 
  /*
- * Comment
+ * Block comment
+ */
+
+/*
+ Block comment
  */

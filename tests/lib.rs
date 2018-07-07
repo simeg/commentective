@@ -22,11 +22,12 @@ mod tests {
         let result = l::javascript::Js {
             maybe_file: File::open(path),
             file_name: String::from("irrelevant-name"),
+            multi_opts: l::javascript::multi_opts(),
         }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
-        assert_eq!(lines.len(), 7);
-        assert_eq!(lines, [1, 3, 4, 5, 7, 8, 9]);
+        assert_eq!(lines.len(), 10);
+        assert_eq!(lines, [1, 3, 4, 5, 7, 8, 9, 11, 12, 13]);
     }
 
     #[test]
@@ -35,6 +36,7 @@ mod tests {
         let result = l::javascript::Js {
             maybe_file: File::open(path),
             file_name: String::from("irrelevant-name"),
+            multi_opts: l::javascript::multi_opts(),
         }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
