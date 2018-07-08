@@ -11,4 +11,7 @@ object MainObject {
    /**
      * Doc like comment
      */
+
+     /* Comment */
+     /** Comment */
 }
