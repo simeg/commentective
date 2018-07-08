@@ -2,7 +2,7 @@ language: rust
 cache:
   cargo: true
   directories:
-  - kcov-master
+  - "${HOME}/kcov/"
 sudo: required
 rust:
 #  - stable
@@ -22,6 +22,9 @@ notifications:
 
 before_install:
   - sudo apt-get update
+
+env:
+- PATH=$PATH:${HOME}/kcov/bin
 
 # These packages are required for codecov
 addons:
@@ -44,8 +47,9 @@ after_success: |
   cd build &&
   cmake .. &&
   make &&
-  make install DESTDIR=../../kcov-build &&
+  make install DESTDIR=${HOME}/kcov &&
   cd ../.. &&
+  rm -rf kcov-master &&
   for file in target/debug/commentective-*[^\.d]; do mkdir -p "target/cov/$(basename $file)"; ./kcov-build/usr/local/bin/kcov --exclude-pattern=/.cargo,/usr/lib --verify "target/cov/$(basename $file)" "$file"; done &&
   bash <(curl -s https://codecov.io/bash) &&
   echo "Uploaded code coverage successfully"
