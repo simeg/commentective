@@ -9,5 +9,9 @@ license = "MIT"
 name = "commentective"
 version = "0.1.0"
 
+exclude = [
+    "tests/*",
+]
+
 [dependencies]
 clap = "2.32.0"
