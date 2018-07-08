@@ -15,9 +15,9 @@ assumes that your code is syntactically correct.
 | Go         |     ✔️    |
 | Scala      |     ✔️    |
 | CSS        |     ✔️    |
+| HTML       |     ✔️    |
 | C          |     X     |
 | C++        |     X     |
-| HTML       |     X     |
 
 # Usage
 `detector` is language agnostic, meaning you don't need to tell it what

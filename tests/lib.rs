@@ -7,6 +7,7 @@ mod tests {
     use detector::language::csharp::CSharp;
     use detector::language::css::CSS;
     use detector::language::golang::Go;
+    use detector::language::html::HTML;
     use detector::language::java::Java;
     use detector::language::javascript::Js;
     use detector::language::php::PHP;
@@ -299,6 +300,32 @@ mod tests {
             maybe_file: File::open(path),
             file_name: s("irrelevant-name"),
             multi_opts: l::css::multi_opts(),
+        }.find();
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap().lines.len(), 0);
+    }
+
+    #[test]
+    fn html_find_with_value() {
+        let path = Path::new("tests/resources/html/with-comments.html");
+        let result = HTML {
+            maybe_file: File::open(path),
+            file_name: s("irrelevant-name"),
+            multi_opts: l::html::multi_opts(),
+        }.find();
+        assert!(result.is_ok());
+        let lines = result.unwrap().lines;
+        assert_eq!(lines.len(), 6);
+        assert_eq!(lines, [1, 3, 5, 7, 8, 9]);
+    }
+
+    #[test]
+    fn html_find_with_err() {
+        let path = Path::new("tests/resources/html/without-comments.html");
+        let result = HTML {
+            maybe_file: File::open(path),
+            file_name: s("irrelevant-name"),
+            multi_opts: l::html::multi_opts(),
         }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);

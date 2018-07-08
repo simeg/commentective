@@ -4,6 +4,7 @@ pub mod bash;
 pub mod csharp;
 pub mod css;
 pub mod golang;
+pub mod html;
 pub mod java;
 pub mod javascript;
 pub mod php;
@@ -17,6 +18,7 @@ pub enum FileTypes {
     CSS,
     CSharp,
     Go,
+    HTML,
     Java,
     JavaScript,
     PHP,
