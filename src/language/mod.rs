@@ -9,6 +9,7 @@ pub mod php;
 pub mod python;
 pub mod ruby;
 pub mod rust;
+pub mod scala;
 
 pub enum FileTypes {
     Bash,
@@ -20,6 +21,7 @@ pub enum FileTypes {
     Python,
     Ruby,
     Rust,
+    Scala,
 }
 
 pub trait Language {

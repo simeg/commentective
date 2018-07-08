@@ -13,9 +13,9 @@ assumes that your code is syntactically correct.
 | PHP        |     ✔️    |
 | Ruby       |     ✔️    |
 | Go         |     ✔️    |
+| Scala      |     ✔️    |
 | C          |     X     |
 | C++        |     X     |
-| Scala      |     X     |
 | CSS        |     X     |
 | HTML       |     X     |
 

@@ -12,6 +12,7 @@ mod tests {
     use detector::language::python::Python;
     use detector::language::ruby::Ruby;
     use detector::language::rust::Rust;
+    use detector::language::scala::Scala;
     use detector::language::Language;
     use detector::utils::string::s;
     use std::fs::File;
@@ -245,6 +246,32 @@ mod tests {
         let result = Go {
             maybe_file: File::open(path),
             file_name: s("irrelevant-name"),
+        }.find();
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap().lines.len(), 0);
+    }
+
+    #[test]
+    fn scala_find_with_value() {
+        let path = Path::new("tests/resources/scala/with-comments.scala");
+        let result = Scala {
+            maybe_file: File::open(path),
+            file_name: s("irrelevant-name"),
+            multi_opts: l::scala::multi_opts(),
+        }.find();
+        assert!(result.is_ok());
+        let lines = result.unwrap().lines;
+        assert_eq!(lines.len(), 7);
+        assert_eq!(lines, [1, 7, 8, 9, 11, 12, 13]);
+    }
+
+    #[test]
+    fn scala_find_with_err() {
+        let path = Path::new("tests/resources/scala/without-comments.scala");
+        let result = Scala {
+            maybe_file: File::open(path),
+            file_name: s("irrelevant-name"),
+            multi_opts: l::scala::multi_opts(),
         }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);

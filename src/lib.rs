@@ -7,6 +7,7 @@ use language::php;
 use language::python;
 use language::ruby;
 use language::rust;
+use language::scala;
 use language::FileTypes;
 use language::FindResult;
 use language::Language;
@@ -42,6 +43,8 @@ pub fn resolve_type_and_run(p: &Path) -> Result<FindResult, Error> {
                 "py" => Ok(run_source(FileTypes::Python, p)?),
                 "rb" => Ok(run_source(FileTypes::Ruby, p)?),
                 "rs" => Ok(run_source(FileTypes::Rust, p)?),
+                "sc" => Ok(run_source(FileTypes::Scala, p)?),
+                "scala" => Ok(run_source(FileTypes::Scala, p)?),
                 "sh" => Ok(run_source(FileTypes::Bash, p)?),
                 _ => unsupported_err,
             },
@@ -60,5 +63,6 @@ fn run_source(file_type: FileTypes, p: &Path) -> Result<FindResult, Error> {
         FileTypes::Python => python::source(p).find(),
         FileTypes::Ruby => ruby::source(p).find(),
         FileTypes::Rust => rust::source(p).find(),
+        FileTypes::Scala => scala::source(p).find(),
     }
 }
