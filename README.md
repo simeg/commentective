@@ -4,20 +4,20 @@ assumes that your code is syntactically correct.
 
 |  Language  | Supported |
 | ---------- | --------- |
-| JavaScript |     ✔️    |
-| Java       |     ✔️    |
-| Rust       |     ✔️    |
-| Python     |     ✔️    |
-| C#         |     ✔️    |
 | Bash/Shell |     ✔️    |
-| PHP        |     ✔️    |
-| Ruby       |     ✔️    |
-| Go         |     ✔️    |
-| Scala      |     ✔️    |
-| CSS        |     ✔️    |
-| HTML       |     ✔️    |
 | C          |     ✔️    |
+| C#         |     ✔️    |
 | C++        |     ✔️    |
+| CSS        |     ✔️    |
+| Go         |     ✔️    |
+| HTML       |     ✔️    |
+| Java       |     ✔️    |
+| JavaScript |     ✔️    |
+| PHP        |     ✔️    |
+| Python     |     ✔️    |
+| Ruby       |     ✔️    |
+| Rust       |     ✔️    |
+| Scala      |     ✔️    |
 
 # Usage
 `detector` is language agnostic, meaning you don't need to tell it what
