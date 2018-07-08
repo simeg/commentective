@@ -5,6 +5,7 @@ description = "CLI tool to locate comments and commented out code in your source
 documentation = "https://github.com/simeg/commentective/blob/master/README.md"
 homepage = "https://github.com/simeg/commentective"
 keywords = ["command-line-tool", "cli", "rust", "comments"]
+readme = "README.md"
 license = "MIT"
 name = "commentective"
 version = "0.1.0"
@@ -12,6 +13,9 @@ version = "0.1.0"
 exclude = [
     "tests/*",
 ]
+
+[badges]
+travis-ci = { repository = "simeg/commentective" }
 
 [dependencies]
 clap = "2.32.0"
