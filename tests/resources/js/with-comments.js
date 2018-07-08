@@ -13,3 +13,6 @@ var myVar = '2';//Inline comment attached to code
  */
 
  /* Comment */
+
+ /*
+ Special block comment */

@@ -14,4 +14,7 @@ object MainObject {
 
      /* Comment */
      /** Comment */
+
+   /*
+     Special block comment */
 }

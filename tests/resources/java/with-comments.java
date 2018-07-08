@@ -24,6 +24,9 @@ class Foo {
 
   /** Comment */
 
+  /*
+ Special block comment */
+
   public static void main(String[] args) {
   }
 }

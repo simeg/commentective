@@ -14,4 +14,7 @@
 * This is a comment
 */
 
+/*
+ Special block comment */
+
 ?>

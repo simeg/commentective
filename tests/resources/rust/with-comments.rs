@@ -11,3 +11,10 @@ fn my_func() {
  */
 
 /* Inline block comment */
+
+/*
+ Special block comment */
+
+fn foo() -> bool {
+    false
+}

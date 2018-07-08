@@ -8,3 +8,6 @@ int sampleVariable; // Inline comment
 */
 
 /* Comment */
+
+/*
+ Special block comment */
