@@ -1,6 +1,7 @@
 use std::io::Error;
 
 pub mod bash;
+pub mod c;
 pub mod csharp;
 pub mod css;
 pub mod golang;
@@ -15,6 +16,7 @@ pub mod scala;
 
 pub enum FileTypes {
     Bash,
+    C,
     CSS,
     CSharp,
     Go,

@@ -19,6 +19,7 @@ mod tests {
     use detector::utils::string::s;
     use std::fs::File;
     use std::path::Path;
+    use detector::language::c::C;
 
     #[test]
     fn javascript_find_with_value() {
@@ -326,6 +327,32 @@ mod tests {
             maybe_file: File::open(path),
             file_name: s("irrelevant-name"),
             multi_opts: l::html::multi_opts(),
+        }.find();
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap().lines.len(), 0);
+    }
+
+    #[test]
+    fn c_find_with_value() {
+        let path = Path::new("tests/resources/c/with-comments.c");
+        let result = C {
+            maybe_file: File::open(path),
+            file_name: s("irrelevant-name"),
+            multi_opts: l::c::multi_opts(),
+        }.find();
+        assert!(result.is_ok());
+        let lines = result.unwrap().lines;
+        assert_eq!(lines.len(), 8);
+        assert_eq!(lines, [1, 3, 5, 6, 7, 9, 10, 12]);
+    }
+
+    #[test]
+    fn c_find_with_err() {
+        let path = Path::new("tests/resources/c/without-comments.c");
+        let result = C {
+            maybe_file: File::open(path),
+            file_name: s("irrelevant-name"),
+            multi_opts: l::c::multi_opts(),
         }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);

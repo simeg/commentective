@@ -16,6 +16,7 @@ use language::Language;
 use std::io::Error;
 use std::io::ErrorKind;
 use std::path::Path;
+use language::c;
 
 pub mod language;
 pub mod utils;
@@ -37,6 +38,7 @@ pub fn resolve_type_and_run(p: &Path) -> Result<FindResult, Error> {
         Some(_ext) => match _ext.to_str() {
             None => panic!("Could not convert OsStr -> str"),
             Some(extension) => match extension {
+                "c" => Ok(run_source(FileTypes::C, p)?),
                 "cs" => Ok(run_source(FileTypes::CSharp, p)?),
                 "css" => Ok(run_source(FileTypes::CSS, p)?),
                 "go" => Ok(run_source(FileTypes::Go, p)?),
@@ -59,6 +61,7 @@ pub fn resolve_type_and_run(p: &Path) -> Result<FindResult, Error> {
 fn run_source(file_type: FileTypes, p: &Path) -> Result<FindResult, Error> {
     match file_type {
         FileTypes::Bash => bash::source(p).find(),
+        FileTypes::C => c::source(p).find(),
         FileTypes::CSS => css::source(p).find(),
         FileTypes::CSharp => csharp::source(p).find(),
         FileTypes::Go => golang::source(p).find(),

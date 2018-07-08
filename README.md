@@ -16,7 +16,7 @@ assumes that your code is syntactically correct.
 | Scala      |     ✔️    |
 | CSS        |     ✔️    |
 | HTML       |     ✔️    |
-| C          |     X     |
+| C          |     ✔️    |
 | C++        |     X     |
 
 # Usage
