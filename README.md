@@ -14,6 +14,7 @@ written in. It will look at the extension of the files and act accordingly.
 $ commentective [FILES]
 ```
 
+
 # Supported languages
 
 |  Language  | Supported |
@@ -33,5 +34,11 @@ $ commentective [FILES]
 | Rust       |     ✔️    |
 | Scala      |     ✔️    |
 
-Got a request for a different language? 
+Got a request for a language? 
 [Submit an issue!](https://github.com/simeg/commentective/issues/new)
+
+
+# Contribute :zap:
+
+Want to contribute to this project? A backlog is kept in the
+[issues](https://github.com/simeg/commentective/issues), just take your pick.
