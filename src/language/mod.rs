@@ -6,6 +6,7 @@ pub mod java;
 pub mod javascript;
 pub mod php;
 pub mod python;
+pub mod ruby;
 pub mod rust;
 
 pub enum FileTypes {
@@ -15,6 +16,7 @@ pub enum FileTypes {
     JavaScript,
     PHP,
     Python,
+    Ruby,
     Rust,
 }
 

@@ -9,6 +9,7 @@ mod tests {
     use detector::language::javascript::Js;
     use detector::language::php::PHP;
     use detector::language::python::Python;
+    use detector::language::ruby::Ruby;
     use detector::language::rust::Rust;
     use detector::language::Language;
     use detector::utils::string::s;
@@ -193,6 +194,32 @@ mod tests {
             maybe_file: File::open(path),
             file_name: s("irrelevant-name"),
             multi_opts: l::php::multi_opts(),
+        }.find();
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap().lines.len(), 0);
+    }
+
+    #[test]
+    fn ruby_find_with_value() {
+        let path = Path::new("tests/resources/ruby/with-comments.rb");
+        let result = Ruby {
+            maybe_file: File::open(path),
+            file_name: s("irrelevant-name"),
+            multi_opts: l::ruby::multi_opts(),
+        }.find();
+        assert!(result.is_ok());
+        let lines = result.unwrap().lines;
+        assert_eq!(lines.len(), 6);
+        assert_eq!(lines, [1, 2, 3, 5, 8, 9]);
+    }
+
+    #[test]
+    fn ruby_find_with_err() {
+        let path = Path::new("tests/resources/ruby/without-comments.rb");
+        let result = Ruby {
+            maybe_file: File::open(path),
+            file_name: s("irrelevant-name"),
+            multi_opts: l::ruby::multi_opts(),
         }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);

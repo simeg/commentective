@@ -11,9 +11,9 @@ assumes that your code is syntactically correct.
 | C#         |     ✔️    |
 | Bash/Shell |     ✔️    |
 | PHP        |     ✔️    |
+| Ruby       |     ✔️    |
 | C          |     X     |
 | C++        |     X     |
-| Ruby       |     X     |
 | Go         |     X     |
 | Scala      |     X     |
 | CSS        |     X     |
