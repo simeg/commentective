@@ -66,7 +66,7 @@ pub mod string {
 
 pub mod list {
     pub fn in_list(needle: &String, haystack: Vec<String>) -> bool {
-        match haystack.into_iter().rfind(|ele| ele == needle) {
+        match haystack.into_iter().rfind(|ele| needle.contains(ele)) {
             None => false,
             Some(_) => true,
         }
