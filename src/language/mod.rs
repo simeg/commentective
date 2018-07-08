@@ -2,6 +2,7 @@ use std::io::Error;
 
 pub mod bash;
 pub mod csharp;
+pub mod golang;
 pub mod java;
 pub mod javascript;
 pub mod php;
@@ -12,6 +13,7 @@ pub mod rust;
 pub enum FileTypes {
     Bash,
     CSharp,
+    Go,
     Java,
     JavaScript,
     PHP,

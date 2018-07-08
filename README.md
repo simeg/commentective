@@ -12,9 +12,9 @@ assumes that your code is syntactically correct.
 | Bash/Shell |     ✔️    |
 | PHP        |     ✔️    |
 | Ruby       |     ✔️    |
+| Go         |     ✔️    |
 | C          |     X     |
 | C++        |     X     |
-| Go         |     X     |
 | Scala      |     X     |
 | CSS        |     X     |
 | HTML       |     X     |
