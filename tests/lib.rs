@@ -5,6 +5,7 @@ mod tests {
     use detector::language as l;
     use detector::language::bash::Bash;
     use detector::language::csharp::CSharp;
+    use detector::language::css::CSS;
     use detector::language::golang::Go;
     use detector::language::java::Java;
     use detector::language::javascript::Js;
@@ -272,6 +273,32 @@ mod tests {
             maybe_file: File::open(path),
             file_name: s("irrelevant-name"),
             multi_opts: l::scala::multi_opts(),
+        }.find();
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap().lines.len(), 0);
+    }
+
+    #[test]
+    fn css_find_with_value() {
+        let path = Path::new("tests/resources/css/with-comments.css");
+        let result = CSS {
+            maybe_file: File::open(path),
+            file_name: s("irrelevant-name"),
+            multi_opts: l::css::multi_opts(),
+        }.find();
+        assert!(result.is_ok());
+        let lines = result.unwrap().lines;
+        assert_eq!(lines.len(), 6);
+        assert_eq!(lines, [1, 3, 6, 7, 8, 10]);
+    }
+
+    #[test]
+    fn css_find_with_err() {
+        let path = Path::new("tests/resources/css/without-comments.css");
+        let result = CSS {
+            maybe_file: File::open(path),
+            file_name: s("irrelevant-name"),
+            multi_opts: l::css::multi_opts(),
         }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);

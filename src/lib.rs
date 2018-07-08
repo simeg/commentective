@@ -1,5 +1,6 @@
 use language::bash;
 use language::csharp;
+use language::css;
 use language::golang;
 use language::java;
 use language::javascript;
@@ -36,6 +37,7 @@ pub fn resolve_type_and_run(p: &Path) -> Result<FindResult, Error> {
             None => panic!("Could not convert OsStr -> str"),
             Some(extension) => match extension {
                 "cs" => Ok(run_source(FileTypes::CSharp, p)?),
+                "css" => Ok(run_source(FileTypes::CSS, p)?),
                 "go" => Ok(run_source(FileTypes::Go, p)?),
                 "java" => Ok(run_source(FileTypes::Java, p)?),
                 "js" => Ok(run_source(FileTypes::JavaScript, p)?),
@@ -55,6 +57,7 @@ pub fn resolve_type_and_run(p: &Path) -> Result<FindResult, Error> {
 fn run_source(file_type: FileTypes, p: &Path) -> Result<FindResult, Error> {
     match file_type {
         FileTypes::Bash => bash::source(p).find(),
+        FileTypes::CSS => css::source(p).find(),
         FileTypes::CSharp => csharp::source(p).find(),
         FileTypes::Go => golang::source(p).find(),
         FileTypes::Java => java::source(p).find(),
