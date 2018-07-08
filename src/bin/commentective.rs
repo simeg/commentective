@@ -1,10 +1,10 @@
 extern crate clap;
-extern crate detector;
+extern crate commentective;
 
 use clap::App;
 use clap::Arg;
 use clap::Values;
-use detector::utils::path::exists_on_filesystem;
+use commentective::utils::path::exists_on_filesystem;
 use std::path::Path;
 
 fn main() {
@@ -25,7 +25,7 @@ fn main() {
     let values: Values = matches.values_of("FILES").unwrap();
     let paths: Vec<&Path> = values.map(|file| Path::new(file)).collect::<Vec<&Path>>();
 
-    for i in detector::run(paths) {
+    for i in commentective::run(paths) {
         println!("{:?}", i);
     }
 }

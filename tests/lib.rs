@@ -1,24 +1,24 @@
-extern crate detector;
+extern crate commentective;
 
 #[cfg(test)]
 mod tests {
-    use detector::language as l;
-    use detector::language::bash::Bash;
-    use detector::language::c::C;
-    use detector::language::cpp::Cpp;
-    use detector::language::csharp::CSharp;
-    use detector::language::css::CSS;
-    use detector::language::golang::Go;
-    use detector::language::html::HTML;
-    use detector::language::java::Java;
-    use detector::language::javascript::Js;
-    use detector::language::php::PHP;
-    use detector::language::python::Python;
-    use detector::language::ruby::Ruby;
-    use detector::language::rust::Rust;
-    use detector::language::scala::Scala;
-    use detector::language::Language;
-    use detector::utils::string::s;
+    use commentective::language as l;
+    use commentective::language::bash::Bash;
+    use commentective::language::c::C;
+    use commentective::language::cpp::Cpp;
+    use commentective::language::csharp::CSharp;
+    use commentective::language::css::CSS;
+    use commentective::language::golang::Go;
+    use commentective::language::html::HTML;
+    use commentective::language::java::Java;
+    use commentective::language::javascript::Js;
+    use commentective::language::php::PHP;
+    use commentective::language::python::Python;
+    use commentective::language::ruby::Ruby;
+    use commentective::language::rust::Rust;
+    use commentective::language::scala::Scala;
+    use commentective::language::Language;
+    use commentective::utils::string::s;
     use std::fs::File;
     use std::path::Path;
 
@@ -388,10 +388,10 @@ mod tests {
 
 #[cfg(test)]
 mod utils {
-    use detector;
-    use detector::utils;
-    use detector::utils::path::exists_on_filesystem;
-    use detector::utils::string::s;
+    use commentective;
+    use commentective::utils;
+    use commentective::utils::path::exists_on_filesystem;
+    use commentective::utils::string::s;
     use std::ffi::OsStr;
     use std::path::Path;
 
@@ -403,14 +403,14 @@ mod utils {
     #[test]
     fn resolve_type_with_value() {
         let path = Path::new(EXISTING_FILE);
-        let result = detector::resolve_type_and_run(path);
+        let result = commentective::resolve_type_and_run(path);
         assert!(result.is_ok());
     }
 
     #[test]
     fn resolve_type_with_err() {
         let path = Path::new(UNSUPPORTED_FILE);
-        let result = detector::resolve_type_and_run(path);
+        let result = commentective::resolve_type_and_run(path);
         assert!(result.is_err());
     }
 

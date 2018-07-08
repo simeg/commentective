@@ -1,6 +1,6 @@
 .PHONY: build ci clean fmt install install-fmt link lint release run test
 
-BIN_NAME = detector
+BIN_NAME = commentective
 CARGO=$(shell which cargo)
 
 build:
