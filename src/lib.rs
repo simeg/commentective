@@ -1,4 +1,6 @@
 use language::bash;
+use language::c;
+use language::cpp;
 use language::csharp;
 use language::css;
 use language::golang;
@@ -16,7 +18,6 @@ use language::Language;
 use std::io::Error;
 use std::io::ErrorKind;
 use std::path::Path;
-use language::c;
 
 pub mod language;
 pub mod utils;
@@ -39,6 +40,7 @@ pub fn resolve_type_and_run(p: &Path) -> Result<FindResult, Error> {
             None => panic!("Could not convert OsStr -> str"),
             Some(extension) => match extension {
                 "c" => Ok(run_source(FileTypes::C, p)?),
+                "cpp" => Ok(run_source(FileTypes::Cpp, p)?),
                 "cs" => Ok(run_source(FileTypes::CSharp, p)?),
                 "css" => Ok(run_source(FileTypes::CSS, p)?),
                 "go" => Ok(run_source(FileTypes::Go, p)?),
@@ -64,6 +66,7 @@ fn run_source(file_type: FileTypes, p: &Path) -> Result<FindResult, Error> {
         FileTypes::C => c::source(p).find(),
         FileTypes::CSS => css::source(p).find(),
         FileTypes::CSharp => csharp::source(p).find(),
+        FileTypes::Cpp => cpp::source(p).find(),
         FileTypes::Go => golang::source(p).find(),
         FileTypes::HTML => html::source(p).find(),
         FileTypes::Java => java::source(p).find(),

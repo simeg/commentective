@@ -17,7 +17,7 @@ assumes that your code is syntactically correct.
 | CSS        |     ✔️    |
 | HTML       |     ✔️    |
 | C          |     ✔️    |
-| C++        |     X     |
+| C++        |     ✔️    |
 
 # Usage
 `detector` is language agnostic, meaning you don't need to tell it what

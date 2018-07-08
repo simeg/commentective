@@ -4,6 +4,8 @@ extern crate detector;
 mod tests {
     use detector::language as l;
     use detector::language::bash::Bash;
+    use detector::language::c::C;
+    use detector::language::cpp::Cpp;
     use detector::language::csharp::CSharp;
     use detector::language::css::CSS;
     use detector::language::golang::Go;
@@ -19,7 +21,6 @@ mod tests {
     use detector::utils::string::s;
     use std::fs::File;
     use std::path::Path;
-    use detector::language::c::C;
 
     #[test]
     fn javascript_find_with_value() {
@@ -353,6 +354,32 @@ mod tests {
             maybe_file: File::open(path),
             file_name: s("irrelevant-name"),
             multi_opts: l::c::multi_opts(),
+        }.find();
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap().lines.len(), 0);
+    }
+
+    #[test]
+    fn cpp_find_with_value() {
+        let path = Path::new("tests/resources/cpp/with-comments.cpp");
+        let result = Cpp {
+            maybe_file: File::open(path),
+            file_name: s("irrelevant-name"),
+            multi_opts: l::cpp::multi_opts(),
+        }.find();
+        assert!(result.is_ok());
+        let lines = result.unwrap().lines;
+        assert_eq!(lines.len(), 11);
+        assert_eq!(lines, [1, 3, 5, 6, 7, 9, 10, 12, 14, 15, 16]);
+    }
+
+    #[test]
+    fn cpp_find_with_err() {
+        let path = Path::new("tests/resources/cpp/without-comments.cpp");
+        let result = Cpp {
+            maybe_file: File::open(path),
+            file_name: s("irrelevant-name"),
+            multi_opts: l::cpp::multi_opts(),
         }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
