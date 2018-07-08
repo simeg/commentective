@@ -30,7 +30,7 @@ pub fn resolve_type_and_run(p: &Path) -> Result<FindResult, Error> {
     match p.extension() {
         None => unsupported_err,
         Some(_ext) => match _ext.to_str() {
-            None => panic!("Could convert OsStr -> str"),
+            None => panic!("Could not convert OsStr -> str"),
             Some(extension) => match extension.as_ref() {
                 "cs" => Ok(run_source(FileTypes::CSharp, p)?),
                 "java" => Ok(run_source(FileTypes::Java, p)?),
