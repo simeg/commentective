@@ -1,4 +1,4 @@
-.PHONY: build ci clean fmt install install-fmt link lint release run test
+.PHONY: build ci clean fmt install install-rustfmt link lint release run test
 
 BIN_NAME = commentective
 CARGO=$(shell which cargo)
