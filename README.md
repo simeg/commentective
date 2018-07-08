@@ -38,6 +38,12 @@ Got a request for a language?
 [Submit an issue!](https://github.com/simeg/commentective/issues/new)
 
 
+# Installation
+```bash
+$ cargo install commentective
+```
+
+
 # Contribute :zap:
 
 Want to contribute to this project? A backlog is kept in the
