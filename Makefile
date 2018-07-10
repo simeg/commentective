@@ -1,4 +1,4 @@
-.PHONY: build ci clean fmt install install-rustfmt link lint release run test
+.PHONY: build check ci clean fmt install install-rustfmt link lint release run test
 
 BIN_NAME = commentective
 CARGO=$(shell which cargo)
@@ -6,7 +6,10 @@ CARGO=$(shell which cargo)
 build:
 	@$(CARGO) build
 
-ci: install-rustfmt lint build test
+check:
+	$(CARGO) check --release
+
+ci: install-rustfmt lint check test
 
 clean:
 	rm -rf ./target
