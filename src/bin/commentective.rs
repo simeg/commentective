@@ -25,7 +25,7 @@ fn main() {
     let values: Values = matches.values_of("FILES").unwrap();
     let paths: Vec<&Path> = values.map(|file| Path::new(file)).collect::<Vec<&Path>>();
 
-    for i in commentective::run(paths) {
-        println!("{:?}", i);
+    for comments in commentective::run(paths) {
+        println!("{:?}", comments);
     }
 }
