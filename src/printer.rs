@@ -4,8 +4,7 @@ use self::colored::ColoredString;
 use self::colored::*;
 use console::Term;
 use language::FindResult;
-use printer::Colors::Red;
-use printer::Colors::Yellow;
+use printer::Colors::*;
 use std::io::Error;
 use std::io::Write;
 
@@ -28,58 +27,62 @@ where
         match maybe_result {
             Ok(result) => match result.lines.len() {
                 0 => {
-                    Printer::print_file_name(self, result.file_name);
-                    Printer::writeln(self, "> No comments found".white());
+                    self.print_file_name(result.file_name);
+                    self.print_colored(String::from("> No comments found"), White);
                     Ok(())
                 }
                 _ => {
-                    Printer::print_result(self, result);
+                    self.result(result);
                     Ok(())
                 }
             },
             Err(e) => {
-                Printer::print_error(self, &e);
+                self.error(&e);
                 Err(e)
             }
         }
     }
 
-    fn print_error(&mut self, err: &Error) {
-        Printer::print_line(self, Red);
+    fn error(&mut self, err: &Error) {
+        self.print_colored_line(Red);
         let msg = format!("Error: {}", err.to_string());
-        Printer::writeln(self, msg.red());
-        Printer::print_line(self, Red);
+        self.print_colored(msg, Red);
+        self.print_colored_line(Red);
     }
 
-    fn print_result(&mut self, result: FindResult) {
-        Printer::print_file_name(self, result.file_name);
+    fn result(&mut self, result: FindResult) {
+        self.print_file_name(result.file_name);
         result
             .lines
             .into_iter()
-            .map(|line| Printer::print_comments(self, line))
+            .map(|line| self.print_comments(line))
             .for_each(drop);
     }
 
     fn print_file_name(&mut self, file_name: String) {
-        Printer::print_line(self, Yellow);
+        self.print_colored_line(Yellow);
         let msg = format!("{} {}", "File:", file_name);
-        Printer::writeln(self, msg.yellow());
-        Printer::print_line(self, Yellow);
+        self.print_colored(msg, Yellow);
+        self.print_colored_line(Yellow);
     }
 
     fn print_comments(&mut self, line_number: u32) {
         let msg = format!("L{}", line_number.to_string());
-        Printer::writeln(self, msg.green());
+        self.print_colored(msg, Green);
     }
 
-    fn print_line(&mut self, color: Colors) {
+    fn print_colored_line(&mut self, color: Colors) {
         let term_width = Term::stdout().size().1 as usize;
         let line = "─".repeat(term_width);
+        self.print_colored(line, color);
+    }
+
+    fn print_colored(&mut self, text: String, color: Colors) {
         match color {
-            Colors::Yellow => Printer::writeln(self, line.yellow()),
-            Colors::Green => Printer::writeln(self, line.green()),
-            Colors::Red => Printer::writeln(self, line.red()),
-            Colors::White => Printer::writeln(self, line.white()),
+            Colors::Yellow => self.writeln(text.yellow()),
+            Colors::Green => self.writeln(text.green()),
+            Colors::Red => self.writeln(text.red()),
+            Colors::White => self.writeln(text.white()),
         }
     }
 
