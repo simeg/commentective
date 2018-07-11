@@ -1,3 +1,5 @@
+extern crate console;
+
 use language::bash;
 use language::c;
 use language::cpp;
