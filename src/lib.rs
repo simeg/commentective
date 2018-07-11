@@ -20,6 +20,7 @@ use std::io::ErrorKind;
 use std::path::Path;
 
 pub mod language;
+pub mod printer;
 pub mod utils;
 
 pub fn run(paths: Vec<&Path>) -> Vec<Result<FindResult, Error>> {

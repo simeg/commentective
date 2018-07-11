@@ -1,10 +1,13 @@
 extern crate clap;
+extern crate colored;
 extern crate commentective;
 
 use clap::App;
 use clap::Arg;
 use clap::Values;
+use commentective::printer::Printer;
 use commentective::utils::path::exists_on_filesystem;
+use std::io;
 use std::path::Path;
 
 fn main() {
@@ -25,7 +28,12 @@ fn main() {
     let values: Values = matches.values_of("FILES").unwrap();
     let paths: Vec<&Path> = values.map(|file| Path::new(file)).collect::<Vec<&Path>>();
 
-    for comments in commentective::run(paths) {
-        println!("{:?}", comments);
-    }
+    let mut printer = Printer {
+        writer: io::stdout(),
+    };
+
+    commentective::run(paths)
+        .into_iter()
+        .map(|result| printer.terminal(result))
+        .for_each(drop);
 }

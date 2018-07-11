@@ -20,3 +20,4 @@ codecov = { repository = "simeg/commentective", branch = "master", service = "gi
 
 [dependencies]
 clap = "2.32.0"
+colored = "1.6"
