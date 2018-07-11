@@ -28,7 +28,9 @@ where
         match maybe_result {
             Ok(result) => match result.lines.len() {
                 0 => {
+                    Printer::print_line(self, Yellow);
                     Printer::writeln(self, "No comments found".yellow());
+                    Printer::print_line(self, Yellow);
                     Ok(())
                 }
                 _ => {
