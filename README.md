@@ -28,6 +28,7 @@ $ commentective [FILES]
 | HTML       |     ✔️    |
 | Java       |     ✔️    |
 | JavaScript |     ✔️    |
+| Lua        |     ✔️    |
 | PHP        |     ✔️    |
 | Python     |     ✔️    |
 | Ruby       |     ✔️    |
