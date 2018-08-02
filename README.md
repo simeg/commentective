@@ -6,6 +6,7 @@ It will find single line comments and multi line comments. It supports a number 
 find a case that `commentective` does not support, please
 [submit an issue](https://github.com/simeg/commentective/issues/new).
 
+
 # Usage
 `commentective` is language agnostic, meaning you don't need to tell it what language your files are 
 written in. It will look at the extension of the files and act accordingly.
@@ -48,4 +49,4 @@ $ cargo install commentective
 # Contribute :zap:
 
 Want to contribute to this project? A backlog is kept in the
-[issues](https://github.com/simeg/commentective/issues), just take your pick.
+[issues](https://github.com/simeg/commentective/issues), have a look!
