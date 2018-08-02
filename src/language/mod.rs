@@ -9,6 +9,7 @@ pub mod golang;
 pub mod html;
 pub mod java;
 pub mod javascript;
+pub mod lua;
 pub mod php;
 pub mod python;
 pub mod ruby;
@@ -25,6 +26,7 @@ pub enum FileTypes {
     HTML,
     Java,
     JavaScript,
+    Lua,
     PHP,
     Python,
     Ruby,

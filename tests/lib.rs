@@ -12,6 +12,7 @@ mod tests {
     use commentective::language::html::HTML;
     use commentective::language::java::Java;
     use commentective::language::javascript::Js;
+    use commentective::language::lua::Lua;
     use commentective::language::php::PHP;
     use commentective::language::python::Python;
     use commentective::language::ruby::Ruby;
@@ -380,6 +381,30 @@ mod tests {
             maybe_file: File::open(path),
             file_name: s("irrelevant-name"),
             multi_opts: l::cpp::multi_opts(),
+        }.find();
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap().lines.len(), 0);
+    }
+
+    #[test]
+    fn lua_find_with_value() {
+        let path = Path::new("tests/resources/lua/with-comments.lua");
+        let result = Lua {
+            maybe_file: File::open(path),
+            file_name: s("irrelevant-name"),
+        }.find();
+        assert!(result.is_ok());
+        let lines = result.unwrap().lines;
+        assert_eq!(lines.len(), 13);
+        assert_eq!(lines, [1, 2, 5, 6, 7, 9, 10, 11, 13, 14, 15, 19, 21]);
+    }
+
+    #[test]
+    fn lua_find_with_err() {
+        let path = Path::new("tests/resources/lua/without-comments.lua");
+        let result = Lua {
+            maybe_file: File::open(path),
+            file_name: s("irrelevant-name"),
         }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
