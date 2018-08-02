@@ -9,6 +9,7 @@ use language::golang;
 use language::html;
 use language::java;
 use language::javascript;
+use language::lua;
 use language::php;
 use language::python;
 use language::ruby;
@@ -50,6 +51,7 @@ pub fn resolve_type_and_run(p: &Path) -> Result<FindResult, Error> {
                 "html" => Ok(run_source(FileTypes::HTML, p)?),
                 "java" => Ok(run_source(FileTypes::Java, p)?),
                 "js" => Ok(run_source(FileTypes::JavaScript, p)?),
+                "lua" => Ok(run_source(FileTypes::Lua, p)?),
                 "php" => Ok(run_source(FileTypes::PHP, p)?),
                 "py" => Ok(run_source(FileTypes::Python, p)?),
                 "rb" => Ok(run_source(FileTypes::Ruby, p)?),
@@ -74,6 +76,7 @@ fn run_source(file_type: FileTypes, p: &Path) -> Result<FindResult, Error> {
         FileTypes::HTML => html::source(p).find(),
         FileTypes::Java => java::source(p).find(),
         FileTypes::JavaScript => javascript::source(p).find(),
+        FileTypes::Lua => lua::source(p).find(),
         FileTypes::PHP => php::source(p).find(),
         FileTypes::Python => python::source(p).find(),
         FileTypes::Ruby => ruby::source(p).find(),
