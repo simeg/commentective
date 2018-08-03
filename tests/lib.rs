@@ -23,12 +23,14 @@ mod tests {
     use std::fs::File;
     use std::path::Path;
 
+    const IRRELEVANT: &'static str = "irrelevant";
+
     #[test]
     fn javascript_find_with_value() {
         let path = Path::new("tests/resources/javascript/with-comments.js");
         let result = JavaScript {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
             multi_opts: l::javascript::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -42,7 +44,7 @@ mod tests {
         let path = Path::new("tests/resources/javascript/without-comments.js");
         let result = JavaScript {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
             multi_opts: l::javascript::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -54,7 +56,7 @@ mod tests {
         let path = Path::new("tests/resources/java/with-comments.java");
         let result = Java {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
             multi_opts: l::java::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -71,7 +73,7 @@ mod tests {
         let path = Path::new("tests/resources/java/without-comments.java");
         let result = Java {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
             multi_opts: l::java::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -83,7 +85,7 @@ mod tests {
         let path = Path::new("tests/resources/rust/with-comments.rs");
         let result = Rust {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
             multi_opts: l::rust::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -97,7 +99,7 @@ mod tests {
         let path = Path::new("tests/resources/rust/without-comments.rs");
         let result = Rust {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
             multi_opts: l::rust::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -109,7 +111,7 @@ mod tests {
         let path = Path::new("tests/resources/python/with-comments.py");
         let result = Python {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
         }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
@@ -122,7 +124,7 @@ mod tests {
         let path = Path::new("tests/resources/python/without-comments.py");
         let result = Python {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
         }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
@@ -133,7 +135,7 @@ mod tests {
         let path = Path::new("tests/resources/csharp/with-comments.cs");
         let result = CSharp {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
             multi_opts: l::csharp::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -147,7 +149,7 @@ mod tests {
         let path = Path::new("tests/resources/csharp/without-comments.cs");
         let result = CSharp {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
             multi_opts: l::csharp::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -159,7 +161,7 @@ mod tests {
         let path = Path::new("tests/resources/bash/with-comments.sh");
         let result = Bash {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
             multi_opts: l::bash::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -173,7 +175,7 @@ mod tests {
         let path = Path::new("tests/resources/bash/without-comments.sh");
         let result = Bash {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
             multi_opts: l::bash::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -185,7 +187,7 @@ mod tests {
         let path = Path::new("tests/resources/php/with-comments.php");
         let result = PHP {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
             multi_opts: l::php::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -199,7 +201,7 @@ mod tests {
         let path = Path::new("tests/resources/php/without-comments.php");
         let result = PHP {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
             multi_opts: l::php::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -211,7 +213,7 @@ mod tests {
         let path = Path::new("tests/resources/ruby/with-comments.rb");
         let result = Ruby {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
             multi_opts: l::ruby::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -225,7 +227,7 @@ mod tests {
         let path = Path::new("tests/resources/ruby/without-comments.rb");
         let result = Ruby {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
             multi_opts: l::ruby::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -237,7 +239,7 @@ mod tests {
         let path = Path::new("tests/resources/golang/with-comments.go");
         let result = Go {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
         }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
@@ -250,7 +252,7 @@ mod tests {
         let path = Path::new("tests/resources/golang/without-comments.go");
         let result = Go {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
         }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
@@ -261,7 +263,7 @@ mod tests {
         let path = Path::new("tests/resources/scala/with-comments.scala");
         let result = Scala {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
             multi_opts: l::scala::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -275,7 +277,7 @@ mod tests {
         let path = Path::new("tests/resources/scala/without-comments.scala");
         let result = Scala {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
             multi_opts: l::scala::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -287,7 +289,7 @@ mod tests {
         let path = Path::new("tests/resources/css/with-comments.css");
         let result = CSS {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
             multi_opts: l::css::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -301,7 +303,7 @@ mod tests {
         let path = Path::new("tests/resources/css/without-comments.css");
         let result = CSS {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
             multi_opts: l::css::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -313,7 +315,7 @@ mod tests {
         let path = Path::new("tests/resources/html/with-comments.html");
         let result = HTML {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
             multi_opts: l::html::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -327,7 +329,7 @@ mod tests {
         let path = Path::new("tests/resources/html/without-comments.html");
         let result = HTML {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
             multi_opts: l::html::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -339,7 +341,7 @@ mod tests {
         let path = Path::new("tests/resources/c/with-comments.c");
         let result = C {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
             multi_opts: l::c::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -353,7 +355,7 @@ mod tests {
         let path = Path::new("tests/resources/c/without-comments.c");
         let result = C {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
             multi_opts: l::c::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -365,7 +367,7 @@ mod tests {
         let path = Path::new("tests/resources/cpp/with-comments.cpp");
         let result = Cpp {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
             multi_opts: l::cpp::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -379,7 +381,7 @@ mod tests {
         let path = Path::new("tests/resources/cpp/without-comments.cpp");
         let result = Cpp {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
             multi_opts: l::cpp::multi_opts(),
         }.find();
         assert!(result.is_ok());
@@ -391,7 +393,7 @@ mod tests {
         let path = Path::new("tests/resources/lua/with-comments.lua");
         let result = Lua {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
         }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
@@ -404,7 +406,7 @@ mod tests {
         let path = Path::new("tests/resources/lua/without-comments.lua");
         let result = Lua {
             maybe_file: File::open(path),
-            file_name: str("irrelevant-name"),
+            file_name: str(IRRELEVANT),
         }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
