@@ -23,6 +23,12 @@ fn main() {
                 .validator_os(exists_on_filesystem)
                 .index(1),
         )
+        .arg(
+            Arg::with_name("short")
+                .short("s")
+                .long("short")
+                .help("Formats output with \"file.ext:line\" without colors")
+        )
         .get_matches();
 
     let values: Values = matches.values_of("FILES").unwrap();
@@ -30,6 +36,7 @@ fn main() {
 
     let mut printer = Printer {
         writer: io::stdout(),
+        short: matches.is_present("short"),
     };
 
     commentective::run(paths)
