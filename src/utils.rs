@@ -4,7 +4,7 @@ pub mod path {
     use std::io::Error;
     use std::io::ErrorKind;
     use std::path::Path;
-    use utils::string::s;
+    use utils::string::str;
 
     pub fn filename(path: &Path) -> Result<String, Error> {
         match path.file_name() {
@@ -17,7 +17,7 @@ pub mod path {
                     ErrorKind::InvalidData,
                     "Unable to convert OsStr -> str",
                 )),
-                Some(str) => Ok(s(str)),
+                Some(string) => Ok(str(string)),
             },
         }
     }
@@ -59,7 +59,7 @@ pub mod string {
         found_matches.len() == matches.len()
     }
 
-    pub fn s(input: &str) -> String {
+    pub fn str(input: &str) -> String {
         String::from(input)
     }
 }
@@ -78,7 +78,7 @@ pub mod comments {
     use std::io::BufRead;
     use std::io::BufReader;
     use utils::list::in_list;
-    use utils::string::s;
+    use utils::string::str;
 
     #[derive(Debug)]
     pub struct Line {
@@ -101,12 +101,12 @@ pub mod comments {
         let mut is_multi = false;
 
         for line in file_to_lines(file) {
-            if is_single_line_comment(&s(line.content.trim())) {
+            if is_single_line_comment(&str(line.content.trim())) {
                 comments.push(line.index);
-            } else if in_list(&s(line.content.trim()), multi_opts.starts.clone()) {
+            } else if in_list(&str(line.content.trim()), multi_opts.starts.clone()) {
                 is_multi = true;
                 comments.push(line.index);
-            } else if in_list(&s(line.content.trim()), multi_opts.ends.clone()) {
+            } else if in_list(&str(line.content.trim()), multi_opts.ends.clone()) {
                 is_multi = false;
                 comments.push(line.index);
             } else {

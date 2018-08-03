@@ -7,7 +7,7 @@ use std::path::Path;
 use utils::comments::find_comments;
 use utils::comments::MultiCommentOpts;
 use utils::path::filename;
-use utils::string::s;
+use utils::string::str;
 use utils::string::string_contains_any_of;
 
 #[derive(Debug)]
@@ -27,8 +27,8 @@ pub fn source(p: &Path) -> Bash {
 
 pub fn multi_opts() -> MultiCommentOpts {
     MultiCommentOpts {
-        starts: vec![s("<<COMMENT")],
-        ends: vec![s("COMMENT")],
+        starts: vec![str("<<COMMENT")],
+        ends: vec![str("COMMENT")],
     }
 }
 
@@ -50,5 +50,5 @@ impl language::Language for Bash {
 }
 
 fn is_single_line_comment(line: &str) -> bool {
-    string_contains_any_of(s(line), vec!["#"]) && !string_contains_any_of(s(line), vec!["#!/"])
+    string_contains_any_of(str(line), vec!["#"]) && !string_contains_any_of(str(line), vec!["#!/"])
 }

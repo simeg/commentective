@@ -1,5 +1,5 @@
 use std::io::Error;
-use utils::string::s;
+use utils::string::str;
 
 pub mod bash;
 pub mod c;
@@ -51,7 +51,7 @@ pub struct FindResult {
 impl Default for FindResult {
     fn default() -> FindResult {
         FindResult {
-            file_name: s("DEFAULT_FILE_NAME"),
+            file_name: str("DEFAULT_FILE_NAME"),
             lines: [].to_vec(),
             print: true,
         }
