@@ -17,6 +17,7 @@ enum Colors {
 
 pub struct Printer<W> {
     pub writer: W,
+    pub short: bool
 }
 
 impl<W> Printer<W>
@@ -27,8 +28,10 @@ where
         match maybe_result {
             Ok(result) => match result.lines.len() {
                 0 => {
-                    self.print_file_name(result.file_name);
-                    self.print_colored(String::from("> No comments found"), White);
+                    if !self.short {
+                        self.print_file_name(&result.file_name);
+                        self.print_colored(String::from("> No comments found"), White);
+                    }
                     Ok(())
                 }
                 _ => {
@@ -44,31 +47,43 @@ where
     }
 
     fn error(&mut self, err: &Error) {
-        self.print_colored_line(Red);
+        if !self.short {
+            self.print_colored_line(Red);
+        }
         let msg = format!("Error: {}", err.to_string());
-        self.print_colored(msg, Red);
-        self.print_colored_line(Red);
+        if !self.short {
+            self.print_colored(msg, Red);
+            self.print_colored_line(Red);
+        }
     }
 
     fn result(&mut self, result: FindResult) {
-        self.print_file_name(result.file_name);
+        let file_name = result.file_name;
+        if !self.short {
+            self.print_file_name(&file_name);
+        }
         result
             .lines
             .into_iter()
-            .map(|line| self.print_comments(line))
+            .map(|line| self.print_comments(line, &file_name))
             .for_each(drop);
     }
 
-    fn print_file_name(&mut self, file_name: String) {
+    fn print_file_name(&mut self, file_name: &String) {
         self.print_colored_line(Yellow);
         let msg = format!("{} {}", "File:", file_name);
         self.print_colored(msg, Yellow);
         self.print_colored_line(Yellow);
     }
 
-    fn print_comments(&mut self, line_number: u32) {
-        let msg = format!("L{}", line_number.to_string());
-        self.print_colored(msg, Green);
+    fn print_comments(&mut self, line_number: u32, file_name: &String) {
+        if !self.short {
+            let msg = format!("L{}", line_number.to_string());
+            self.print_colored(msg, Green);
+        } else {
+            let msg = format!("{}:{}", file_name, line_number.to_string());
+            writeln!(&mut self.writer, "{}", msg).expect("Unable to write")
+        }
     }
 
     fn print_colored_line(&mut self, color: Colors) {
