@@ -47,10 +47,14 @@ where
     }
 
     fn error(&mut self, err: &Error) {
-        self.print_colored_line(Red);
+        if !self.short {
+            self.print_colored_line(Red);
+        }
         let msg = format!("Error: {}", err.to_string());
-        self.print_colored(msg, Red);
-        self.print_colored_line(Red);
+        if !self.short {
+            self.print_colored(msg, Red);
+            self.print_colored_line(Red);
+        }
     }
 
     fn result(&mut self, result: FindResult) {

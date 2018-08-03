@@ -9,6 +9,7 @@ use commentective::printer::Printer;
 use commentective::utils::path::exists_on_filesystem;
 use std::io;
 use std::path::Path;
+use std::process;
 
 fn main() {
     let matches = App::new("Detector")
@@ -39,8 +40,13 @@ fn main() {
         short: matches.is_present("short"),
     };
 
-    commentective::run(paths)
+    let successful = commentective::run(paths)
         .into_iter()
         .map(|result| printer.terminal(result))
-        .for_each(drop);
+        .filter(|result| result.is_err())
+        .count() == 0;
+
+    if !successful {
+        process::exit(1);
+    }
 }
