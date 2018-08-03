@@ -417,6 +417,7 @@ mod utils {
     use commentective::utils;
     use commentective::utils::path::exists_on_filesystem;
     use commentective::utils::string::str;
+    use commentective::OptionsCli;
     use std::ffi::OsStr;
     use std::path::Path;
 
@@ -428,14 +429,14 @@ mod utils {
     #[test]
     fn resolve_type_with_value() {
         let path = Path::new(EXISTING_FILE);
-        let result = commentective::resolve_type_and_run(path);
+        let result = commentective::resolve_type_and_run(path, &OptionsCli { extension: None });
         assert!(result.is_ok());
     }
 
     #[test]
     fn resolve_type_with_err() {
         let path = Path::new(UNSUPPORTED_FILE);
-        let result = commentective::resolve_type_and_run(path);
+        let result = commentective::resolve_type_and_run(path, &OptionsCli { extension: None });
         assert!(result.is_err());
     }
 

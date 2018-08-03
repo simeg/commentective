@@ -1,7 +1,7 @@
 .PHONY: build check ci clean fmt install install-rustfmt link lint release run test
 
 BIN_NAME = commentective
-CARGO=$(shell which cargo)
+CARGO = $(shell which cargo)
 
 build:
 	@$(CARGO) build

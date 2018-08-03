@@ -17,7 +17,7 @@ enum Colors {
 
 pub struct Printer<W> {
     pub writer: W,
-    pub short: bool
+    pub short: bool,
 }
 
 impl<W> Printer<W>
@@ -26,19 +26,24 @@ where
 {
     pub fn terminal(&mut self, maybe_result: Result<FindResult, Error>) -> Result<(), Error> {
         match maybe_result {
-            Ok(result) => match result.lines.len() {
-                0 => {
-                    if !self.short {
-                        self.print_file_name(&result.file_name);
-                        self.print_colored(String::from("> No comments found"), White);
+            Ok(result) => {
+                if !result.print {
+                    return Ok(());
+                }
+                match result.lines.len() {
+                    0 => {
+                        if !self.short {
+                            self.print_file_name(&result.file_name);
+                            self.print_colored(String::from("> No comments found"), White);
+                        }
+                        Ok(())
                     }
-                    Ok(())
+                    _ => {
+                        self.result(result);
+                        Ok(())
+                    }
                 }
-                _ => {
-                    self.result(result);
-                    Ok(())
-                }
-            },
+            }
             Err(e) => {
                 self.error(&e);
                 Err(e)

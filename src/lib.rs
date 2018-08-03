@@ -21,23 +21,34 @@ use language::Language;
 use std::io::Error;
 use std::io::ErrorKind;
 use std::path::Path;
+use utils::comments::noop_find_result;
+use utils::path::extension;
 
 pub mod language;
 pub mod printer;
 pub mod utils;
 
-pub fn run(paths: Vec<&Path>) -> Vec<Result<FindResult, Error>> {
+pub struct OptionsCli {
+    pub extension: Option<String>,
+}
+
+pub fn run(paths: Vec<&Path>, opts: OptionsCli) -> Vec<Result<FindResult, Error>> {
     paths
         .into_iter()
-        .map(|path| resolve_type_and_run(path))
+        .map(|path| resolve_type_and_run(path, &opts))
         .collect::<Vec<Result<FindResult, Error>>>()
 }
 
-pub fn resolve_type_and_run(p: &Path) -> Result<FindResult, Error> {
+pub fn resolve_type_and_run(p: &Path, opts: &OptionsCli) -> Result<FindResult, Error> {
     let unsupported_err = Err(Error::new(
         ErrorKind::NotFound,
         "Unsupported file extension",
     ));
+
+    if exclude_file(p, opts) {
+        return Ok(noop_find_result());
+    }
+
     match p.extension() {
         None => unsupported_err,
         Some(_ext) => match _ext.to_str() {
@@ -82,5 +93,21 @@ fn run_source(file_type: FileTypes, p: &Path) -> Result<FindResult, Error> {
         FileTypes::Ruby => ruby::source(p).find(),
         FileTypes::Rust => rust::source(p).find(),
         FileTypes::Scala => scala::source(p).find(),
+    }
+}
+
+fn exclude_file(p: &Path, opts: &OptionsCli) -> bool {
+    match &opts.extension {
+        None => false,
+        Some(ext_options) => match extension(p) {
+            Ok(ext_file) => {
+                if ext_options == &ext_file {
+                    false
+                } else {
+                    true
+                }
+            }
+            Err(e) => panic!("{:?}", e),
+        },
     }
 }

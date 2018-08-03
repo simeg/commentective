@@ -10,7 +10,7 @@ pub mod path {
         match path.file_name() {
             None => Err(Error::new(
                 ErrorKind::InvalidData,
-                "No OsStr present in input",
+                "No OsStr present in path",
             )),
             Some(os_str) => match os_str.to_str() {
                 None => Err(Error::new(
@@ -20,6 +20,15 @@ pub mod path {
                 Some(string) => Ok(str(string)),
             },
         }
+    }
+
+    pub fn extension(path: &Path) -> Result<String, ()> {
+        let extension = path
+            .extension()
+            .expect("No extension in path")
+            .to_str()
+            .expect("Could not convert OsStr -> &str");
+        Ok(str(extension))
     }
 
     pub fn exists_on_filesystem(path: &OsStr) -> Result<(), OsString> {
@@ -74,6 +83,7 @@ pub mod list {
 }
 
 pub mod comments {
+    use language::FindResult;
     use std::fs::File;
     use std::io::BufRead;
     use std::io::BufReader;
@@ -136,5 +146,13 @@ pub mod comments {
                 Err(_) => panic!("Could not read line"),
             })
             .collect()
+    }
+
+    pub fn noop_find_result() -> FindResult {
+        FindResult {
+            file_name: str("SHOULD_NOT_BE_PRINTED"),
+            lines: [].to_vec(),
+            print: false,
+        }
     }
 }
