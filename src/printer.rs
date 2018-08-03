@@ -4,11 +4,11 @@ use self::colored::ColoredString;
 use self::colored::*;
 use console::Term;
 use language::FindResult;
-use printer::Colors::*;
+use printer::Color::*;
 use std::io::Error;
 use std::io::Write;
 
-enum Colors {
+enum Color {
     Green,
     Red,
     White,
@@ -91,18 +91,18 @@ where
         }
     }
 
-    fn print_colored_line(&mut self, color: Colors) {
+    fn print_colored_line(&mut self, color: Color) {
         let term_width = Term::stdout().size().1 as usize;
         let line = "─".repeat(term_width);
         self.print_colored(line, color);
     }
 
-    fn print_colored(&mut self, text: String, color: Colors) {
+    fn print_colored(&mut self, text: String, color: Color) {
         match color {
-            Colors::Yellow => self.writeln(text.yellow()),
-            Colors::Green => self.writeln(text.green()),
-            Colors::Red => self.writeln(text.red()),
-            Colors::White => self.writeln(text.white()),
+            Color::Yellow => self.writeln(text.yellow()),
+            Color::Green => self.writeln(text.green()),
+            Color::Red => self.writeln(text.red()),
+            Color::White => self.writeln(text.white()),
         }
     }
 

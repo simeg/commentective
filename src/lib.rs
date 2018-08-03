@@ -15,7 +15,7 @@ use language::python;
 use language::ruby;
 use language::rust;
 use language::scala;
-use language::FileTypes;
+use language::FileType;
 use language::FindResult;
 use language::Language;
 use std::io::Error;
@@ -54,45 +54,45 @@ pub fn resolve_type_and_run(p: &Path, opts: &OptionsCli) -> Result<FindResult, E
         Some(_ext) => match _ext.to_str() {
             None => panic!("Could not convert OsStr -> str"),
             Some(extension) => match extension {
-                "c" => Ok(run_source(FileTypes::C, p)?),
-                "cpp" => Ok(run_source(FileTypes::Cpp, p)?),
-                "cs" => Ok(run_source(FileTypes::CSharp, p)?),
-                "css" => Ok(run_source(FileTypes::CSS, p)?),
-                "go" => Ok(run_source(FileTypes::Go, p)?),
-                "html" => Ok(run_source(FileTypes::HTML, p)?),
-                "java" => Ok(run_source(FileTypes::Java, p)?),
-                "js" => Ok(run_source(FileTypes::JavaScript, p)?),
-                "lua" => Ok(run_source(FileTypes::Lua, p)?),
-                "php" => Ok(run_source(FileTypes::PHP, p)?),
-                "py" => Ok(run_source(FileTypes::Python, p)?),
-                "rb" => Ok(run_source(FileTypes::Ruby, p)?),
-                "rs" => Ok(run_source(FileTypes::Rust, p)?),
-                "sc" => Ok(run_source(FileTypes::Scala, p)?),
-                "scala" => Ok(run_source(FileTypes::Scala, p)?),
-                "sh" => Ok(run_source(FileTypes::Bash, p)?),
+                "c" => Ok(run_source(FileType::C, p)?),
+                "cpp" => Ok(run_source(FileType::Cpp, p)?),
+                "cs" => Ok(run_source(FileType::CSharp, p)?),
+                "css" => Ok(run_source(FileType::CSS, p)?),
+                "go" => Ok(run_source(FileType::Go, p)?),
+                "html" => Ok(run_source(FileType::HTML, p)?),
+                "java" => Ok(run_source(FileType::Java, p)?),
+                "js" => Ok(run_source(FileType::JavaScript, p)?),
+                "lua" => Ok(run_source(FileType::Lua, p)?),
+                "php" => Ok(run_source(FileType::PHP, p)?),
+                "py" => Ok(run_source(FileType::Python, p)?),
+                "rb" => Ok(run_source(FileType::Ruby, p)?),
+                "rs" => Ok(run_source(FileType::Rust, p)?),
+                "sc" => Ok(run_source(FileType::Scala, p)?),
+                "scala" => Ok(run_source(FileType::Scala, p)?),
+                "sh" => Ok(run_source(FileType::Bash, p)?),
                 _ => unsupported_err,
             },
         },
     }
 }
 
-fn run_source(file_type: FileTypes, p: &Path) -> Result<FindResult, Error> {
+fn run_source(file_type: FileType, p: &Path) -> Result<FindResult, Error> {
     match file_type {
-        FileTypes::Bash => bash::source(p).find(),
-        FileTypes::C => c::source(p).find(),
-        FileTypes::CSS => css::source(p).find(),
-        FileTypes::CSharp => csharp::source(p).find(),
-        FileTypes::Cpp => cpp::source(p).find(),
-        FileTypes::Go => golang::source(p).find(),
-        FileTypes::HTML => html::source(p).find(),
-        FileTypes::Java => java::source(p).find(),
-        FileTypes::JavaScript => javascript::source(p).find(),
-        FileTypes::Lua => lua::source(p).find(),
-        FileTypes::PHP => php::source(p).find(),
-        FileTypes::Python => python::source(p).find(),
-        FileTypes::Ruby => ruby::source(p).find(),
-        FileTypes::Rust => rust::source(p).find(),
-        FileTypes::Scala => scala::source(p).find(),
+        FileType::Bash => bash::source(p).find(),
+        FileType::C => c::source(p).find(),
+        FileType::CSS => css::source(p).find(),
+        FileType::CSharp => csharp::source(p).find(),
+        FileType::Cpp => cpp::source(p).find(),
+        FileType::Go => golang::source(p).find(),
+        FileType::HTML => html::source(p).find(),
+        FileType::Java => java::source(p).find(),
+        FileType::JavaScript => javascript::source(p).find(),
+        FileType::Lua => lua::source(p).find(),
+        FileType::PHP => php::source(p).find(),
+        FileType::Python => python::source(p).find(),
+        FileType::Ruby => ruby::source(p).find(),
+        FileType::Rust => rust::source(p).find(),
+        FileType::Scala => scala::source(p).find(),
     }
 }
 

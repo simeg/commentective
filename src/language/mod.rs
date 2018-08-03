@@ -17,7 +17,7 @@ pub mod ruby;
 pub mod rust;
 pub mod scala;
 
-pub enum FileTypes {
+pub enum FileType {
     Bash,
     C,
     CSS,
