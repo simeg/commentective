@@ -1,4 +1,5 @@
 use std::io::Error;
+use utils::string::s;
 
 pub mod bash;
 pub mod c;
@@ -44,4 +45,15 @@ pub trait Language {
 pub struct FindResult {
     pub file_name: String,
     pub lines: Vec<u32>,
+    pub print: bool,
+}
+
+impl Default for FindResult {
+    fn default() -> FindResult {
+        FindResult {
+            file_name: s("DEFAULT_FILE_NAME"),
+            lines: [].to_vec(),
+            print: true,
+        }
+    }
 }

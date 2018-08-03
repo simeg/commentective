@@ -40,6 +40,7 @@ impl language::Language for HTML {
                 Ok(FindResult {
                     file_name: self.file_name.to_owned(),
                     lines: comments,
+                    ..Default::default()
                 })
             }
             Err(_) => Err(Error::new(ErrorKind::InvalidInput, "Could not parse file")),
