@@ -11,7 +11,7 @@ mod tests {
     use commentective::language::golang::Go;
     use commentective::language::html::HTML;
     use commentective::language::java::Java;
-    use commentective::language::javascript::Js;
+    use commentective::language::javascript::JavaScript;
     use commentective::language::lua::Lua;
     use commentective::language::php::PHP;
     use commentective::language::python::Python;
@@ -25,8 +25,8 @@ mod tests {
 
     #[test]
     fn javascript_find_with_value() {
-        let path = Path::new("tests/resources/js/with-comments.js");
-        let result = Js {
+        let path = Path::new("tests/resources/javascript/with-comments.js");
+        let result = JavaScript {
             maybe_file: File::open(path),
             file_name: str("irrelevant-name"),
             multi_opts: l::javascript::multi_opts(),
@@ -39,8 +39,8 @@ mod tests {
 
     #[test]
     fn javascript_find_with_err() {
-        let path = Path::new("tests/resources/js/without-comments.js");
-        let result = Js {
+        let path = Path::new("tests/resources/javascript/without-comments.js");
+        let result = JavaScript {
             maybe_file: File::open(path),
             file_name: str("irrelevant-name"),
             multi_opts: l::javascript::multi_opts(),
@@ -422,7 +422,7 @@ mod utils {
     use std::path::Path;
 
     const NON_EXISTING_FILE: &'static str = "I_DO_NOT_EXIST";
-    const EXISTING_FILE: &'static str = "tests/resources/js/with-comments.js";
+    const EXISTING_FILE: &'static str = "tests/resources/javascript/with-comments.js";
     const EMPTY_FILE: &'static str = "tests/resources/empty.foo";
     const UNSUPPORTED_FILE: &'static str = "tests/resources/empty.foo";
 

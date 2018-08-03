@@ -11,14 +11,14 @@ use utils::string::str;
 use utils::string::string_contains_all;
 use utils::string::string_contains_any_of;
 
-pub struct Js {
+pub struct JavaScript {
     pub maybe_file: Result<File, Error>,
     pub file_name: String,
     pub multi_opts: MultiCommentOpts,
 }
 
-pub fn source(p: &Path) -> Js {
-    Js {
+pub fn source(p: &Path) -> JavaScript {
+    JavaScript {
         maybe_file: File::open(p),
         file_name: filename(p).unwrap(),
         multi_opts: multi_opts(),
@@ -32,7 +32,7 @@ pub fn multi_opts() -> MultiCommentOpts {
     }
 }
 
-impl language::Language for Js {
+impl language::Language for JavaScript {
     #[inline]
     fn find(&self) -> Result<language::FindResult, Error> {
         match self.maybe_file {
