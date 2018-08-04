@@ -1,7 +1,7 @@
 extern crate commentective;
 
 #[cfg(test)]
-mod tests {
+mod languages {
     use commentective::language as l;
     use commentective::language::bash::Bash;
     use commentective::language::c::C;
@@ -410,6 +410,64 @@ mod tests {
         }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
+    }
+}
+
+#[cfg(test)]
+mod flags {
+    use commentective;
+    use commentective::utils::string::str;
+    use commentective::OptionsCli;
+    use std::path::Path;
+
+    #[test]
+    fn flag_extension() {
+        let path_javascript = Path::new("tests/resources/javascript/with-comments.js");
+        let path_python = Path::new("tests/resources/python/with-comments.py");
+        let paths = vec![path_javascript, path_python];
+
+        let opts_no_ext = OptionsCli { extension: None };
+        for (i, result) in commentective::run(paths.clone(), opts_no_ext)
+            .iter()
+            .enumerate()
+        {
+            assert!(result.is_ok());
+
+            if i == 0 {
+                // JavaScript
+                result
+                    .iter()
+                    .map(|res| assert_eq!(res.lines.len(), 13))
+                    .for_each(drop);
+            } else {
+                // Python
+                result
+                    .iter()
+                    .map(|res| assert_eq!(res.lines.len(), 4))
+                    .for_each(drop);
+            }
+        }
+
+        let opts_with_ext = OptionsCli {
+            extension: Some(str("js")),
+        };
+        for (i, result) in commentective::run(paths, opts_with_ext).iter().enumerate() {
+            assert!(result.is_ok());
+
+            if i == 0 {
+                // JavaScript
+                result
+                    .iter()
+                    .map(|res| assert_eq!(res.lines.len(), 13))
+                    .for_each(drop);
+            } else {
+                // Python
+                result
+                    .iter()
+                    .map(|res| assert_eq!(res.lines.len(), 0))
+                    .for_each(drop);
+            }
+        }
     }
 }
 
