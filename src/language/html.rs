@@ -7,7 +7,7 @@ use std::path::Path;
 use utils::comments::find_comments;
 use utils::comments::MultiCommentOpts;
 use utils::path::filename;
-use utils::string::s;
+use utils::string::str;
 use utils::string::string_contains_all;
 
 pub struct HTML {
@@ -26,8 +26,8 @@ pub fn source(p: &Path) -> HTML {
 
 pub fn multi_opts() -> MultiCommentOpts {
     MultiCommentOpts {
-        starts: vec![s("<!--")],
-        ends: vec![s("-->")],
+        starts: vec![str("<!--")],
+        ends: vec![str("-->")],
     }
 }
 
@@ -40,6 +40,7 @@ impl language::Language for HTML {
                 Ok(FindResult {
                     file_name: self.file_name.to_owned(),
                     lines: comments,
+                    ..Default::default()
                 })
             }
             Err(_) => Err(Error::new(ErrorKind::InvalidInput, "Could not parse file")),
@@ -48,5 +49,5 @@ impl language::Language for HTML {
 }
 
 fn is_single_line_comment(line: &str) -> bool {
-    string_contains_all(s(line), vec!["<!--", "-->"])
+    string_contains_all(str(line), vec!["<!--", "-->"])
 }

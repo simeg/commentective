@@ -1,16 +1,16 @@
 use language;
 use language::FindResult;
 use std::fs::File;
-use std::io::Error;
-use std::io::ErrorKind;
 use std::io::BufRead;
 use std::io::BufReader;
+use std::io::Error;
+use std::io::ErrorKind;
 use std::path::Path;
 use std::vec::Vec;
 use utils::path::filename;
-use utils::string::s;
-use utils::string::string_contains_any_of;
+use utils::string::str;
 use utils::string::string_contains_all;
+use utils::string::string_contains_any_of;
 
 pub struct Lua {
     pub maybe_file: Result<File, Error>,
@@ -22,7 +22,7 @@ enum LuaCommentType {
     SingleLine,
     MultiLineStart,
     MultiLineEnd,
-    None
+    None,
 }
 
 pub fn source(p: &Path) -> Lua {
@@ -55,8 +55,8 @@ impl language::Language for Lua {
                                     LuaCommentType::MultiLineStart => {
                                         in_multiline = true;
                                         comments.push(counter);
-                                    },
-                                    _ => ()
+                                    }
+                                    _ => (),
                                 }
                             }
                         }
@@ -68,6 +68,7 @@ impl language::Language for Lua {
                 Ok(FindResult {
                     file_name: self.file_name.to_owned(),
                     lines: comments,
+                    ..Default::default()
                 })
             }
             Err(_) => Err(Error::new(ErrorKind::InvalidInput, "Could not parse file")),
@@ -76,19 +77,19 @@ impl language::Language for Lua {
 }
 
 fn get_comment_type(line: &String) -> LuaCommentType {
-    if string_contains_all(s(line), vec!["--[[", "]]"]) {
+    if string_contains_all(str(line), vec!["--[[", "]]"]) {
         return LuaCommentType::SingleLine;
     }
 
-    if string_contains_any_of(s(line), vec!["]]"]) {
+    if string_contains_any_of(str(line), vec!["]]"]) {
         return LuaCommentType::MultiLineEnd;
     }
 
-    if string_contains_any_of(s(line), vec!["--[["]) {
+    if string_contains_any_of(str(line), vec!["--[["]) {
         return LuaCommentType::MultiLineStart;
     }
 
-    if string_contains_any_of(s(line), vec!["--"]) {
+    if string_contains_any_of(str(line), vec!["--"]) {
         return LuaCommentType::SingleLine;
     }
 

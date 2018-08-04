@@ -4,22 +4,31 @@ pub mod path {
     use std::io::Error;
     use std::io::ErrorKind;
     use std::path::Path;
-    use utils::string::s;
+    use utils::string::str;
 
     pub fn filename(path: &Path) -> Result<String, Error> {
         match path.file_name() {
             None => Err(Error::new(
                 ErrorKind::InvalidData,
-                "No OsStr present in input",
+                "No OsStr present in path",
             )),
             Some(os_str) => match os_str.to_str() {
                 None => Err(Error::new(
                     ErrorKind::InvalidData,
                     "Unable to convert OsStr -> str",
                 )),
-                Some(str) => Ok(s(str)),
+                Some(string) => Ok(str(string)),
             },
         }
+    }
+
+    pub fn extension(path: &Path) -> Result<String, ()> {
+        let extension = path
+            .extension()
+            .expect("No extension in path")
+            .to_str()
+            .expect("Could not convert OsStr -> &str");
+        Ok(str(extension))
     }
 
     pub fn exists_on_filesystem(path: &OsStr) -> Result<(), OsString> {
@@ -59,7 +68,7 @@ pub mod string {
         found_matches.len() == matches.len()
     }
 
-    pub fn s(input: &str) -> String {
+    pub fn str(input: &str) -> String {
         String::from(input)
     }
 }
@@ -74,11 +83,12 @@ pub mod list {
 }
 
 pub mod comments {
+    use language::FindResult;
     use std::fs::File;
     use std::io::BufRead;
     use std::io::BufReader;
     use utils::list::in_list;
-    use utils::string::s;
+    use utils::string::str;
 
     #[derive(Debug)]
     pub struct Line {
@@ -101,12 +111,12 @@ pub mod comments {
         let mut is_multi = false;
 
         for line in file_to_lines(file) {
-            if is_single_line_comment(&s(line.content.trim())) {
+            if is_single_line_comment(&str(line.content.trim())) {
                 comments.push(line.index);
-            } else if in_list(&s(line.content.trim()), multi_opts.starts.clone()) {
+            } else if in_list(&str(line.content.trim()), multi_opts.starts.clone()) {
                 is_multi = true;
                 comments.push(line.index);
-            } else if in_list(&s(line.content.trim()), multi_opts.ends.clone()) {
+            } else if in_list(&str(line.content.trim()), multi_opts.ends.clone()) {
                 is_multi = false;
                 comments.push(line.index);
             } else {
@@ -136,5 +146,13 @@ pub mod comments {
                 Err(_) => panic!("Could not read line"),
             })
             .collect()
+    }
+
+    pub fn noop_find_result() -> FindResult {
+        FindResult {
+            file_name: str("SHOULD_NOT_BE_PRINTED"),
+            lines: [].to_vec(),
+            print: false,
+        }
     }
 }

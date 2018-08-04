@@ -1,4 +1,5 @@
 use std::io::Error;
+use utils::string::str;
 
 pub mod bash;
 pub mod c;
@@ -16,7 +17,7 @@ pub mod ruby;
 pub mod rust;
 pub mod scala;
 
-pub enum FileTypes {
+pub enum FileType {
     Bash,
     C,
     CSS,
@@ -44,4 +45,15 @@ pub trait Language {
 pub struct FindResult {
     pub file_name: String,
     pub lines: Vec<u32>,
+    pub print: bool,
+}
+
+impl Default for FindResult {
+    fn default() -> FindResult {
+        FindResult {
+            file_name: str("DEFAULT_FILE_NAME"),
+            lines: [].to_vec(),
+            print: true,
+        }
+    }
 }

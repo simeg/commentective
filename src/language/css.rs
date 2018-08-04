@@ -7,7 +7,7 @@ use std::path::Path;
 use utils::comments::find_comments;
 use utils::comments::MultiCommentOpts;
 use utils::path::filename;
-use utils::string::s;
+use utils::string::str;
 use utils::string::string_contains_all;
 use utils::string::string_contains_any_of;
 
@@ -27,8 +27,8 @@ pub fn source(p: &Path) -> CSS {
 
 pub fn multi_opts() -> MultiCommentOpts {
     MultiCommentOpts {
-        starts: vec![s("/*")],
-        ends: vec![s("*/")],
+        starts: vec![str("/*")],
+        ends: vec![str("*/")],
     }
 }
 
@@ -41,6 +41,7 @@ impl language::Language for CSS {
                 Ok(FindResult {
                     file_name: self.file_name.to_owned(),
                     lines: comments,
+                    ..Default::default()
                 })
             }
             Err(_) => Err(Error::new(ErrorKind::InvalidInput, "Could not parse file")),
@@ -49,5 +50,6 @@ impl language::Language for CSS {
 }
 
 fn is_single_line_comment(line: &str) -> bool {
-    string_contains_any_of(s(line), vec!["//"]) || string_contains_all(s(line), vec!["/*", "*/"])
+    string_contains_any_of(str(line), vec!["//"])
+        || string_contains_all(str(line), vec!["/*", "*/"])
 }

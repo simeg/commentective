@@ -4,11 +4,11 @@ use self::colored::ColoredString;
 use self::colored::*;
 use console::Term;
 use language::FindResult;
-use printer::Colors::*;
+use printer::Color::*;
 use std::io::Error;
 use std::io::Write;
 
-enum Colors {
+enum Color {
     Green,
     Red,
     White,
@@ -17,7 +17,7 @@ enum Colors {
 
 pub struct Printer<W> {
     pub writer: W,
-    pub short: bool
+    pub short: bool,
 }
 
 impl<W> Printer<W>
@@ -26,19 +26,24 @@ where
 {
     pub fn terminal(&mut self, maybe_result: Result<FindResult, Error>) -> Result<(), Error> {
         match maybe_result {
-            Ok(result) => match result.lines.len() {
-                0 => {
-                    if !self.short {
-                        self.print_file_name(&result.file_name);
-                        self.print_colored(String::from("> No comments found"), White);
+            Ok(result) => {
+                if !result.print {
+                    return Ok(());
+                }
+                match result.lines.len() {
+                    0 => {
+                        if !self.short {
+                            self.print_file_name(&result.file_name);
+                            self.print_colored(String::from("> No comments found"), White);
+                        }
+                        Ok(())
                     }
-                    Ok(())
+                    _ => {
+                        self.result(result);
+                        Ok(())
+                    }
                 }
-                _ => {
-                    self.result(result);
-                    Ok(())
-                }
-            },
+            }
             Err(e) => {
                 self.error(&e);
                 Err(e)
@@ -86,18 +91,18 @@ where
         }
     }
 
-    fn print_colored_line(&mut self, color: Colors) {
+    fn print_colored_line(&mut self, color: Color) {
         let term_width = Term::stdout().size().1 as usize;
         let line = "─".repeat(term_width);
         self.print_colored(line, color);
     }
 
-    fn print_colored(&mut self, text: String, color: Colors) {
+    fn print_colored(&mut self, text: String, color: Color) {
         match color {
-            Colors::Yellow => self.writeln(text.yellow()),
-            Colors::Green => self.writeln(text.green()),
-            Colors::Red => self.writeln(text.red()),
-            Colors::White => self.writeln(text.white()),
+            Color::Yellow => self.writeln(text.yellow()),
+            Color::Green => self.writeln(text.green()),
+            Color::Red => self.writeln(text.red()),
+            Color::White => self.writeln(text.white()),
         }
     }
 
