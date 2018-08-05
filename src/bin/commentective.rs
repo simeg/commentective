@@ -14,8 +14,8 @@ use std::path::Path;
 use std::process;
 
 fn main() {
-    let matches = App::new("Detector")
-        .version("1.0.0")
+    let matches = App::new("commentective")
+        .version("0.3.0")
         .author("Simon Egersand <s.egersand@gmail.com>")
         .about("CLI tool to find comments and commented out code")
         .arg(

@@ -8,10 +8,11 @@ keywords = ["command-line-tool", "cli", "rust", "comments"]
 readme = "README.md"
 license = "MIT"
 name = "commentective"
-version = "0.2.0"
+version = "0.3.0"
 
 exclude = [
     "tests/*",
+    "scripts/*",
 ]
 
 [badges]

@@ -12,7 +12,17 @@ find a case that `commentective` does not support, please
 written in. It will look at the extension of the files and act accordingly.
 
 ```bash
-$ commentective [FILES]
+$ commentective [FLAGS] [OPTIONS] <FILES>...
+```
+
+## Flags
+```bash
+-s, --short  Formats output with "file.ext:line" without colors
+```
+
+## Options
+```bash
+-e, --extension <extension>  Only analyze files with this extension
 ```
 
 
