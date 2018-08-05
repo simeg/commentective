@@ -426,8 +426,8 @@ mod flags {
         let path_python = Path::new("tests/resources/python/with-comments.py");
         let paths = vec![path_javascript, path_python];
 
-        let opts_no_ext = OptionsCli { extension: None };
-        for (i, result) in commentective::run(paths.clone(), opts_no_ext)
+        let opts_no_ext = OptionsCli { extension: None, short: false };
+        for (i, result) in commentective::run(paths.clone(), &opts_no_ext)
             .iter()
             .enumerate()
         {
@@ -450,8 +450,9 @@ mod flags {
 
         let opts_with_ext = OptionsCli {
             extension: Some(str("js")),
+            short: false,
         };
-        for (i, result) in commentective::run(paths, opts_with_ext).iter().enumerate() {
+        for (i, result) in commentective::run(paths, &opts_with_ext).iter().enumerate() {
             assert!(result.is_ok());
 
             if i == 0 {
@@ -489,14 +490,14 @@ mod utils {
     #[test]
     fn resolve_type_with_value() {
         let path = Path::new(EXISTING_FILE);
-        let result = commentective::resolve_type_and_run(path, &OptionsCli { extension: None });
+        let result = commentective::resolve_type_and_run(path, &OptionsCli { extension: None, short: false });
         assert!(result.is_ok());
     }
 
     #[test]
     fn resolve_type_with_err() {
         let path = Path::new(UNSUPPORTED_FILE);
-        let result = commentective::resolve_type_and_run(path, &OptionsCli { extension: None });
+        let result = commentective::resolve_type_and_run(path, &OptionsCli { extension: None, short: false });
         assert!(result.is_err());
     }
 

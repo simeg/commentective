@@ -14,31 +14,28 @@ use std::path::Path;
 use std::process;
 
 fn main() {
+    let arg_short = Arg::with_name("short").short("s").long("short").help(
+        "Formats output with \"file.ext:line\" without colors. Only outputs files with comments.",
+    );
+    let arg_extension = Arg::with_name("extension")
+        .short("e")
+        .long("extension")
+        .help("Only analyze files with this extension")
+        .takes_value(true);
+    let arg_files = Arg::with_name("FILES")
+        .help("Files to analyze")
+        .required(true)
+        .multiple(true)
+        .validator_os(exists_on_filesystem)
+        .index(1);
+
     let matches = App::new("commentective")
         .version("0.3.0")
         .author("Simon Egersand <s.egersand@gmail.com>")
         .about("CLI tool to find comments and commented out code")
-        .arg(
-            Arg::with_name("FILES")
-                .help("Files to analyze")
-                .required(true)
-                .multiple(true)
-                .validator_os(exists_on_filesystem)
-                .index(1),
-        )
-        .arg(
-            Arg::with_name("extension")
-                .short("e")
-                .long("extension")
-                .help("Only analyze files with this extension")
-                .takes_value(true),
-        )
-        .arg(
-            Arg::with_name("short")
-                .short("s")
-                .long("short")
-                .help("Formats output with \"file.ext:line\" without colors"),
-        )
+        .arg(arg_files)
+        .arg(arg_extension)
+        .arg(arg_short)
         .get_matches();
 
     let values: Values = matches.values_of("FILES").unwrap();
@@ -46,14 +43,17 @@ fn main() {
 
     let extension: Option<String> = matches.value_of("extension").map(str); // Convert &str -> String
 
-    let mut printer = Printer {
-        writer: io::stdout(),
+    let opts_cli = OptionsCli {
+        extension,
         short: matches.is_present("short"),
     };
 
-    let opts_cli = OptionsCli { extension };
+    let mut printer = Printer {
+        writer: io::stdout(),
+        options: &opts_cli,
+    };
 
-    let successful = commentective::run(paths, opts_cli)
+    let successful = commentective::run(paths, &opts_cli)
         .into_iter()
         .map(|result| printer.terminal(result))
         .filter(|result| result.is_err())

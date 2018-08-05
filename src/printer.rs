@@ -7,6 +7,7 @@ use language::FindResult;
 use printer::Color::*;
 use std::io::Error;
 use std::io::Write;
+use OptionsCli;
 
 enum Color {
     Green,
@@ -15,12 +16,12 @@ enum Color {
     Yellow,
 }
 
-pub struct Printer<W> {
+pub struct Printer<'a, W> {
     pub writer: W,
-    pub short: bool,
+    pub options: &'a OptionsCli,
 }
 
-impl<W> Printer<W>
+impl<'a, W> Printer<'a, W>
 where
     W: Write,
 {
@@ -32,7 +33,7 @@ where
                 }
                 match result.lines.len() {
                     0 => {
-                        if !self.short {
+                        if !self.options.short {
                             self.print_file_name(&result.file_name);
                             self.print_colored(String::from("> No comments found"), White);
                         }
@@ -52,11 +53,11 @@ where
     }
 
     fn error(&mut self, err: &Error) {
-        if !self.short {
+        if !self.options.short {
             self.print_colored_line(Red);
         }
         let msg = format!("Error: {}", err.to_string());
-        if !self.short {
+        if !self.options.short {
             self.print_colored(msg, Red);
             self.print_colored_line(Red);
         }
@@ -64,7 +65,7 @@ where
 
     fn result(&mut self, result: FindResult) {
         let file_name = result.file_name;
-        if !self.short {
+        if !self.options.short {
             self.print_file_name(&file_name);
         }
         result
@@ -82,7 +83,7 @@ where
     }
 
     fn print_comments(&mut self, line_number: u32, file_name: &String) {
-        if !self.short {
+        if !self.options.short {
             let msg = format!("L{}", line_number.to_string());
             self.print_colored(msg, Green);
         } else {
