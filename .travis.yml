@@ -20,24 +20,27 @@ cache:
 env:
 - PATH=$PATH:${HOME}/kcov/bin
 
-before_install:
-- if [ ! -d "${HOME}/kcov/bin" ]; then wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz;
-  tar xzf master.tar.gz;
-  cd kcov-master;
-  mkdir build;
-  cd build;
-  cmake -DCMAKE_INSTALL_PREFIX=${HOME}/kcov ..;
-  make;
-  make install;
-  cd ../..;
-  rm -rf kcov-master;
-  mkdir -p coverage; fi
+#before_install:
+#- if [ ! -d "${HOME}/kcov/bin" ]; then wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz;
+#  tar xzf master.tar.gz;
+#  cd kcov-master;
+#  mkdir build;
+#  cd build;
+#  cmake -DCMAKE_INSTALL_PREFIX=${HOME}/kcov ..;
+#  make;
+#  make install;
+#  cd ../..;
+#  rm -rf kcov-master;
+#  mkdir -p coverage; fi
 
-script:
-#- kcov --exclude-path=ops-common coverage test.sh
+script: make ci
 
-after_success:
-- bash <(curl -s https://codecov.io/bash)
+jobs:
+  include:
+    - stage: coverage
+      rust: nightly
+      script:
+        - ./scripts/code_coverage.sh
 
 #language: rust
 #sudo: required

@@ -7,20 +7,23 @@ readonly KCOV_OUT="target/cov"
 readonly KCOV="./$KCOV_BUILD/usr/local/bin/kcov"
 
 install() {
-    if [ ! -f "$KCOV" ]; then
-        wget "https://github.com/SimonKagstrom/kcov/archive/master.tar.gz"
-        tar xzf "master.tar.gz"
-        mkdir "kcov-master/build"
-        cd "kcov-master/build"
-        cmake ..
-        make && make install DESTDIR="../../$KCOV_BUILD"
-        cd ../../
-        rm -rf kcov-master
+    if [ ! -d "${HOME}/kcov/bin" ]; then
+        wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz;
+        tar xzf master.tar.gz;
+        cd kcov-master;
+        mkdir build;
+        cd build;
+        cmake -DCMAKE_INSTALL_PREFIX=${HOME}/kcov ..;
+        make;
+        make install;
+        cd ../..;
+        rm -rf kcov-master;
+        mkdir -p coverage;
     fi
 }
 
 run() {
-#    rm -rf "$KCOV_OUT"
+    rm -rf "$KCOV_OUT"
 
     local files
     files=$(cargo test --no-run --message-format=json | jq -r "select(.profile.test == true) | .filenames[]")
@@ -37,8 +40,6 @@ upload() {
     bash <(curl -s https://codecov.io/bash)
 }
 
-#install && \
-# run && \
-# upload
-
-run
+install && \
+ run && \
+ upload
