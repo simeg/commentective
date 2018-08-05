@@ -20,7 +20,7 @@ install() {
 }
 
 run() {
-    rm -rf "$KCOV_OUT"
+#    rm -rf "$KCOV_OUT"
 
     local files
     files=$(cargo test --no-run --message-format=json | jq -r "select(.profile.test == true) | .filenames[]")
@@ -37,6 +37,8 @@ upload() {
     bash <(curl -s https://codecov.io/bash)
 }
 
-install && \
- run && \
- upload
+#install && \
+# run && \
+# upload
+
+run
