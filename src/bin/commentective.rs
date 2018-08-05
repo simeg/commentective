@@ -15,7 +15,7 @@ use std::process;
 
 fn main() {
     let matches = App::new("commentective")
-        .version("0.2.0")
+        .version("0.3.0")
         .author("Simon Egersand <s.egersand@gmail.com>")
         .about("CLI tool to find comments and commented out code")
         .arg(
