@@ -3,7 +3,7 @@ sudo: required
 cache:
   cargo: true
   directories:
-  - "${HOME}/kcov-build/"
+  - "${HOME}/kcov-build/usr/local/bin/kcov"
 rust:
 #  - stable
 #  - beta
