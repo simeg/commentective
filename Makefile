@@ -29,6 +29,14 @@ link:
 lint:
 	cargo fmt --all -- --check
 
+# TODO: In CI - verify that packaged
+# .cargo file has reasonable size
+package:
+	@$(CARGO) package
+
+publish:
+	@$(CARGO) publish
+
 release:
 	@$(CARGO) build --release
 
