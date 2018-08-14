@@ -49,7 +49,7 @@ fn main() {
     };
 
     let mut printer = Printer {
-        writer: io::stdout(),
+        writer: &mut io::stdout(),
         options: &opts_cli,
     };
 

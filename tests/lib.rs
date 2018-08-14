@@ -413,6 +413,68 @@ mod languages {
     }
 }
 
+static WITHOUT_ARGS_OUTPUT: &'static str = "error: The following required arguments were not provided:
+    <FILES>...
+
+USAGE:
+    commentective [FLAGS] [OPTIONS] <FILES>...
+
+For more information try --help
+";
+
+#[cfg(test)]
+mod printer {
+    use commentective::utils::string::str;
+    use commentective::OptionsCli;
+    use commentective::printer::Printer;
+    use commentective::language::FindResult;
+    use std::io;
+    use std::process::Command;
+    use WITHOUT_ARGS_OUTPUT;
+
+    fn default_cli_options() -> &'static OptionsCli {
+        &OptionsCli {
+            extension: None,
+            short: false,
+        }
+    }
+
+//    fn default_printer<W: io::Write>() -> &'static Printer<W> {
+//        &Printer {
+//            writer: &mut &io::stdin(),
+//            options: default_cli_options(),
+//        }
+//    }
+
+    #[test]
+    fn print_comments__when__comments_found() {
+        let mut found_comments = Vec::new();
+        let mut printer = Printer {
+            writer: &mut found_comments,
+            options: default_cli_options(),
+        };
+
+        let comments_found = vec![0, 1, 2];
+        let find_result = FindResult {
+            file_name: str("arbitrary-file-name"),
+            lines: comments_found,
+            print: true,
+        };
+
+        let result = printer.terminal(Ok(find_result));
+
+        println!("{:?}", result);
+
+        assert!(found_comments);
+
+//        assert_eq!(&mut found_comments.len(), &mut 2);
+        assert!(result.is_err());
+
+
+//        assert!(result.is_ok());
+    }
+}
+
 #[cfg(test)]
 mod flags {
     use commentective;
@@ -430,23 +492,23 @@ mod flags {
         for (i, result) in commentective::run(paths.clone(), &opts_no_ext)
             .iter()
             .enumerate()
-        {
-            assert!(result.is_ok());
+            {
+                assert!(result.is_ok());
 
-            if i == 0 {
-                // JavaScript
-                result
-                    .iter()
-                    .map(|res| assert_eq!(res.lines.len(), 13))
-                    .for_each(drop);
-            } else {
-                // Python
-                result
-                    .iter()
-                    .map(|res| assert_eq!(res.lines.len(), 4))
-                    .for_each(drop);
+                if i == 0 {
+                    // JavaScript
+                    result
+                        .iter()
+                        .map(|res| assert_eq!(res.lines.len(), 13))
+                        .for_each(drop);
+                } else {
+                    // Python
+                    result
+                        .iter()
+                        .map(|res| assert_eq!(res.lines.len(), 4))
+                        .for_each(drop);
+                }
             }
-        }
 
         let opts_with_ext = OptionsCli {
             extension: Some(str("js")),

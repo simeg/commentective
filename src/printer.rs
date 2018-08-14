@@ -8,6 +8,7 @@ use printer::Color::*;
 use std::io::Error;
 use std::io::Write;
 use OptionsCli;
+use std::io;
 
 enum Color {
     Green,
@@ -16,24 +17,25 @@ enum Color {
     Yellow,
 }
 
-pub struct Printer<'a, W> {
-    pub writer: W,
+pub struct Printer<W> {
+    pub writer: &'a mut W,
     pub options: &'a OptionsCli,
 }
 
-impl<'a, W> Printer<'a, W>
-where
-    W: Write,
+impl<W> Printer<W>
+    where
+        W: io::Write,
 {
     pub fn terminal(&mut self, maybe_result: Result<FindResult, Error>) -> Result<(), Error> {
         match maybe_result {
             Ok(result) => {
-                if !result.print {
+                if result.print == false {
                     return Ok(());
                 }
+
                 match result.lines.len() {
                     0 => {
-                        if !self.options.short {
+                        if self.options.short == false {
                             self.print_file_name(&result.file_name);
                             self.print_colored(String::from("> No comments found"), White);
                         }
@@ -53,11 +55,11 @@ where
     }
 
     fn error(&mut self, err: &Error) {
-        if !self.options.short {
+        if self.options.short == false {
             self.print_colored_line(Red);
         }
         let msg = format!("Error: {}", err.to_string());
-        if !self.options.short {
+        if self.options.short == false {
             self.print_colored(msg, Red);
             self.print_colored_line(Red);
         }
@@ -65,7 +67,7 @@ where
 
     fn result(&mut self, result: FindResult) {
         let file_name = result.file_name;
-        if !self.options.short {
+        if self.options.short == false {
             self.print_file_name(&file_name);
         }
         result
@@ -83,12 +85,12 @@ where
     }
 
     fn print_comments(&mut self, line_number: u32, file_name: &String) {
-        if !self.options.short {
+        if self.options.short == false {
             let msg = format!("L{}", line_number.to_string());
             self.print_colored(msg, Green);
         } else {
             let msg = format!("{}:{}", file_name, line_number.to_string());
-            writeln!(&mut self.writer, "{}", msg).expect("Unable to write")
+            writeln!(self.writer, "{}", msg).expect("Unable to write")
         }
     }
 
@@ -108,6 +110,7 @@ where
     }
 
     fn writeln(&mut self, output: ColoredString) {
-        writeln!(&mut self.writer, "{}", output).expect("Unable to write")
+        println!("I am writing a comment now 22222222");
+        writeln!(self.writer, "{}", output).expect("Unable to write")
     }
 }
