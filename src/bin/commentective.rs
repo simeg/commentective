@@ -1,3 +1,4 @@
+#[macro_use]
 extern crate clap;
 extern crate colored;
 extern crate commentective;
@@ -30,8 +31,8 @@ fn main() {
         .index(1);
 
     let matches = App::new("commentective")
-        .version("0.3.0")
-        .author("Simon Egersand <s.egersand@gmail.com>")
+        .author(crate_authors!())
+        .version(crate_version!())
         .about("CLI tool to find comments and commented out code")
         .arg(arg_files)
         .arg(arg_extension)
