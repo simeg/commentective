@@ -17,6 +17,7 @@ use std::process;
 
 static ARG_NAME_SHORT: &str = "short";
 static ARG_NAME_EXTENSION: &str = "extension";
+static ARG_NAME_IGNORE_EMPTY: &str = "ignore-empty";
 static OPT_NAME_FILES: &str = "FILES";
 
 fn main() {
@@ -31,6 +32,11 @@ fn main() {
         .help("Only analyze files with this extension")
         .takes_value(true);
 
+    let arg_ignore_empty = Arg::with_name(ARG_NAME_IGNORE_EMPTY)
+        .short(first_char(ARG_NAME_IGNORE_EMPTY))
+        .long(ARG_NAME_IGNORE_EMPTY)
+        .help("Ignore printing files without comments");
+
     let opt_files = Arg::with_name(OPT_NAME_FILES)
         .help("Files to analyze")
         .required(true)
@@ -44,6 +50,7 @@ fn main() {
         .about("CLI tool to find comments and commented out code")
         .arg(opt_files)
         .arg(arg_extension)
+        .arg(arg_ignore_empty)
         .arg(arg_short)
         .get_matches();
 
@@ -55,6 +62,7 @@ fn main() {
     let opts_cli = OptionsCli {
         extension,
         short: matches.is_present(ARG_NAME_SHORT),
+        ignore_empty: matches.is_present(ARG_NAME_IGNORE_EMPTY),
     };
 
     let mut printer = Printer {
