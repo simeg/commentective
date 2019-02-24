@@ -35,6 +35,7 @@ pub mod utils;
 pub struct OptionsCli {
     pub extension: Option<String>,
     pub short: bool,
+    pub ignore_empty: bool,
 }
 
 pub fn run(paths: Vec<&Path>, opts: &OptionsCli) -> Vec<Result<FindResult, Error>> {

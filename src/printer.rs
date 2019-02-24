@@ -33,7 +33,9 @@ where
                 }
                 match result.lines.len() {
                     0 => {
-                        if !self.options.short {
+                        if self.options.short || self.options.ignore_empty {
+                            // Don't print if nothing found
+                        } else {
                             self.print_file_name(&result.file_name);
                             self.print_colored(String::from("> No comments found"), White);
                         }
