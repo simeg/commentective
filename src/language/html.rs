@@ -1,4 +1,4 @@
-use language;
+use language::Language;
 use language::FindResult;
 use std::fs::File;
 use std::io::Error;
@@ -31,9 +31,9 @@ pub fn multi_opts() -> MultiCommentOpts {
     }
 }
 
-impl language::Language for HTML {
+impl Language for HTML {
     #[inline]
-    fn find(&self) -> Result<language::FindResult, Error> {
+    fn find(&self) -> Result<FindResult, Error> {
         match self.maybe_file {
             Ok(ref file) => {
                 let comments = find_comments(file, &self.multi_opts, &is_single_line_comment);

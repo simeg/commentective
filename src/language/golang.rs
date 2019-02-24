@@ -1,4 +1,4 @@
-use language;
+use language::Language;
 use language::FindResult;
 use std::fs::File;
 use std::io::BufRead;
@@ -22,9 +22,9 @@ pub fn source(p: &Path) -> Go {
     }
 }
 
-impl language::Language for Go {
+impl Language for Go {
     #[inline]
-    fn find(&self) -> Result<language::FindResult, Error> {
+    fn find(&self) -> Result<FindResult, Error> {
         let mut counter = 1; // Lines begin on index 1
         let mut comments = Vec::<u32>::new();
 
