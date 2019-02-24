@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.5.0
+* Add flag to ignore outputting files without any comments in them
+
 ## 0.4.0
 * Run evaluation of files in parallel, increasing speed ~50%
 
