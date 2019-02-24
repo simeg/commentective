@@ -1,4 +1,4 @@
-# commentective [![Build Status](https://travis-ci.com/simeg/commentective.svg?token=N26ztkyW6iXxAQwi2QWe&branch=master)](https://travis-ci.com/simeg/commentective) [![codecov](https://codecov.io/gh/simeg/commentective/branch/master/graph/badge.svg)](https://codecov.io/gh/simeg/commentective)
+# commentective [![Crate Status](https://img.shields.io/crates/v/commentective.svg)](https://crates.io/crates/commentective) [![Build Status](https://travis-ci.com/simeg/commentective.svg?token=N26ztkyW6iXxAQwi2QWe&branch=master)](https://travis-ci.com/simeg/commentective) [![codecov](https://codecov.io/gh/simeg/commentective/branch/master/graph/badge.svg)](https://codecov.io/gh/simeg/commentective)
 `commentective` (word play on _comment detective_) is a CLI tool that locates commented out code and
  comments in your project. Note that this tool assumes that your code is syntactically correct.
 
