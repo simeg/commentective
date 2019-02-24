@@ -71,6 +71,8 @@ pub mod string {
     pub fn str(input: &str) -> String {
         String::from(input)
     }
+
+    pub fn first_char(input: &str) -> String { input.chars().skip(0).take(1).collect() }
 }
 
 pub mod list {

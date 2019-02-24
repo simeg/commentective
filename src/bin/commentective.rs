@@ -9,21 +9,29 @@ use clap::Values;
 use commentective::printer::Printer;
 use commentective::utils::path::exists_on_filesystem;
 use commentective::utils::string::str;
+use commentective::utils::string::first_char;
 use commentective::OptionsCli;
 use std::io;
 use std::path::Path;
 use std::process;
 
+static ARG_NAME_SHORT: &str = "short";
+static ARG_NAME_EXTENSION: &str = "extension";
+static OPT_NAME_FILES: &str = "FILES";
+
 fn main() {
-    let arg_short = Arg::with_name("short").short("s").long("short").help(
-        "Formats output with \"file.ext:line\" without colors. Only outputs files with comments.",
-    );
-    let arg_extension = Arg::with_name("extension")
-        .short("e")
-        .long("extension")
+    let arg_short = Arg::with_name(ARG_NAME_SHORT)
+        .short(first_char(ARG_NAME_SHORT))
+        .long(ARG_NAME_SHORT)
+        .help("Formats output with \"file.ext:line\" without colors. Only outputs files with comments.");
+
+    let arg_extension = Arg::with_name(ARG_NAME_EXTENSION)
+        .short(first_char(ARG_NAME_EXTENSION))
+        .long(ARG_NAME_EXTENSION)
         .help("Only analyze files with this extension")
         .takes_value(true);
-    let arg_files = Arg::with_name("FILES")
+
+    let opt_files = Arg::with_name(OPT_NAME_FILES)
         .help("Files to analyze")
         .required(true)
         .multiple(true)
@@ -34,19 +42,19 @@ fn main() {
         .author(crate_authors!())
         .version(crate_version!())
         .about("CLI tool to find comments and commented out code")
-        .arg(arg_files)
+        .arg(opt_files)
         .arg(arg_extension)
         .arg(arg_short)
         .get_matches();
 
-    let values: Values = matches.values_of("FILES").unwrap();
+    let values: Values = matches.values_of(OPT_NAME_FILES).unwrap();
     let paths: Vec<&Path> = values.map(|file| Path::new(file)).collect::<Vec<&Path>>();
 
-    let extension: Option<String> = matches.value_of("extension").map(str); // Convert &str -> String
+    let extension: Option<String> = matches.value_of(ARG_NAME_EXTENSION).map(str); // Convert &str -> String
 
     let opts_cli = OptionsCli {
         extension,
-        short: matches.is_present("short"),
+        short: matches.is_present(ARG_NAME_SHORT),
     };
 
     let mut printer = Printer {
