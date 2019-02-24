@@ -1,4 +1,7 @@
 extern crate console;
+extern crate rayon;
+
+use rayon::prelude::*;
 
 use language::bash;
 use language::c;
@@ -36,7 +39,7 @@ pub struct OptionsCli {
 
 pub fn run(paths: Vec<&Path>, opts: &OptionsCli) -> Vec<Result<FindResult, Error>> {
     paths
-        .into_iter()
+        .par_iter()
         .map(|path| resolve_type_and_run(path, &opts))
         .collect::<Vec<Result<FindResult, Error>>>()
 }

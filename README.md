@@ -8,7 +8,7 @@ find a case that `commentective` does not support, please
 
 
 # Usage
-`commentective` is language agnostic, meaning you don't need to tell it what language your files are 
+`commentective` is language agnostic, meaning you don't need to tell it what language your files are
 written in. It will look at the extension of the files and act accordingly.
 
 ```bash
@@ -46,7 +46,7 @@ $ commentective [FLAGS] [OPTIONS] <FILES>...
 | Rust       |     ✔️    |
 | Scala      |     ✔️    |
 
-Got a request for a language? 
+Got a request for a language?
 [Submit an issue!](https://github.com/simeg/commentective/issues/new)
 
 
