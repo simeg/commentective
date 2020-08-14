@@ -2,12 +2,12 @@ extern crate colored;
 
 use self::colored::ColoredString;
 use self::colored::*;
+use crate::language::FindResult;
+use crate::printer::Color::{Green, Red, White, Yellow};
+use crate::OptionsCli;
 use console::Term;
-use language::FindResult;
-use printer::Color::*;
 use std::io::Error;
 use std::io::Write;
-use OptionsCli;
 
 enum Color {
     Green,
@@ -77,14 +77,14 @@ where
             .for_each(drop);
     }
 
-    fn print_file_name(&mut self, file_name: &String) {
+    fn print_file_name(&mut self, file_name: &str) {
         self.print_colored_line(Yellow);
         let msg = format!("{} {}", "File:", file_name);
         self.print_colored(msg, Yellow);
         self.print_colored_line(Yellow);
     }
 
-    fn print_comments(&mut self, line_number: u32, file_name: &String) {
+    fn print_comments(&mut self, line_number: u32, file_name: &str) {
         if !self.options.short {
             let msg = format!("L{}", line_number.to_string());
             self.print_colored(msg, Green);

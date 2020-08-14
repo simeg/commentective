@@ -1,5 +1,7 @@
-use language::Language;
-use language::FindResult;
+use crate::language::FindResult;
+use crate::language::Language;
+use crate::utils::path::filename;
+use crate::utils::string::string_contains_any_of;
 use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
@@ -7,8 +9,6 @@ use std::io::Error;
 use std::io::ErrorKind;
 use std::path::Path;
 use std::vec::Vec;
-use utils::path::filename;
-use utils::string::string_contains_any_of;
 
 pub struct Python {
     pub maybe_file: Result<File, Error>,
@@ -39,7 +39,7 @@ impl Language for Python {
                         }
                         Err(_) => panic!("Could not read line"),
                     }
-                    counter = counter + 1;
+                    counter += 1;
                 }
 
                 Ok(FindResult {

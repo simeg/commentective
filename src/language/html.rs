@@ -1,14 +1,14 @@
-use language::Language;
-use language::FindResult;
+use crate::language::FindResult;
+use crate::language::Language;
+use crate::utils::comments::find_comments;
+use crate::utils::comments::MultiCommentOpts;
+use crate::utils::path::filename;
+use crate::utils::string::str;
+use crate::utils::string::string_contains_all;
 use std::fs::File;
 use std::io::Error;
 use std::io::ErrorKind;
 use std::path::Path;
-use utils::comments::find_comments;
-use utils::comments::MultiCommentOpts;
-use utils::path::filename;
-use utils::string::str;
-use utils::string::string_contains_all;
 
 pub struct HTML {
     pub maybe_file: Result<File, Error>,
