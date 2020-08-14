@@ -1,15 +1,14 @@
 #[macro_use]
 extern crate clap;
 extern crate colored;
-extern crate commentective;
 
 use clap::App;
 use clap::Arg;
 use clap::Values;
 use commentective::printer::Printer;
 use commentective::utils::path::exists_on_filesystem;
-use commentective::utils::string::str;
 use commentective::utils::string::first_char;
+use commentective::utils::string::str;
 use commentective::OptionsCli;
 use std::io;
 use std::path::Path;
@@ -74,7 +73,8 @@ fn main() {
         .into_iter()
         .map(|result| printer.terminal(result))
         .filter(|result| result.is_err())
-        .count() == 0;
+        .count()
+        == 0;
 
     if !successful {
         process::exit(1);

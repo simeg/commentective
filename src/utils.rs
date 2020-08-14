@@ -1,10 +1,10 @@
 pub mod path {
+    use crate::utils::string::str;
     use std::ffi::OsStr;
     use std::ffi::OsString;
     use std::io::Error;
     use std::io::ErrorKind;
     use std::path::Path;
-    use utils::string::str;
 
     pub fn filename(path: &Path) -> Result<String, Error> {
         match path.file_name() {
@@ -72,25 +72,27 @@ pub mod string {
         String::from(input)
     }
 
-    pub fn first_char(input: &str) -> String { input.chars().skip(0).take(1).collect() }
+    pub fn first_char(input: &str) -> String {
+        input.chars().skip(0).take(1).collect()
+    }
 }
 
 pub mod list {
-    pub fn in_list(needle: &String, haystack: Vec<String>) -> bool {
-        match haystack.into_iter().rfind(|ele| needle.contains(ele)) {
-            None => false,
-            Some(_) => true,
-        }
+    pub fn in_list(needle: &str, haystack: Vec<String>) -> bool {
+        haystack
+            .into_iter()
+            .rfind(|ele| needle.contains(ele))
+            .is_some()
     }
 }
 
 pub mod comments {
-    use language::FindResult;
+    use crate::language::FindResult;
+    use crate::utils::list::in_list;
+    use crate::utils::string::str;
     use std::fs::File;
     use std::io::BufRead;
     use std::io::BufReader;
-    use utils::list::in_list;
-    use utils::string::str;
 
     #[derive(Debug)]
     pub struct Line {
@@ -107,7 +109,7 @@ pub mod comments {
     pub fn find_comments(
         file: &File,
         multi_opts: &MultiCommentOpts,
-        is_single_line_comment: &Fn(&str) -> bool,
+        is_single_line_comment: &dyn Fn(&str) -> bool,
     ) -> Vec<u32> {
         let mut comments = Vec::<u32>::new();
         let mut is_multi = false;
@@ -121,10 +123,8 @@ pub mod comments {
             } else if in_list(&str(line.content.trim()), multi_opts.ends.clone()) {
                 is_multi = false;
                 comments.push(line.index);
-            } else {
-                if is_multi {
-                    comments.push(line.index);
-                }
+            } else if is_multi {
+                comments.push(line.index);
             }
         }
 
@@ -135,14 +135,13 @@ pub mod comments {
         let mut counter: u32 = 1;
         BufReader::new(file)
             .lines()
-            .into_iter()
             .map(|line| match line {
                 Ok(l) => {
                     let line = Line {
                         index: counter,
                         content: l,
                     };
-                    counter = counter + 1;
+                    counter += 1;
                     line
                 }
                 Err(_) => panic!("Could not read line"),

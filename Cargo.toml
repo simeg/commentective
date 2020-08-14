@@ -9,6 +9,7 @@ readme = "README.md"
 license = "MIT"
 name = "commentective"
 version = "0.5.0"
+edition = "2018"
 
 exclude = [
     "tests/*",

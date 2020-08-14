@@ -32,7 +32,8 @@ mod languages {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
             multi_opts: l::javascript::multi_opts(),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 13);
@@ -46,7 +47,8 @@ mod languages {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
             multi_opts: l::javascript::multi_opts(),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -58,7 +60,8 @@ mod languages {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
             multi_opts: l::java::multi_opts(),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 17);
@@ -75,7 +78,8 @@ mod languages {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
             multi_opts: l::java::multi_opts(),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -87,7 +91,8 @@ mod languages {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
             multi_opts: l::rust::multi_opts(),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 10);
@@ -101,7 +106,8 @@ mod languages {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
             multi_opts: l::rust::multi_opts(),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -112,7 +118,8 @@ mod languages {
         let result = Python {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 4);
@@ -125,7 +132,8 @@ mod languages {
         let result = Python {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -137,7 +145,8 @@ mod languages {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
             multi_opts: l::csharp::multi_opts(),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 9);
@@ -151,7 +160,8 @@ mod languages {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
             multi_opts: l::csharp::multi_opts(),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -163,7 +173,8 @@ mod languages {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
             multi_opts: l::bash::multi_opts(),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 5);
@@ -177,7 +188,8 @@ mod languages {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
             multi_opts: l::bash::multi_opts(),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -189,7 +201,8 @@ mod languages {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
             multi_opts: l::php::multi_opts(),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 11);
@@ -203,7 +216,8 @@ mod languages {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
             multi_opts: l::php::multi_opts(),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -215,7 +229,8 @@ mod languages {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
             multi_opts: l::ruby::multi_opts(),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 6);
@@ -229,7 +244,8 @@ mod languages {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
             multi_opts: l::ruby::multi_opts(),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -240,7 +256,8 @@ mod languages {
         let result = Go {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 2);
@@ -253,7 +270,8 @@ mod languages {
         let result = Go {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -265,7 +283,8 @@ mod languages {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
             multi_opts: l::scala::multi_opts(),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 11);
@@ -279,7 +298,8 @@ mod languages {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
             multi_opts: l::scala::multi_opts(),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -291,7 +311,8 @@ mod languages {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
             multi_opts: l::css::multi_opts(),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 6);
@@ -305,7 +326,8 @@ mod languages {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
             multi_opts: l::css::multi_opts(),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -317,7 +339,8 @@ mod languages {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
             multi_opts: l::html::multi_opts(),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 6);
@@ -331,7 +354,8 @@ mod languages {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
             multi_opts: l::html::multi_opts(),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -343,7 +367,8 @@ mod languages {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
             multi_opts: l::c::multi_opts(),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 8);
@@ -357,7 +382,8 @@ mod languages {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
             multi_opts: l::c::multi_opts(),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -369,7 +395,8 @@ mod languages {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
             multi_opts: l::cpp::multi_opts(),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 11);
@@ -383,7 +410,8 @@ mod languages {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
             multi_opts: l::cpp::multi_opts(),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -394,7 +422,8 @@ mod languages {
         let result = Lua {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 13);
@@ -407,7 +436,8 @@ mod languages {
         let result = Lua {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-        }.find();
+        }
+        .find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -433,7 +463,8 @@ mod flags {
         };
         for (i, result) in commentective::run(paths.clone(), &opts_no_ext)
             .iter()
-            .enumerate() {
+            .enumerate()
+        {
             assert!(result.is_ok());
 
             if i == 0 {
@@ -494,14 +525,28 @@ mod utils {
     #[test]
     fn resolve_type_with_value() {
         let path = Path::new(EXISTING_FILE);
-        let result = commentective::resolve_type_and_run(path, &OptionsCli { extension: None, short: false, ignore_empty: false });
+        let result = commentective::resolve_type_and_run(
+            path,
+            &OptionsCli {
+                extension: None,
+                short: false,
+                ignore_empty: false,
+            },
+        );
         assert!(result.is_ok());
     }
 
     #[test]
     fn resolve_type_with_err() {
         let path = Path::new(UNSUPPORTED_FILE);
-        let result = commentective::resolve_type_and_run(path, &OptionsCli { extension: None, short: false, ignore_empty: false });
+        let result = commentective::resolve_type_and_run(
+            path,
+            &OptionsCli {
+                extension: None,
+                short: false,
+                ignore_empty: false,
+            },
+        );
         assert!(result.is_err());
     }
 

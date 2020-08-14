@@ -1,5 +1,9 @@
-use language::Language;
-use language::FindResult;
+use crate::language::FindResult;
+use crate::language::Language;
+use crate::utils::path::filename;
+use crate::utils::string::str;
+use crate::utils::string::string_contains_all;
+use crate::utils::string::string_contains_any_of;
 use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
@@ -7,10 +11,6 @@ use std::io::Error;
 use std::io::ErrorKind;
 use std::path::Path;
 use std::vec::Vec;
-use utils::path::filename;
-use utils::string::str;
-use utils::string::string_contains_all;
-use utils::string::string_contains_any_of;
 
 pub struct Lua {
     pub maybe_file: Result<File, Error>,
@@ -62,7 +62,7 @@ impl Language for Lua {
                         }
                         Err(_) => panic!("Could not read line"),
                     }
-                    counter = counter + 1;
+                    counter += 1;
                 }
 
                 Ok(FindResult {
@@ -76,7 +76,7 @@ impl Language for Lua {
     }
 }
 
-fn get_comment_type(line: &String) -> LuaCommentType {
+fn get_comment_type(line: &str) -> LuaCommentType {
     if string_contains_all(str(line), vec!["--[[", "]]"]) {
         return LuaCommentType::SingleLine;
     }
@@ -93,5 +93,5 @@ fn get_comment_type(line: &String) -> LuaCommentType {
         return LuaCommentType::SingleLine;
     }
 
-    return LuaCommentType::None;
+    LuaCommentType::None
 }

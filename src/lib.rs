@@ -3,29 +3,29 @@ extern crate rayon;
 
 use rayon::prelude::*;
 
-use language::bash;
-use language::c;
-use language::cpp;
-use language::csharp;
-use language::css;
-use language::golang;
-use language::html;
-use language::java;
-use language::javascript;
-use language::lua;
-use language::php;
-use language::python;
-use language::ruby;
-use language::rust;
-use language::scala;
-use language::FileType;
-use language::FindResult;
-use language::Language;
+use crate::language::bash;
+use crate::language::c;
+use crate::language::cpp;
+use crate::language::csharp;
+use crate::language::css;
+use crate::language::golang;
+use crate::language::html;
+use crate::language::java;
+use crate::language::javascript;
+use crate::language::lua;
+use crate::language::php;
+use crate::language::python;
+use crate::language::ruby;
+use crate::language::rust;
+use crate::language::scala;
+use crate::language::FileType;
+use crate::language::FindResult;
+use crate::language::Language;
+use crate::utils::comments::noop_find_result;
+use crate::utils::path::extension;
 use std::io::Error;
 use std::io::ErrorKind;
 use std::path::Path;
-use utils::comments::noop_find_result;
-use utils::path::extension;
 
 pub mod language;
 pub mod printer;
@@ -106,13 +106,7 @@ fn exclude_file(p: &Path, opts: &OptionsCli) -> bool {
     match &opts.extension {
         None => false,
         Some(ext_options) => match extension(p) {
-            Ok(ext_file) => {
-                if ext_options == &ext_file {
-                    false
-                } else {
-                    true
-                }
-            }
+            Ok(ext_file) => ext_options != &ext_file,
             Err(e) => panic!("{:?}", e),
         },
     }
