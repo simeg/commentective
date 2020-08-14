@@ -1,14 +1,15 @@
 [package]
-authors = ["Simon Egersand <s.egersand@gmail.com>"]
-categories = ["command-line-interface", "command-line-utilities", "development-tools"]
-description = "CLI tool to locate comments and commented out code in your source code"
-documentation = "https://github.com/simeg/commentective/blob/master/README.md"
-homepage = "https://github.com/simeg/commentective"
-keywords = ["command-line-tool", "cli", "rust", "comments"]
-readme = "README.md"
-license = "MIT"
 name = "commentective"
 version = "0.5.0"
+description = "CLI tool to locate comments and commented out code in your source code"
+authors = ["Simon Egersand <s.egersand@gmail.com>"]
+categories = ["command-line-interface", "command-line-utilities", "development-tools"]
+keywords = ["command-line-tool", "cli", "rust", "comments"]
+
+documentation = "https://github.com/simeg/commentective/blob/master/README.md"
+homepage = "https://github.com/simeg/commentective"
+readme = "README.md"
+license = "MIT"
 edition = "2018"
 
 exclude = [
