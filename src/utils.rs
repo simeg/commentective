@@ -1,7 +1,6 @@
 pub mod path {
     use crate::utils::string::str;
     use std::ffi::OsStr;
-    use std::ffi::OsString;
     use std::io::Error;
     use std::io::ErrorKind;
     use std::path::Path;
@@ -31,17 +30,17 @@ pub mod path {
         Ok(str(extension))
     }
 
-    pub fn exists_on_filesystem(path: &OsStr) -> Result<(), OsString> {
+    pub fn exists_on_filesystem(path: &OsStr) -> Result<(), String> {
         match path.to_str() {
-            None => Err(OsString::from("Could not convert input file path -> str")),
+            None => Err(String::from("Could not convert input file path -> str")),
             Some(p) => {
                 if Path::new(p).exists() {
                     return Ok(());
                 }
-                Err(OsString::from(format!(
+                Err(format!(
                     "Cannot verify that file exist [{}]",
                     path.to_str().unwrap()
-                )))
+                ))
             }
         }
     }
@@ -72,8 +71,15 @@ pub mod string {
         String::from(input)
     }
 
-    pub fn first_char(input: &str) -> String {
-        input.chars().skip(0).take(1).collect()
+    pub fn first_char(input: &str) -> char {
+        // TODO: Find cleaner way to solve this
+        *input
+            .chars()
+            .skip(0)
+            .take(1)
+            .collect::<Vec<char>>()
+            .get(0)
+            .unwrap()
     }
 }
 
