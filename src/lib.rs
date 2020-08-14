@@ -31,7 +31,6 @@ pub mod language;
 pub mod printer;
 pub mod utils;
 
-#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub struct OptionsCli {
     pub extension: Option<String>,
     pub short: bool,

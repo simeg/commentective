@@ -33,7 +33,6 @@ pub fn source(p: &Path) -> Lua {
 }
 
 impl Language for Lua {
-    #[inline]
     fn find(&self) -> Result<FindResult, Error> {
         let mut counter = 1; // Lines begin on index 1
         let mut comments = Vec::<u32>::new();

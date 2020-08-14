@@ -12,7 +12,6 @@ use commentective::utils::string::str;
 use commentective::OptionsCli;
 use std::io;
 use std::path::Path;
-use std::process;
 
 static ARG_NAME_SHORT: &str = "short";
 static ARG_NAME_EXTENSION: &str = "extension";
@@ -53,8 +52,8 @@ fn main() {
         .arg(arg_short)
         .get_matches();
 
-    let values: Values = matches.values_of(OPT_NAME_FILES).unwrap();
-    let paths: Vec<&Path> = values.map(|file| Path::new(file)).collect::<Vec<&Path>>();
+    let files: Values = matches.values_of(OPT_NAME_FILES).unwrap();
+    let paths: Vec<&Path> = files.map(|file| Path::new(file)).collect::<Vec<&Path>>();
 
     let extension: Option<String> = matches.value_of(ARG_NAME_EXTENSION).map(str); // Convert &str -> String
 
@@ -69,14 +68,14 @@ fn main() {
         options: &opts_cli,
     };
 
-    let successful = commentective::run(paths, &opts_cli)
+    let was_successful = commentective::run(paths, &opts_cli)
         .into_iter()
         .map(|result| printer.terminal(result))
         .filter(|result| result.is_err())
         .count()
         == 0;
 
-    if !successful {
-        process::exit(1);
+    if !was_successful {
+        std::process::exit(1);
     }
 }

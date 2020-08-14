@@ -11,7 +11,6 @@ use std::io::Error;
 use std::io::ErrorKind;
 use std::path::Path;
 
-#[derive(Debug)]
 pub struct Java {
     pub maybe_file: Result<File, Error>,
     pub file_name: String,
@@ -34,7 +33,6 @@ pub fn multi_opts() -> MultiCommentOpts {
 }
 
 impl Language for Java {
-    #[inline]
     fn find(&self) -> Result<FindResult, Error> {
         match self.maybe_file {
             Ok(ref file) => {
