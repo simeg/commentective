@@ -100,13 +100,11 @@ pub mod comments {
     use std::io::BufRead;
     use std::io::BufReader;
 
-    #[derive(Debug)]
     pub struct Line {
         index: u32,
         content: String,
     }
 
-    #[derive(Debug)]
     pub struct MultiCommentOpts {
         pub starts: Vec<String>,
         pub ends: Vec<String>,

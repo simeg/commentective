@@ -32,7 +32,6 @@ pub fn multi_opts() -> MultiCommentOpts {
 }
 
 impl Language for HTML {
-    #[inline]
     fn find(&self) -> Result<FindResult, Error> {
         match self.maybe_file {
             Ok(ref file) => {

@@ -12,7 +12,6 @@ use std::io::ErrorKind;
 use std::path::Path;
 use std::result::Result::Err;
 
-#[derive(Debug)]
 pub struct CSharp {
     pub maybe_file: Result<File, Error>,
     pub file_name: String,
@@ -35,7 +34,6 @@ pub fn multi_opts() -> MultiCommentOpts {
 }
 
 impl Language for CSharp {
-    #[inline]
     fn find(&self) -> Result<FindResult, Error> {
         match self.maybe_file {
             Ok(ref file) => {

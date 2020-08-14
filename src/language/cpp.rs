@@ -33,7 +33,6 @@ pub fn multi_opts() -> MultiCommentOpts {
 }
 
 impl Language for Cpp {
-    #[inline]
     fn find(&self) -> Result<FindResult, Error> {
         match self.maybe_file {
             Ok(ref file) => {
