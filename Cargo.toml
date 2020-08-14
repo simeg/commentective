@@ -22,7 +22,7 @@ travis-ci = { repository = "simeg/commentective" }
 codecov = { repository = "simeg/commentective", branch = "master", service = "github" }
 
 [dependencies]
-clap = "2.32.0"
-colored = "1.6"
-console = "0.6.1"
-rayon = "1.0.3"
+clap = "3.0.0-beta.1"
+colored = "2.0.0"
+console = "0.12.0"
+rayon = "1.3.1"

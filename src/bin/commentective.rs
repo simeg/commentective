@@ -23,21 +23,21 @@ fn main() {
     let arg_short = Arg::with_name(ARG_NAME_SHORT)
         .short(first_char(ARG_NAME_SHORT))
         .long(ARG_NAME_SHORT)
-        .help("Formats output with \"file.ext:line\" without colors. Only outputs files with comments.");
+        .about("Formats output with \"file.ext:line\" without colors. Only outputs files with comments.");
 
     let arg_extension = Arg::with_name(ARG_NAME_EXTENSION)
         .short(first_char(ARG_NAME_EXTENSION))
         .long(ARG_NAME_EXTENSION)
-        .help("Only analyze files with this extension")
+        .about("Only analyze files with this extension")
         .takes_value(true);
 
     let arg_ignore_empty = Arg::with_name(ARG_NAME_IGNORE_EMPTY)
         .short(first_char(ARG_NAME_IGNORE_EMPTY))
         .long(ARG_NAME_IGNORE_EMPTY)
-        .help("Ignore printing files without comments");
+        .about("Ignore printing files without comments");
 
     let opt_files = Arg::with_name(OPT_NAME_FILES)
-        .help("Files to analyze")
+        .about("Files to analyze")
         .required(true)
         .multiple(true)
         .validator_os(exists_on_filesystem)

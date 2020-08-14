@@ -9,6 +9,9 @@ build:
 check:
 	$(CARGO) check --release
 
+clippy:
+	$(CARGO) clippy
+
 ci: install-rustfmt lint check test
 
 clean:
