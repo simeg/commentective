@@ -1,5 +1,7 @@
 #[cfg(test)]
 mod languages {
+    #![allow(non_snake_case)]
+
     use commentective::language::bash::Bash;
     use commentective::language::c::C;
     use commentective::language::cpp::Cpp;
@@ -19,7 +21,7 @@ mod languages {
     use std::path::PathBuf;
 
     #[test]
-    fn javascript_find_with_value() {
+    fn javascript__find__with_comments() {
         let path = PathBuf::from("tests/resources/javascript/with-comments.js");
         let result = JavaScript::default().find(path);
         assert!(result.is_ok());
@@ -29,7 +31,7 @@ mod languages {
     }
 
     #[test]
-    fn javascript_find_with_err() {
+    fn javascript__find__without_comments() {
         let path = PathBuf::from("tests/resources/javascript/without-comments.js");
         let result = JavaScript::default().find(path);
         assert!(result.is_ok());
@@ -37,7 +39,7 @@ mod languages {
     }
 
     #[test]
-    fn java_find_with_value() {
+    fn java__find__with_comments() {
         let path = PathBuf::from("tests/resources/java/with-comments.java");
         let result = Java::default().find(path);
         assert!(result.is_ok());
@@ -50,7 +52,7 @@ mod languages {
     }
 
     #[test]
-    fn java_find_with_err() {
+    fn java__find__without_comments() {
         let path = PathBuf::from("tests/resources/java/without-comments.java");
         let result = Java::default().find(path);
         assert!(result.is_ok());
@@ -58,7 +60,7 @@ mod languages {
     }
 
     #[test]
-    fn rust_find_with_value() {
+    fn rust__find__with_comments() {
         let path = PathBuf::from("tests/resources/rust/with-comments.rs");
         let result = Rust::default().find(path);
         assert!(result.is_ok());
@@ -68,7 +70,7 @@ mod languages {
     }
 
     #[test]
-    fn rust_find_with_err() {
+    fn rust__find__without_comments() {
         let path = PathBuf::from("tests/resources/rust/without-comments.rs");
         let result = Rust::default().find(path);
         assert!(result.is_ok());
@@ -76,7 +78,7 @@ mod languages {
     }
 
     #[test]
-    fn python_find_with_value() {
+    fn python__find__with_comments() {
         let path = PathBuf::from("tests/resources/python/with-comments.py");
         let result = Python::default().find(path);
         assert!(result.is_ok());
@@ -86,7 +88,7 @@ mod languages {
     }
 
     #[test]
-    fn python_find_with_err() {
+    fn python__find__without_comments() {
         let path = PathBuf::from("tests/resources/python/without-comments.py");
         let result = Python::default().find(path);
         assert!(result.is_ok());
@@ -94,7 +96,7 @@ mod languages {
     }
 
     #[test]
-    fn csharp_find_with_value() {
+    fn csharp__find__with_comments() {
         let path = PathBuf::from("tests/resources/csharp/with-comments.cs");
         let result = CSharp::default().find(path);
         assert!(result.is_ok());
@@ -104,7 +106,7 @@ mod languages {
     }
 
     #[test]
-    fn csharp_find_with_err() {
+    fn csharp__find__without_comments() {
         let path = PathBuf::from("tests/resources/csharp/without-comments.cs");
         let result = CSharp::default().find(path);
         assert!(result.is_ok());
@@ -112,7 +114,7 @@ mod languages {
     }
 
     #[test]
-    fn bash_find_with_value() {
+    fn bash__find__with_comments() {
         let path = PathBuf::from("tests/resources/bash/with-comments.sh");
         let result = Bash::default().find(path);
         assert!(result.is_ok());
@@ -122,7 +124,7 @@ mod languages {
     }
 
     #[test]
-    fn bash_find_with_err() {
+    fn bash__find__without_comments() {
         let path = PathBuf::from("tests/resources/bash/without-comments.sh");
         let result = Bash::default().find(path);
         assert!(result.is_ok());
@@ -130,7 +132,7 @@ mod languages {
     }
 
     #[test]
-    fn php_find_with_value() {
+    fn php__find__with_comments() {
         let path = PathBuf::from("tests/resources/php/with-comments.php");
         let result = PHP::default().find(path);
         assert!(result.is_ok());
@@ -140,7 +142,7 @@ mod languages {
     }
 
     #[test]
-    fn php_find_with_err() {
+    fn php__find__without_comments() {
         let path = PathBuf::from("tests/resources/php/without-comments.php");
         let result = PHP::default().find(path);
         assert!(result.is_ok());
@@ -148,7 +150,7 @@ mod languages {
     }
 
     #[test]
-    fn ruby_find_with_value() {
+    fn ruby__find__with_comments() {
         let path = PathBuf::from("tests/resources/ruby/with-comments.rb");
         let result = Ruby::default().find(path);
         assert!(result.is_ok());
@@ -158,7 +160,7 @@ mod languages {
     }
 
     #[test]
-    fn ruby_find_with_err() {
+    fn ruby__find__without_comments() {
         let path = PathBuf::from("tests/resources/ruby/without-comments.rb");
         let result = Ruby::default().find(path);
         assert!(result.is_ok());
@@ -166,7 +168,7 @@ mod languages {
     }
 
     #[test]
-    fn golang_find_with_value() {
+    fn golang__find__with_comments() {
         let path = PathBuf::from("tests/resources/golang/with-comments.go");
         let result = Go::default().find(path);
         assert!(result.is_ok());
@@ -176,7 +178,7 @@ mod languages {
     }
 
     #[test]
-    fn golang_find_with_err() {
+    fn golang__find__without_comments() {
         let path = PathBuf::from("tests/resources/golang/without-comments.go");
         let result = Go::default().find(path);
         assert!(result.is_ok());
@@ -184,7 +186,7 @@ mod languages {
     }
 
     #[test]
-    fn scala_find_with_value() {
+    fn scala__find__with_comments() {
         let path = PathBuf::from("tests/resources/scala/with-comments.scala");
         let result = Scala::default().find(path);
         assert!(result.is_ok());
@@ -194,7 +196,7 @@ mod languages {
     }
 
     #[test]
-    fn scala_find_with_err() {
+    fn scala__find__without_comments() {
         let path = PathBuf::from("tests/resources/scala/without-comments.scala");
         let result = Scala::default().find(path);
         assert!(result.is_ok());
@@ -202,7 +204,7 @@ mod languages {
     }
 
     #[test]
-    fn css_find_with_value() {
+    fn css__find__with_comments() {
         let path = PathBuf::from("tests/resources/css/with-comments.css");
         let result = CSS::default().find(path);
         assert!(result.is_ok());
@@ -212,7 +214,7 @@ mod languages {
     }
 
     #[test]
-    fn css_find_with_err() {
+    fn css__find__without_comments() {
         let path = PathBuf::from("tests/resources/css/without-comments.css");
         let result = CSS::default().find(path);
         assert!(result.is_ok());
@@ -220,7 +222,7 @@ mod languages {
     }
 
     #[test]
-    fn html_find_with_value() {
+    fn html__find__with_comments() {
         let path = PathBuf::from("tests/resources/html/with-comments.html");
         let result = HTML::default().find(path);
         assert!(result.is_ok());
@@ -230,7 +232,7 @@ mod languages {
     }
 
     #[test]
-    fn html_find_with_err() {
+    fn html__find__without_comments() {
         let path = PathBuf::from("tests/resources/html/without-comments.html");
         let result = HTML::default().find(path);
         assert!(result.is_ok());
@@ -238,7 +240,7 @@ mod languages {
     }
 
     #[test]
-    fn c_find_with_value() {
+    fn c__find__with_comments() {
         let path = PathBuf::from("tests/resources/c/with-comments.c");
         let result = C::default().find(path);
         assert!(result.is_ok());
@@ -248,7 +250,7 @@ mod languages {
     }
 
     #[test]
-    fn c_find_with_err() {
+    fn c__find__without_comments() {
         let path = PathBuf::from("tests/resources/c/without-comments.c");
         let result = C::default().find(path);
         assert!(result.is_ok());
@@ -256,7 +258,7 @@ mod languages {
     }
 
     #[test]
-    fn cpp_find_with_value() {
+    fn cpp__find__with_comments() {
         let path = PathBuf::from("tests/resources/cpp/with-comments.cpp");
         let result = Cpp::default().find(path);
         assert!(result.is_ok());
@@ -266,7 +268,7 @@ mod languages {
     }
 
     #[test]
-    fn cpp_find_with_err() {
+    fn cpp__find__without_comments() {
         let path = PathBuf::from("tests/resources/cpp/without-comments.cpp");
         let result = Cpp::default().find(path);
         assert!(result.is_ok());
@@ -274,7 +276,7 @@ mod languages {
     }
 
     #[test]
-    fn lua_find_with_value() {
+    fn lua__find__with_comments() {
         let path = PathBuf::from("tests/resources/lua/with-comments.lua");
         let result = Lua::default().find(path);
         assert!(result.is_ok());
@@ -284,7 +286,7 @@ mod languages {
     }
 
     #[test]
-    fn lua_find_with_err() {
+    fn lua__find__without_comments() {
         let path = PathBuf::from("tests/resources/lua/without-comments.lua");
         let result = Lua::default().find(path);
         assert!(result.is_ok());
@@ -356,6 +358,8 @@ mod flags {
 
 #[cfg(test)]
 mod utils {
+    #![allow(non_snake_case)]
+
     use commentective::OptionsCli;
     use std::path::PathBuf;
 
@@ -363,7 +367,7 @@ mod utils {
     const UNSUPPORTED_FILE: &'static str = "tests/resources/empty.foo";
 
     #[test]
-    fn resolve_type_with_value() {
+    fn resolve_type__with_comments() {
         let path = PathBuf::from(EXISTING_FILE);
         let result = commentective::resolve_type_and_run(
             path,
@@ -377,7 +381,7 @@ mod utils {
     }
 
     #[test]
-    fn resolve_type_with_err() {
+    fn resolve_type__without_comments() {
         let path = PathBuf::from(UNSUPPORTED_FILE);
         let result = commentective::resolve_type_and_run(
             path,
