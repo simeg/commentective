@@ -17,24 +17,6 @@ pub mod ruby;
 pub mod rust;
 pub mod scala;
 
-pub enum FileType {
-    Bash,
-    C,
-    CSS,
-    CSharp,
-    Cpp,
-    Go,
-    HTML,
-    Java,
-    JavaScript,
-    Lua,
-    PHP,
-    Python,
-    Ruby,
-    Rust,
-    Scala,
-}
-
 pub trait Language {
     fn find(&self) -> Result<FindResult, Error>
     where
