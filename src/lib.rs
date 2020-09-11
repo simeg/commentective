@@ -23,6 +23,7 @@ use crate::language::FindResult;
 use crate::utils::comments::noop_find_result;
 use crate::utils::path::extension;
 
+use std::fs::metadata;
 use std::io::Error;
 use std::io::ErrorKind;
 use std::path::{Path, PathBuf};
@@ -40,12 +41,12 @@ pub struct OptionsCli {
 pub fn run(paths: Vec<PathBuf>, opts: &OptionsCli) -> Vec<Result<FindResult, Error>> {
     paths
         .par_iter()
+        .filter(|path| metadata(path).unwrap().is_file()) // File presence has been verified so we can unwrap here
         .map(|path| resolve_type_and_run(path.to_path_buf(), &opts))
         .collect::<Vec<Result<FindResult, Error>>>()
 }
 
 pub fn resolve_type_and_run(path: PathBuf, opts: &OptionsCli) -> Result<FindResult, Error> {
-    // TODO: Silently ignore directories
     let unsupported_err = Err(Error::new(
         ErrorKind::NotFound,
         "Unsupported file extension",
