@@ -150,3 +150,41 @@ pub mod comments {
         }
     }
 }
+
+#[cfg(test)]
+mod test {
+    use crate::utils::path::{exists_on_filesystem, extension, filename};
+    use std::path::Path;
+
+    type TestResult = Result<(), Box<dyn std::error::Error>>;
+
+    #[test]
+    fn test_path_filename() {
+        let path = Path::new("dir/dir/some_file.js");
+
+        let actual = filename(path).unwrap();
+        let expected = "some_file.js".to_string();
+
+        assert_eq!(actual, expected)
+    }
+
+    #[test]
+    fn test_path_extension() {
+        let path = Path::new("dir/dir/some_file.js");
+
+        let actual = extension(path).unwrap();
+        let expected = "js".to_string();
+
+        assert_eq!(actual, expected)
+    }
+
+    #[test]
+    fn test_path_exists_on_filesystem() -> TestResult {
+        let file = tempfile::NamedTempFile::new()?;
+
+        let actual = exists_on_filesystem(file.path().as_ref());
+
+        assert!(actual.is_ok());
+        Ok(())
+    }
+}
