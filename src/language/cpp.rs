@@ -3,9 +3,9 @@ use crate::language::Language;
 use crate::utils::comments::find_comments;
 use crate::utils::comments::MultiCommentOpts;
 use crate::utils::path::filename;
+use crate::utils::string::contains_all;
+use crate::utils::string::contains_any_of;
 use crate::utils::string::str;
-use crate::utils::string::string_contains_all;
-use crate::utils::string::string_contains_any_of;
 use std::fs::File;
 use std::io::Error;
 use std::io::ErrorKind;
@@ -49,7 +49,7 @@ impl Language for Cpp {
 }
 
 fn is_single_line_comment(line: &str) -> bool {
-    string_contains_any_of(str(line), vec!["//"])
-        || string_contains_all(str(line), vec!["/*", "*/"])
-        || string_contains_all(str(line), vec!["/*", "/**/"])
+    contains_any_of(line, vec!["//"])
+        || contains_all(line, vec!["/*", "*/"])
+        || contains_all(line, vec!["/*", "/**/"])
 }

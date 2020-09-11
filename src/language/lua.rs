@@ -1,9 +1,8 @@
 use crate::language::FindResult;
 use crate::language::Language;
 use crate::utils::path::filename;
-use crate::utils::string::str;
-use crate::utils::string::string_contains_all;
-use crate::utils::string::string_contains_any_of;
+use crate::utils::string::contains_all;
+use crate::utils::string::contains_any_of;
 use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
@@ -76,19 +75,19 @@ impl Language for Lua {
 }
 
 fn get_comment_type(line: &str) -> LuaCommentType {
-    if string_contains_all(str(line), vec!["--[[", "]]"]) {
+    if contains_all(line, vec!["--[[", "]]"]) {
         return LuaCommentType::SingleLine;
     }
 
-    if string_contains_any_of(str(line), vec!["]]"]) {
+    if contains_any_of(line, vec!["]]"]) {
         return LuaCommentType::MultiLineEnd;
     }
 
-    if string_contains_any_of(str(line), vec!["--[["]) {
+    if contains_any_of(line, vec!["--[["]) {
         return LuaCommentType::MultiLineStart;
     }
 
-    if string_contains_any_of(str(line), vec!["--"]) {
+    if contains_any_of(line, vec!["--"]) {
         return LuaCommentType::SingleLine;
     }
 

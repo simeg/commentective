@@ -1,5 +1,3 @@
-extern crate commentective;
-
 #[cfg(test)]
 mod languages {
     use commentective::language::bash::Bash;
@@ -446,7 +444,6 @@ mod languages {
 
 #[cfg(test)]
 mod flags {
-    use commentective;
     use commentective::utils::string::str;
     use commentective::OptionsCli;
     use std::path::Path;
@@ -510,17 +507,10 @@ mod flags {
 
 #[cfg(test)]
 mod utils {
-    use commentective;
-    use commentective::utils;
-    use commentective::utils::path::exists_on_filesystem;
-    use commentective::utils::string::str;
     use commentective::OptionsCli;
-    use std::ffi::OsStr;
     use std::path::Path;
 
-    const NON_EXISTING_FILE: &'static str = "I_DO_NOT_EXIST";
     const EXISTING_FILE: &'static str = "tests/resources/javascript/with-comments.js";
-    const EMPTY_FILE: &'static str = "tests/resources/empty.foo";
     const UNSUPPORTED_FILE: &'static str = "tests/resources/empty.foo";
 
     #[test]
@@ -549,46 +539,5 @@ mod utils {
             },
         );
         assert!(result.is_err());
-    }
-
-    #[test]
-    fn exists_on_filesystem_with_value() {
-        let path = OsStr::new(EMPTY_FILE);
-        let result = exists_on_filesystem(path);
-        assert!(result.is_ok());
-    }
-
-    #[test]
-    fn exists_on_filesystem_with_err() {
-        let path = OsStr::new(NON_EXISTING_FILE);
-        let result = exists_on_filesystem(path);
-        assert!(result.is_err());
-    }
-
-    #[test]
-    fn utils_path_filename_with_value() {
-        let path = Path::new(EMPTY_FILE);
-        let result = utils::path::filename(path);
-        assert!(result.is_ok());
-    }
-
-    #[test]
-    fn utils_path_filename_with_err() {
-        let path = Path::new(NON_EXISTING_FILE);
-        let result = utils::path::filename(path);
-        assert!(result.is_ok());
-    }
-
-    #[test]
-    fn utils_string_contains_all_true() {
-        let result = utils::string::string_contains_all(str("/* arbitrary */"), vec!["/*", "*/"]);
-        assert!(result);
-    }
-
-    #[test]
-    fn utils_string_contains_all_false() {
-        let result =
-            utils::string::string_contains_all(str("/* arbitrary */"), vec!["/*", "not exist"]);
-        assert!(!result);
     }
 }

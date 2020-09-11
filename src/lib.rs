@@ -56,7 +56,7 @@ pub fn resolve_type_and_run(p: &Path, opts: &OptionsCli) -> Result<FindResult, E
 
     match p.extension() {
         None => unsupported_err,
-        Some(_ext) => match _ext.to_str() {
+        Some(ext) => match ext.to_str() {
             None => panic!("Could not convert OsStr -> str"),
             Some(extension) => match extension {
                 "c" => Ok(run_source(FileType::C, p)?),
