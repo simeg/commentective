@@ -16,20 +16,12 @@ mod languages {
     use commentective::language::rust::Rust;
     use commentective::language::scala::Scala;
     use commentective::language::Language;
-    use commentective::utils::string::str;
-    use std::fs::File;
-    use std::path::Path;
-
-    const IRRELEVANT: &'static str = "irrelevant";
+    use std::path::PathBuf;
 
     #[test]
     fn javascript_find_with_value() {
-        let path = Path::new("tests/resources/javascript/with-comments.js");
-        let result = JavaScript {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/javascript/with-comments.js");
+        let result = JavaScript { path }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 13);
@@ -38,24 +30,16 @@ mod languages {
 
     #[test]
     fn javascript_find_with_err() {
-        let path = Path::new("tests/resources/javascript/without-comments.js");
-        let result = JavaScript {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/javascript/without-comments.js");
+        let result = JavaScript { path }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
 
     #[test]
     fn java_find_with_value() {
-        let path = Path::new("tests/resources/java/with-comments.java");
-        let result = Java {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/java/with-comments.java");
+        let result = Java { path }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 17);
@@ -67,24 +51,16 @@ mod languages {
 
     #[test]
     fn java_find_with_err() {
-        let path = Path::new("tests/resources/java/without-comments.java");
-        let result = Java {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/java/without-comments.java");
+        let result = Java { path }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
 
     #[test]
     fn rust_find_with_value() {
-        let path = Path::new("tests/resources/rust/with-comments.rs");
-        let result = Rust {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/rust/with-comments.rs");
+        let result = Rust { path }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 10);
@@ -93,24 +69,16 @@ mod languages {
 
     #[test]
     fn rust_find_with_err() {
-        let path = Path::new("tests/resources/rust/without-comments.rs");
-        let result = Rust {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/rust/without-comments.rs");
+        let result = Rust { path }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
 
     #[test]
     fn python_find_with_value() {
-        let path = Path::new("tests/resources/python/with-comments.py");
-        let result = Python {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/python/with-comments.py");
+        let result = Python { path }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 4);
@@ -119,24 +87,16 @@ mod languages {
 
     #[test]
     fn python_find_with_err() {
-        let path = Path::new("tests/resources/python/without-comments.py");
-        let result = Python {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/python/without-comments.py");
+        let result = Python { path }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
 
     #[test]
     fn csharp_find_with_value() {
-        let path = Path::new("tests/resources/csharp/with-comments.cs");
-        let result = CSharp {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/csharp/with-comments.cs");
+        let result = CSharp { path }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 9);
@@ -145,24 +105,16 @@ mod languages {
 
     #[test]
     fn csharp_find_with_err() {
-        let path = Path::new("tests/resources/csharp/without-comments.cs");
-        let result = CSharp {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/csharp/without-comments.cs");
+        let result = CSharp { path }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
 
     #[test]
     fn bash_find_with_value() {
-        let path = Path::new("tests/resources/bash/with-comments.sh");
-        let result = Bash {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/bash/with-comments.sh");
+        let result = Bash { path }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 5);
@@ -171,24 +123,16 @@ mod languages {
 
     #[test]
     fn bash_find_with_err() {
-        let path = Path::new("tests/resources/bash/without-comments.sh");
-        let result = Bash {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/bash/without-comments.sh");
+        let result = Bash { path }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
 
     #[test]
     fn php_find_with_value() {
-        let path = Path::new("tests/resources/php/with-comments.php");
-        let result = PHP {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/php/with-comments.php");
+        let result = PHP { path }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 11);
@@ -197,24 +141,16 @@ mod languages {
 
     #[test]
     fn php_find_with_err() {
-        let path = Path::new("tests/resources/php/without-comments.php");
-        let result = PHP {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/php/without-comments.php");
+        let result = PHP { path }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
 
     #[test]
     fn ruby_find_with_value() {
-        let path = Path::new("tests/resources/ruby/with-comments.rb");
-        let result = Ruby {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/ruby/with-comments.rb");
+        let result = Ruby { path }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 6);
@@ -223,24 +159,16 @@ mod languages {
 
     #[test]
     fn ruby_find_with_err() {
-        let path = Path::new("tests/resources/ruby/without-comments.rb");
-        let result = Ruby {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/ruby/without-comments.rb");
+        let result = Ruby { path }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
 
     #[test]
     fn golang_find_with_value() {
-        let path = Path::new("tests/resources/golang/with-comments.go");
-        let result = Go {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/golang/with-comments.go");
+        let result = Go { path }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 2);
@@ -249,24 +177,16 @@ mod languages {
 
     #[test]
     fn golang_find_with_err() {
-        let path = Path::new("tests/resources/golang/without-comments.go");
-        let result = Go {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/golang/without-comments.go");
+        let result = Go { path }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
 
     #[test]
     fn scala_find_with_value() {
-        let path = Path::new("tests/resources/scala/with-comments.scala");
-        let result = Scala {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/scala/with-comments.scala");
+        let result = Scala { path }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 11);
@@ -275,24 +195,16 @@ mod languages {
 
     #[test]
     fn scala_find_with_err() {
-        let path = Path::new("tests/resources/scala/without-comments.scala");
-        let result = Scala {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/scala/without-comments.scala");
+        let result = Scala { path }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
 
     #[test]
     fn css_find_with_value() {
-        let path = Path::new("tests/resources/css/with-comments.css");
-        let result = CSS {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/css/with-comments.css");
+        let result = CSS { path }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 6);
@@ -301,24 +213,16 @@ mod languages {
 
     #[test]
     fn css_find_with_err() {
-        let path = Path::new("tests/resources/css/without-comments.css");
-        let result = CSS {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/css/without-comments.css");
+        let result = CSS { path }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
 
     #[test]
     fn html_find_with_value() {
-        let path = Path::new("tests/resources/html/with-comments.html");
-        let result = HTML {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/html/with-comments.html");
+        let result = HTML { path }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 6);
@@ -327,24 +231,16 @@ mod languages {
 
     #[test]
     fn html_find_with_err() {
-        let path = Path::new("tests/resources/html/without-comments.html");
-        let result = HTML {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/html/without-comments.html");
+        let result = HTML { path }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
 
     #[test]
     fn c_find_with_value() {
-        let path = Path::new("tests/resources/c/with-comments.c");
-        let result = C {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/c/with-comments.c");
+        let result = C { path }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 8);
@@ -353,24 +249,16 @@ mod languages {
 
     #[test]
     fn c_find_with_err() {
-        let path = Path::new("tests/resources/c/without-comments.c");
-        let result = C {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/c/without-comments.c");
+        let result = C { path }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
 
     #[test]
     fn cpp_find_with_value() {
-        let path = Path::new("tests/resources/cpp/with-comments.cpp");
-        let result = Cpp {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/cpp/with-comments.cpp");
+        let result = Cpp { path }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 11);
@@ -379,24 +267,16 @@ mod languages {
 
     #[test]
     fn cpp_find_with_err() {
-        let path = Path::new("tests/resources/cpp/without-comments.cpp");
-        let result = Cpp {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/cpp/without-comments.cpp");
+        let result = Cpp { path }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
 
     #[test]
     fn lua_find_with_value() {
-        let path = Path::new("tests/resources/lua/with-comments.lua");
-        let result = Lua {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/lua/with-comments.lua");
+        let result = Lua { path }.find();
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 13);
@@ -405,12 +285,8 @@ mod languages {
 
     #[test]
     fn lua_find_with_err() {
-        let path = Path::new("tests/resources/lua/without-comments.lua");
-        let result = Lua {
-            maybe_file: File::open(path),
-            file_name: str(IRRELEVANT),
-        }
-        .find();
+        let path = PathBuf::from("tests/resources/lua/without-comments.lua");
+        let result = Lua { path }.find();
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -418,14 +294,13 @@ mod languages {
 
 #[cfg(test)]
 mod flags {
-    use commentective::utils::string::str;
     use commentective::OptionsCli;
-    use std::path::Path;
+    use std::path::PathBuf;
 
     #[test]
     fn flag_extension() {
-        let path_javascript = Path::new("tests/resources/javascript/with-comments.js");
-        let path_python = Path::new("tests/resources/python/with-comments.py");
+        let path_javascript = PathBuf::from("tests/resources/javascript/with-comments.js");
+        let path_python = PathBuf::from("tests/resources/python/with-comments.py");
         let paths = vec![path_javascript, path_python];
 
         let opts_no_ext = OptionsCli {
@@ -455,7 +330,7 @@ mod flags {
         }
 
         let opts_with_ext = OptionsCli {
-            extension: Some(str("js")),
+            extension: Some("js".to_string()),
             short: false,
             ignore_empty: false,
         };
@@ -482,14 +357,14 @@ mod flags {
 #[cfg(test)]
 mod utils {
     use commentective::OptionsCli;
-    use std::path::Path;
+    use std::path::PathBuf;
 
     const EXISTING_FILE: &'static str = "tests/resources/javascript/with-comments.js";
     const UNSUPPORTED_FILE: &'static str = "tests/resources/empty.foo";
 
     #[test]
     fn resolve_type_with_value() {
-        let path = Path::new(EXISTING_FILE);
+        let path = PathBuf::from(EXISTING_FILE);
         let result = commentective::resolve_type_and_run(
             path,
             &OptionsCli {
@@ -503,7 +378,7 @@ mod utils {
 
     #[test]
     fn resolve_type_with_err() {
-        let path = Path::new(UNSUPPORTED_FILE);
+        let path = PathBuf::from(UNSUPPORTED_FILE);
         let result = commentective::resolve_type_and_run(
             path,
             &OptionsCli {

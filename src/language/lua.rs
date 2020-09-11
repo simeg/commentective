@@ -1,19 +1,16 @@
 use crate::language::FindResult;
 use crate::language::Language;
-use crate::utils::path::filename;
+use crate::utils::path::file_name;
 use crate::utils::string::contains_all;
 use crate::utils::string::contains_any_of;
+
 use std::fs::File;
-use std::io::BufRead;
-use std::io::BufReader;
-use std::io::Error;
-use std::io::ErrorKind;
-use std::path::Path;
+use std::io::{BufRead, BufReader, Error};
+use std::path::PathBuf;
 use std::vec::Vec;
 
 pub struct Lua {
-    pub maybe_file: Result<File, Error>,
-    pub file_name: String,
+    pub path: PathBuf,
 }
 
 #[derive(PartialEq, Eq)]
@@ -24,11 +21,8 @@ enum LuaCommentType {
     None,
 }
 
-pub fn source(p: &Path) -> Lua {
-    Lua {
-        maybe_file: File::open(p),
-        file_name: filename(p).unwrap(),
-    }
+pub fn source(path: PathBuf) -> Lua {
+    Lua { path }
 }
 
 impl Language for Lua {
@@ -37,40 +31,38 @@ impl Language for Lua {
         let mut comments = Vec::<u32>::new();
         let mut in_multiline = false;
 
-        match self.maybe_file {
-            Ok(ref file) => {
-                for line in BufReader::new(file).lines() {
-                    match line {
-                        Ok(l) => {
-                            let comment_type = get_comment_type(&l);
-                            if in_multiline {
-                                // Ignore everything except MultiLineEnd when in a multiline-comment
-                                comments.push(counter);
-                                in_multiline = comment_type != LuaCommentType::MultiLineEnd;
-                            } else {
-                                match get_comment_type(&l) {
-                                    LuaCommentType::SingleLine => comments.push(counter),
-                                    LuaCommentType::MultiLineStart => {
-                                        in_multiline = true;
-                                        comments.push(counter);
-                                    }
-                                    _ => (),
-                                }
-                            }
-                        }
-                        Err(_) => panic!("Could not read line"),
-                    }
-                    counter += 1;
-                }
+        let file = File::open(&self.path)?;
+        let file_name = file_name(&self.path)?;
 
-                Ok(FindResult {
-                    file_name: self.file_name.to_owned(),
-                    lines: comments,
-                    ..Default::default()
-                })
+        for line in BufReader::new(file).lines() {
+            match line {
+                Ok(l) => {
+                    let comment_type = get_comment_type(&l);
+                    if in_multiline {
+                        // Ignore everything except MultiLineEnd when in a multiline-comment
+                        comments.push(counter);
+                        in_multiline = comment_type != LuaCommentType::MultiLineEnd;
+                    } else {
+                        match get_comment_type(&l) {
+                            LuaCommentType::SingleLine => comments.push(counter),
+                            LuaCommentType::MultiLineStart => {
+                                in_multiline = true;
+                                comments.push(counter);
+                            }
+                            _ => (),
+                        }
+                    }
+                }
+                Err(_) => panic!("Could not read line"),
             }
-            Err(_) => Err(Error::new(ErrorKind::InvalidInput, "Could not parse file")),
+            counter += 1;
         }
+
+        Ok(FindResult {
+            file_name,
+            lines: comments,
+            ..Default::default()
+        })
     }
 }
 

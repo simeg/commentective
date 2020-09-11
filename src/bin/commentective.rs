@@ -8,10 +8,9 @@ use clap::Values;
 use commentective::printer::Printer;
 use commentective::utils::path::exists_on_filesystem;
 use commentective::utils::string::first_char;
-use commentective::utils::string::str;
 use commentective::OptionsCli;
 use std::io;
-use std::path::Path;
+use std::path::PathBuf;
 
 static ARG_NAME_SHORT: &str = "short";
 static ARG_NAME_EXTENSION: &str = "extension";
@@ -53,9 +52,9 @@ fn main() {
         .get_matches();
 
     let files: Values = matches.values_of(OPT_NAME_FILES).unwrap();
-    let paths: Vec<&Path> = files.map(|file| Path::new(file)).collect::<Vec<&Path>>();
+    let paths: Vec<PathBuf> = files.map(PathBuf::from).collect();
 
-    let extension: Option<String> = matches.value_of(ARG_NAME_EXTENSION).map(str); // Convert &str -> String
+    let extension: Option<String> = matches.value_of(ARG_NAME_EXTENSION).map(String::from);
 
     let opts_cli = OptionsCli {
         extension,
