@@ -14,18 +14,16 @@ use std::path::Path;
 pub struct JavaScript {
     pub maybe_file: Result<File, Error>,
     pub file_name: String,
-    pub multi_opts: MultiCommentOpts,
 }
 
 pub fn source(p: &Path) -> JavaScript {
     JavaScript {
         maybe_file: File::open(p),
         file_name: filename(p).unwrap(),
-        multi_opts: multi_opts(),
     }
 }
 
-pub fn multi_opts() -> MultiCommentOpts {
+fn multi_opts() -> MultiCommentOpts {
     MultiCommentOpts {
         starts: vec![str("/*")],
         ends: vec![str("*/")],
@@ -36,7 +34,7 @@ impl Language for JavaScript {
     fn find(&self) -> Result<FindResult, Error> {
         match self.maybe_file {
             Ok(ref file) => {
-                let comments = find_comments(file, &self.multi_opts, &is_single_line_comment);
+                let comments = find_comments(file, &multi_opts(), &is_single_line_comment);
                 Ok(FindResult {
                     file_name: self.file_name.to_owned(),
                     lines: comments,
