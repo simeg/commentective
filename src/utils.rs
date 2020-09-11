@@ -71,14 +71,14 @@ pub mod comments {
         pub content: String,
     }
 
-    pub struct MultiCommentOpts {
+    pub struct OptsMultiComments {
         pub starts: Vec<String>,
         pub ends: Vec<String>,
     }
 
     pub fn find_comments(
         file: &File,
-        multi_opts: &MultiCommentOpts,
+        multi_opts: &OptsMultiComments,
         is_single_line_comment: &dyn Fn(&str) -> bool,
     ) -> Vec<u32> {
         let mut comment_lines = Vec::<u32>::new();

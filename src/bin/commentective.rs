@@ -8,7 +8,7 @@ use clap::Values;
 use commentective::printer::Printer;
 use commentective::utils::path::exists_on_filesystem;
 use commentective::utils::string::first_char;
-use commentective::OptionsCli;
+use commentective::OptsCli;
 use std::io;
 use std::path::PathBuf;
 
@@ -56,7 +56,7 @@ fn main() {
 
     let extension: Option<String> = matches.value_of(ARG_NAME_EXTENSION).map(String::from);
 
-    let opts_cli = OptionsCli {
+    let opts_cli = OptsCli {
         extension,
         short: matches.is_present(ARG_NAME_SHORT),
         ignore_empty: matches.is_present(ARG_NAME_IGNORE_EMPTY),

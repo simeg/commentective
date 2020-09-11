@@ -1,7 +1,7 @@
 use crate::language::FindComment;
 use crate::language::FindResult;
 use crate::utils::comments::find_comments;
-use crate::utils::comments::MultiCommentOpts;
+use crate::utils::comments::OptsMultiComments;
 use crate::utils::path::file_name;
 use crate::utils::string::contains_any_of;
 use crate::utils::string::str;
@@ -23,7 +23,7 @@ impl FindComment for Bash {
         let file = File::open(&path)?;
         let file_name = file_name(&path)?;
 
-        let multi_opts = MultiCommentOpts {
+        let multi_opts = OptsMultiComments {
             starts: vec![str("<<COMMENT")],
             ends: vec![str("COMMENT")],
         };

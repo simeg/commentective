@@ -32,13 +32,13 @@ pub mod language;
 pub mod printer;
 pub mod utils;
 
-pub struct OptionsCli {
+pub struct OptsCli {
     pub extension: Option<String>,
     pub short: bool,
     pub ignore_empty: bool,
 }
 
-pub fn run(paths: Vec<PathBuf>, opts: &OptionsCli) -> Vec<Result<FindResult, Error>> {
+pub fn run(paths: Vec<PathBuf>, opts: &OptsCli) -> Vec<Result<FindResult, Error>> {
     paths
         .par_iter()
         .filter(|path| metadata(path).unwrap().is_file()) // File presence has been verified so we can unwrap here
@@ -46,7 +46,7 @@ pub fn run(paths: Vec<PathBuf>, opts: &OptionsCli) -> Vec<Result<FindResult, Err
         .collect::<Vec<Result<FindResult, Error>>>()
 }
 
-pub fn resolve_type_and_run(path: PathBuf, opts: &OptionsCli) -> Result<FindResult, Error> {
+pub fn resolve_type_and_run(path: PathBuf, opts: &OptsCli) -> Result<FindResult, Error> {
     let unsupported_err = Err(Error::new(
         ErrorKind::NotFound,
         format!(
@@ -85,7 +85,7 @@ pub fn resolve_type_and_run(path: PathBuf, opts: &OptionsCli) -> Result<FindResu
     }
 }
 
-fn exclude_file(p: &Path, opts: &OptionsCli) -> bool {
+fn exclude_file(p: &Path, opts: &OptsCli) -> bool {
     match &opts.extension {
         None => false,
         Some(ext_options) => match extension(p) {

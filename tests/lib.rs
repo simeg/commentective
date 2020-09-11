@@ -296,7 +296,7 @@ mod languages {
 
 #[cfg(test)]
 mod flags {
-    use commentective::OptionsCli;
+    use commentective::OptsCli;
     use std::path::PathBuf;
 
     #[test]
@@ -305,7 +305,7 @@ mod flags {
         let path_python = PathBuf::from("tests/resources/python/with-comments.py");
         let paths = vec![path_javascript, path_python];
 
-        let opts_no_ext = OptionsCli {
+        let opts_no_ext = OptsCli {
             extension: None,
             short: false,
             ignore_empty: false,
@@ -331,7 +331,7 @@ mod flags {
             }
         }
 
-        let opts_with_ext = OptionsCli {
+        let opts_with_ext = OptsCli {
             extension: Some("js".to_string()),
             short: false,
             ignore_empty: false,
@@ -360,7 +360,7 @@ mod flags {
 mod utils {
     #![allow(non_snake_case)]
 
-    use commentective::OptionsCli;
+    use commentective::OptsCli;
     use std::path::PathBuf;
 
     const EXISTING_FILE: &'static str = "tests/resources/javascript/with-comments.js";
@@ -371,7 +371,7 @@ mod utils {
         let path = PathBuf::from(EXISTING_FILE);
         let result = commentective::resolve_type_and_run(
             path,
-            &OptionsCli {
+            &OptsCli {
                 extension: None,
                 short: false,
                 ignore_empty: false,
@@ -385,7 +385,7 @@ mod utils {
         let path = PathBuf::from(UNSUPPORTED_FILE);
         let result = commentective::resolve_type_and_run(
             path,
-            &OptionsCli {
+            &OptsCli {
                 extension: None,
                 short: false,
                 ignore_empty: false,
