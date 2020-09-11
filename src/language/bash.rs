@@ -1,5 +1,5 @@
+use crate::language::FindComment;
 use crate::language::FindResult;
-use crate::language::Language;
 use crate::utils::comments::find_comments;
 use crate::utils::comments::MultiCommentOpts;
 use crate::utils::path::file_name;
@@ -10,27 +10,25 @@ use std::fs::File;
 use std::io::Error;
 use std::path::PathBuf;
 
-pub struct Bash {
-    pub path: PathBuf,
-}
+pub struct Bash {}
 
-pub fn source(path: PathBuf) -> Bash {
-    Bash { path }
-}
-
-fn multi_opts() -> MultiCommentOpts {
-    MultiCommentOpts {
-        starts: vec![str("<<COMMENT")],
-        ends: vec![str("COMMENT")],
+impl Default for Bash {
+    fn default() -> Self {
+        Self {}
     }
 }
 
-impl Language for Bash {
-    fn find(&self) -> Result<FindResult, Error> {
-        let file = File::open(&self.path)?;
-        let file_name = file_name(&self.path)?;
+impl FindComment for Bash {
+    fn find(&self, path: PathBuf) -> Result<FindResult, Error> {
+        let file = File::open(&path)?;
+        let file_name = file_name(&path)?;
 
-        let comments = find_comments(&file, &multi_opts(), &is_single_line_comment);
+        let multi_opts = MultiCommentOpts {
+            starts: vec![str("<<COMMENT")],
+            ends: vec![str("COMMENT")],
+        };
+
+        let comments = find_comments(&file, &multi_opts, &is_single_line_comment);
 
         Ok(FindResult {
             file_name,

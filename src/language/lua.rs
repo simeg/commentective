@@ -1,5 +1,5 @@
+use crate::language::FindComment;
 use crate::language::FindResult;
-use crate::language::Language;
 use crate::utils::path::file_name;
 use crate::utils::string::contains_all;
 use crate::utils::string::contains_any_of;
@@ -9,8 +9,12 @@ use std::io::{BufRead, BufReader, Error};
 use std::path::PathBuf;
 use std::vec::Vec;
 
-pub struct Lua {
-    pub path: PathBuf,
+pub struct Lua {}
+
+impl Default for Lua {
+    fn default() -> Self {
+        Self {}
+    }
 }
 
 #[derive(PartialEq, Eq)]
@@ -21,18 +25,14 @@ enum LuaCommentType {
     None,
 }
 
-pub fn source(path: PathBuf) -> Lua {
-    Lua { path }
-}
-
-impl Language for Lua {
-    fn find(&self) -> Result<FindResult, Error> {
+impl FindComment for Lua {
+    fn find(&self, path: PathBuf) -> Result<FindResult, Error> {
         let mut counter = 1; // Lines begin on index 1
         let mut comments = Vec::<u32>::new();
         let mut in_multiline = false;
 
-        let file = File::open(&self.path)?;
-        let file_name = file_name(&self.path)?;
+        let file = File::open(&path)?;
+        let file_name = file_name(&path)?;
 
         for line in BufReader::new(file).lines() {
             match line {
