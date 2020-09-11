@@ -1,5 +1,4 @@
-use crate::language::FindComment;
-use crate::language::FindResult;
+use crate::language::{FindResult, Finder};
 use crate::utils::path::file_name;
 use crate::utils::string::contains_any_of;
 
@@ -8,16 +7,16 @@ use std::io::{BufRead, BufReader, Error};
 use std::path::PathBuf;
 use std::vec::Vec;
 
-pub struct Python {}
-
-impl Default for Python {
-    fn default() -> Self {
-        Self {}
-    }
+pub struct Python {
+    _finder: Finder,
 }
 
-impl FindComment for Python {
-    fn find(&self, path: PathBuf) -> Result<FindResult, Error> {
+impl Python {
+    pub fn with_finder(finder: Finder) -> Self {
+        Self { _finder: finder }
+    }
+
+    pub fn find(&self, path: PathBuf) -> Result<FindResult, Error> {
         let mut counter = 1; // Lines begin on index 1
         let mut comments = Vec::<u32>::new();
 
@@ -27,7 +26,7 @@ impl FindComment for Python {
         for line in BufReader::new(file).lines() {
             match line {
                 Ok(l) => {
-                    if is_comment(l) {
+                    if self.is_comment(l) {
                         comments.push(counter);
                     }
                 }
@@ -42,8 +41,8 @@ impl FindComment for Python {
             ..Default::default()
         })
     }
-}
 
-fn is_comment(line: String) -> bool {
-    contains_any_of(&line, vec!["#"])
+    fn is_comment(&self, line: String) -> bool {
+        contains_any_of(&line, vec!["#"])
+    }
 }

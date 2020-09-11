@@ -5,10 +5,11 @@ extern crate colored;
 use clap::App;
 use clap::Arg;
 use clap::Values;
+use commentective::language::Finder;
 use commentective::printer::Printer;
 use commentective::utils::path::exists_on_filesystem;
 use commentective::utils::string::first_char;
-use commentective::OptsCli;
+use commentective::{Commentative, CommentativeOpts};
 use std::io;
 use std::path::PathBuf;
 
@@ -56,7 +57,7 @@ fn main() {
 
     let extension: Option<String> = matches.value_of(ARG_NAME_EXTENSION).map(String::from);
 
-    let opts_cli = OptsCli {
+    let opts_cli = CommentativeOpts {
         extension,
         short: matches.is_present(ARG_NAME_SHORT),
         ignore_empty: matches.is_present(ARG_NAME_IGNORE_EMPTY),
@@ -66,8 +67,11 @@ fn main() {
         writer: io::stdout(),
         options: &opts_cli,
     };
+    let finder = Finder {};
+    let commentective = Commentative { paths, finder };
 
-    let was_successful = commentective::run(paths, &opts_cli)
+    let was_successful = commentective
+        .run(&opts_cli)
         .into_iter()
         .map(|result| printer.terminal(result))
         .filter(|result| result.is_err())

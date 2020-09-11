@@ -18,9 +18,7 @@ use crate::language::python::Python;
 use crate::language::ruby::Ruby;
 use crate::language::rust::Rust;
 use crate::language::scala::Scala;
-use crate::language::FindComment;
-use crate::language::FindResult;
-use crate::utils::comments::noop_find_result;
+use crate::language::{FindResult, Finder};
 use crate::utils::path::extension;
 
 use std::fs::metadata;
@@ -32,65 +30,76 @@ pub mod language;
 pub mod printer;
 pub mod utils;
 
-pub struct OptsCli {
+pub struct Commentative {
+    pub paths: Vec<PathBuf>,
+    pub finder: Finder,
+}
+
+pub struct CommentativeOpts {
     pub extension: Option<String>,
     pub short: bool,
     pub ignore_empty: bool,
 }
 
-pub fn run(paths: Vec<PathBuf>, opts: &OptsCli) -> Vec<Result<FindResult, Error>> {
-    paths
-        .par_iter()
-        .filter(|path| metadata(path).unwrap().is_file()) // File presence has been verified so we can unwrap here
-        .map(|path| resolve_type_and_run(path.to_path_buf(), &opts))
-        .collect::<Vec<Result<FindResult, Error>>>()
-}
-
-pub fn resolve_type_and_run(path: PathBuf, opts: &OptsCli) -> Result<FindResult, Error> {
-    let unsupported_err = Err(Error::new(
-        ErrorKind::NotFound,
-        format!(
-            "Unsupported file extension for path: {}",
-            path.to_str().unwrap()
-        ),
-    ));
-
-    if exclude_file(&path, opts) {
-        return Ok(noop_find_result());
+impl Commentative {
+    pub fn run(&self, opts: &CommentativeOpts) -> Vec<Result<FindResult, Error>> {
+        self.paths
+            .par_iter()
+            .filter(|path| metadata(path).unwrap().is_file()) // File presence has been verified so we can unwrap here
+            .map(|path| self.resolve_type_and_run(path.to_path_buf(), &opts))
+            .collect::<Vec<Result<FindResult, Error>>>()
     }
 
-    match path.extension() {
-        None => unsupported_err,
-        Some(ext) => match ext.to_str() {
-            None => panic!("Could not convert OsStr -> str"),
-            Some(extension) => match extension {
-                "c" => C::default().find(path),
-                "cpp" => Cpp::default().find(path),
-                "cs" => CSharp::default().find(path),
-                "css" => CSS::default().find(path),
-                "go" => Go::default().find(path),
-                "html" => HTML::default().find(path),
-                "java" => Java::default().find(path),
-                "js" => JavaScript::default().find(path),
-                "lua" => Lua::default().find(path),
-                "php" => PHP::default().find(path),
-                "py" => Python::default().find(path),
-                "rb" => Ruby::default().find(path),
-                "rs" => Rust::default().find(path),
-                "scala" => Scala::default().find(path),
-                "sh" => Bash::default().find(path),
-                _ => unsupported_err,
+    pub fn resolve_type_and_run(
+        &self,
+        path: PathBuf,
+        opts: &CommentativeOpts,
+    ) -> Result<FindResult, Error> {
+        let unsupported_err = Err(Error::new(
+            ErrorKind::NotFound,
+            format!(
+                "Unsupported file extension for path: {}",
+                path.to_str().unwrap()
+            ),
+        ));
+
+        if self.exclude_file(&path, opts) {
+            return Ok(self.finder.noop_find_result());
+        }
+
+        match path.extension() {
+            None => unsupported_err,
+            Some(ext) => match ext.to_str() {
+                None => panic!("Could not convert OsStr -> str"),
+                Some(extension) => match extension {
+                    "c" => C::with_finder(self.finder).find(path),
+                    "cpp" => Cpp::with_finder(self.finder).find(path),
+                    "cs" => CSharp::with_finder(self.finder).find(path),
+                    "css" => CSS::with_finder(self.finder).find(path),
+                    "go" => Go::with_finder(self.finder).find(path),
+                    "html" => HTML::with_finder(self.finder).find(path),
+                    "java" => Java::with_finder(self.finder).find(path),
+                    "js" => JavaScript::with_finder(self.finder).find(path),
+                    "lua" => Lua::with_finder(self.finder).find(path),
+                    "php" => PHP::with_finder(self.finder).find(path),
+                    "py" => Python::with_finder(self.finder).find(path),
+                    "rb" => Ruby::with_finder(self.finder).find(path),
+                    "rs" => Rust::with_finder(self.finder).find(path),
+                    "scala" => Scala::with_finder(self.finder).find(path),
+                    "sh" => Bash::with_finder(self.finder).find(path),
+                    _ => unsupported_err,
+                },
             },
-        },
+        }
     }
-}
 
-fn exclude_file(p: &Path, opts: &OptsCli) -> bool {
-    match &opts.extension {
-        None => false,
-        Some(ext_options) => match extension(p) {
-            Ok(ext_file) => ext_options != &ext_file,
-            Err(e) => panic!("{:?}", e),
-        },
+    fn exclude_file(&self, path: &Path, opts: &CommentativeOpts) -> bool {
+        match &opts.extension {
+            None => false,
+            Some(ext_options) => match extension(path) {
+                Ok(ext_file) => ext_options != &ext_file,
+                Err(e) => panic!("{:?}", e),
+            },
+        }
     }
 }
