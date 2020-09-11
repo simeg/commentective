@@ -49,7 +49,10 @@ pub fn run(paths: Vec<PathBuf>, opts: &OptionsCli) -> Vec<Result<FindResult, Err
 pub fn resolve_type_and_run(path: PathBuf, opts: &OptionsCli) -> Result<FindResult, Error> {
     let unsupported_err = Err(Error::new(
         ErrorKind::NotFound,
-        "Unsupported file extension",
+        format!(
+            "Unsupported file extension for path: {}",
+            path.to_str().unwrap()
+        ),
     ));
 
     if exclude_file(&path, opts) {
