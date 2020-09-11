@@ -1,48 +1,37 @@
 pub mod path {
     use crate::utils::string::str;
     use std::ffi::OsStr;
+    use std::io;
     use std::io::Error;
     use std::io::ErrorKind;
     use std::path::Path;
 
-    pub fn filename(path: &Path) -> Result<String, Error> {
-        match path.file_name() {
-            None => Err(Error::new(
-                ErrorKind::InvalidData,
-                "No OsStr present in path",
-            )),
-            Some(os_str) => match os_str.to_str() {
-                None => Err(Error::new(
-                    ErrorKind::InvalidData,
-                    "Unable to convert OsStr -> str",
-                )),
-                Some(string) => Ok(str(string)),
-            },
-        }
+    pub fn filename(path: &Path) -> io::Result<String> {
+        path.file_name()
+            .map(OsStr::to_str)
+            .flatten()
+            .map(str)
+            .ok_or_else(|| Error::new(ErrorKind::InvalidData, "Unable to get file name from path"))
     }
 
-    pub fn extension(path: &Path) -> Result<String, ()> {
-        let extension = path
-            .extension()
-            .expect("No extension in path")
-            .to_str()
-            .expect("Could not convert OsStr -> &str");
-        Ok(str(extension))
+    pub fn extension(path: &Path) -> io::Result<String> {
+        path.extension()
+            .map(|oss| oss.to_str())
+            .flatten()
+            .map(str)
+            .ok_or_else(|| Error::new(ErrorKind::InvalidData, "Unable to get extension from path"))
     }
 
     pub fn exists_on_filesystem(path: &OsStr) -> Result<(), String> {
-        match path.to_str() {
-            None => Err(String::from("Could not convert input file path -> str")),
-            Some(p) => {
-                if Path::new(p).exists() {
-                    return Ok(());
-                }
-                Err(format!(
-                    "Cannot verify that file exist [{}]",
-                    path.to_str().unwrap()
+        path.to_str()
+            .map(Path::new)
+            .map(Path::exists)
+            .and_then(|exists| if exists { Some(Ok(())) } else { None })
+            .unwrap_or_else(|| {
+                Err(String::from(
+                    "Unable to determine if file exists on file system",
                 ))
-            }
-        }
+            })
     }
 }
 
