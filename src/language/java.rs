@@ -2,25 +2,21 @@ use crate::language::FindResult;
 use crate::language::Language;
 use crate::utils::comments::find_comments;
 use crate::utils::comments::MultiCommentOpts;
-use crate::utils::path::filename;
+use crate::utils::path::file_name;
 use crate::utils::string::contains_all;
 use crate::utils::string::contains_any_of;
 use crate::utils::string::str;
+
 use std::fs::File;
 use std::io::Error;
-use std::io::ErrorKind;
-use std::path::Path;
+use std::path::PathBuf;
 
 pub struct Java {
-    pub maybe_file: Result<File, Error>,
-    pub file_name: String,
+    pub path: PathBuf,
 }
 
-pub fn source(p: &Path) -> Java {
-    Java {
-        maybe_file: File::open(p),
-        file_name: filename(p).unwrap(),
-    }
+pub fn source(path: PathBuf) -> Java {
+    Java { path }
 }
 
 fn multi_opts() -> MultiCommentOpts {
@@ -32,17 +28,16 @@ fn multi_opts() -> MultiCommentOpts {
 
 impl Language for Java {
     fn find(&self) -> Result<FindResult, Error> {
-        match self.maybe_file {
-            Ok(ref file) => {
-                let comments = find_comments(file, &multi_opts(), &is_single_line_comment);
-                Ok(FindResult {
-                    file_name: self.file_name.to_owned(),
-                    lines: comments,
-                    ..Default::default()
-                })
-            }
-            Err(_) => Err(Error::new(ErrorKind::InvalidInput, "Could not parse file")),
-        }
+        let file = File::open(&self.path)?;
+        let file_name = file_name(&self.path)?;
+
+        let comments = find_comments(&file, &multi_opts(), &is_single_line_comment);
+
+        Ok(FindResult {
+            file_name,
+            lines: comments,
+            ..Default::default()
+        })
     }
 }
 

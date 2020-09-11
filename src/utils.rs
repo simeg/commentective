@@ -6,7 +6,7 @@ pub mod path {
     use std::io::ErrorKind;
     use std::path::Path;
 
-    pub fn filename(path: &Path) -> io::Result<String> {
+    pub fn file_name(path: &Path) -> io::Result<String> {
         path.file_name()
             .map(OsStr::to_str)
             .flatten()
@@ -148,7 +148,7 @@ mod test {
     #![allow(non_snake_case)]
 
     use crate::utils::comments::{file_to_lines, in_list, Line};
-    use crate::utils::path::{exists_on_filesystem, extension, filename};
+    use crate::utils::path::{exists_on_filesystem, extension, file_name};
     use crate::utils::string::{contains_all, contains_any_of, first_char, str};
     use std::collections::HashSet;
     use std::fs::File;
@@ -162,7 +162,7 @@ mod test {
     fn test_path__filename__ok() {
         let path = Path::new("dir/dir/some_file.js");
 
-        let actual = filename(path).unwrap();
+        let actual = file_name(path).unwrap();
         let expected = "some_file.js".to_string();
 
         assert_eq!(actual, expected)
@@ -172,7 +172,7 @@ mod test {
     fn test_path__filename__err() {
         let path = Path::new("");
 
-        let actual = filename(path);
+        let actual = file_name(path);
 
         assert!(actual.is_err())
     }
