@@ -1,5 +1,6 @@
 use crate::utils::string::str;
 use std::io::Error;
+use std::path::PathBuf;
 
 pub mod bash;
 pub mod c;
@@ -17,8 +18,8 @@ pub mod ruby;
 pub mod rust;
 pub mod scala;
 
-pub trait Language {
-    fn find(&self) -> Result<FindResult, Error>
+pub trait FindComment {
+    fn find(&self, path: PathBuf) -> Result<FindResult, Error>
     where
         Self: Sized;
 }

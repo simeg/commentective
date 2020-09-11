@@ -3,23 +3,23 @@ extern crate rayon;
 
 use rayon::prelude::*;
 
-use crate::language::bash;
-use crate::language::c;
-use crate::language::cpp;
-use crate::language::csharp;
-use crate::language::css;
-use crate::language::golang;
-use crate::language::html;
-use crate::language::java;
-use crate::language::javascript;
-use crate::language::lua;
-use crate::language::php;
-use crate::language::python;
-use crate::language::ruby;
-use crate::language::rust;
-use crate::language::scala;
+use crate::language::bash::Bash;
+use crate::language::c::C;
+use crate::language::cpp::Cpp;
+use crate::language::csharp::CSharp;
+use crate::language::css::CSS;
+use crate::language::golang::Go;
+use crate::language::html::HTML;
+use crate::language::java::Java;
+use crate::language::javascript::JavaScript;
+use crate::language::lua::Lua;
+use crate::language::php::PHP;
+use crate::language::python::Python;
+use crate::language::ruby::Ruby;
+use crate::language::rust::Rust;
+use crate::language::scala::Scala;
+use crate::language::FindComment;
 use crate::language::FindResult;
-use crate::language::Language;
 use crate::utils::comments::noop_find_result;
 use crate::utils::path::extension;
 
@@ -60,21 +60,21 @@ pub fn resolve_type_and_run(path: PathBuf, opts: &OptionsCli) -> Result<FindResu
         Some(ext) => match ext.to_str() {
             None => panic!("Could not convert OsStr -> str"),
             Some(extension) => match extension {
-                "c" => c::source(path).find(),
-                "cpp" => cpp::source(path).find(),
-                "cs" => csharp::source(path).find(),
-                "css" => css::source(path).find(),
-                "go" => golang::source(path).find(),
-                "html" => html::source(path).find(),
-                "java" => java::source(path).find(),
-                "js" => javascript::source(path).find(),
-                "lua" => lua::source(path).find(),
-                "php" => php::source(path).find(),
-                "py" => python::source(path).find(),
-                "rb" => ruby::source(path).find(),
-                "rs" => rust::source(path).find(),
-                "scala" => scala::source(path).find(),
-                "sh" => bash::source(path).find(),
+                "c" => C::default().find(path),
+                "cpp" => Cpp::default().find(path),
+                "cs" => CSharp::default().find(path),
+                "css" => CSS::default().find(path),
+                "go" => Go::default().find(path),
+                "html" => HTML::default().find(path),
+                "java" => Java::default().find(path),
+                "js" => JavaScript::default().find(path),
+                "lua" => Lua::default().find(path),
+                "php" => PHP::default().find(path),
+                "py" => Python::default().find(path),
+                "rb" => Ruby::default().find(path),
+                "rs" => Rust::default().find(path),
+                "scala" => Scala::default().find(path),
+                "sh" => Bash::default().find(path),
                 _ => unsupported_err,
             },
         },
