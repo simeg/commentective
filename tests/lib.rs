@@ -17,13 +17,13 @@ mod languages {
     use commentective::language::ruby::Ruby;
     use commentective::language::rust::Rust;
     use commentective::language::scala::Scala;
-    use commentective::language::FindComment;
+    use commentective::language::Finder;
     use std::path::PathBuf;
 
     #[test]
     fn javascript__find__with_comments() {
         let path = PathBuf::from("tests/resources/javascript/with-comments.js");
-        let result = JavaScript::default().find(path);
+        let result = JavaScript::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 13);
@@ -33,7 +33,7 @@ mod languages {
     #[test]
     fn javascript__find__without_comments() {
         let path = PathBuf::from("tests/resources/javascript/without-comments.js");
-        let result = JavaScript::default().find(path);
+        let result = JavaScript::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -41,7 +41,7 @@ mod languages {
     #[test]
     fn java__find__with_comments() {
         let path = PathBuf::from("tests/resources/java/with-comments.java");
-        let result = Java::default().find(path);
+        let result = Java::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 17);
@@ -54,7 +54,7 @@ mod languages {
     #[test]
     fn java__find__without_comments() {
         let path = PathBuf::from("tests/resources/java/without-comments.java");
-        let result = Java::default().find(path);
+        let result = Java::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -62,7 +62,7 @@ mod languages {
     #[test]
     fn rust__find__with_comments() {
         let path = PathBuf::from("tests/resources/rust/with-comments.rs");
-        let result = Rust::default().find(path);
+        let result = Rust::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 10);
@@ -72,7 +72,7 @@ mod languages {
     #[test]
     fn rust__find__without_comments() {
         let path = PathBuf::from("tests/resources/rust/without-comments.rs");
-        let result = Rust::default().find(path);
+        let result = Rust::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -80,7 +80,7 @@ mod languages {
     #[test]
     fn python__find__with_comments() {
         let path = PathBuf::from("tests/resources/python/with-comments.py");
-        let result = Python::default().find(path);
+        let result = Python::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 4);
@@ -90,7 +90,7 @@ mod languages {
     #[test]
     fn python__find__without_comments() {
         let path = PathBuf::from("tests/resources/python/without-comments.py");
-        let result = Python::default().find(path);
+        let result = Python::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -98,7 +98,7 @@ mod languages {
     #[test]
     fn csharp__find__with_comments() {
         let path = PathBuf::from("tests/resources/csharp/with-comments.cs");
-        let result = CSharp::default().find(path);
+        let result = CSharp::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 9);
@@ -108,7 +108,7 @@ mod languages {
     #[test]
     fn csharp__find__without_comments() {
         let path = PathBuf::from("tests/resources/csharp/without-comments.cs");
-        let result = CSharp::default().find(path);
+        let result = CSharp::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -116,7 +116,7 @@ mod languages {
     #[test]
     fn bash__find__with_comments() {
         let path = PathBuf::from("tests/resources/bash/with-comments.sh");
-        let result = Bash::default().find(path);
+        let result = Bash::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 5);
@@ -126,7 +126,7 @@ mod languages {
     #[test]
     fn bash__find__without_comments() {
         let path = PathBuf::from("tests/resources/bash/without-comments.sh");
-        let result = Bash::default().find(path);
+        let result = Bash::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -134,7 +134,7 @@ mod languages {
     #[test]
     fn php__find__with_comments() {
         let path = PathBuf::from("tests/resources/php/with-comments.php");
-        let result = PHP::default().find(path);
+        let result = PHP::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 11);
@@ -144,7 +144,7 @@ mod languages {
     #[test]
     fn php__find__without_comments() {
         let path = PathBuf::from("tests/resources/php/without-comments.php");
-        let result = PHP::default().find(path);
+        let result = PHP::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -152,7 +152,7 @@ mod languages {
     #[test]
     fn ruby__find__with_comments() {
         let path = PathBuf::from("tests/resources/ruby/with-comments.rb");
-        let result = Ruby::default().find(path);
+        let result = Ruby::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 6);
@@ -162,7 +162,7 @@ mod languages {
     #[test]
     fn ruby__find__without_comments() {
         let path = PathBuf::from("tests/resources/ruby/without-comments.rb");
-        let result = Ruby::default().find(path);
+        let result = Ruby::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -170,7 +170,7 @@ mod languages {
     #[test]
     fn golang__find__with_comments() {
         let path = PathBuf::from("tests/resources/golang/with-comments.go");
-        let result = Go::default().find(path);
+        let result = Go::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 2);
@@ -180,7 +180,7 @@ mod languages {
     #[test]
     fn golang__find__without_comments() {
         let path = PathBuf::from("tests/resources/golang/without-comments.go");
-        let result = Go::default().find(path);
+        let result = Go::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -188,7 +188,7 @@ mod languages {
     #[test]
     fn scala__find__with_comments() {
         let path = PathBuf::from("tests/resources/scala/with-comments.scala");
-        let result = Scala::default().find(path);
+        let result = Scala::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 11);
@@ -198,7 +198,7 @@ mod languages {
     #[test]
     fn scala__find__without_comments() {
         let path = PathBuf::from("tests/resources/scala/without-comments.scala");
-        let result = Scala::default().find(path);
+        let result = Scala::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -206,7 +206,7 @@ mod languages {
     #[test]
     fn css__find__with_comments() {
         let path = PathBuf::from("tests/resources/css/with-comments.css");
-        let result = CSS::default().find(path);
+        let result = CSS::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 6);
@@ -216,7 +216,7 @@ mod languages {
     #[test]
     fn css__find__without_comments() {
         let path = PathBuf::from("tests/resources/css/without-comments.css");
-        let result = CSS::default().find(path);
+        let result = CSS::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -224,7 +224,7 @@ mod languages {
     #[test]
     fn html__find__with_comments() {
         let path = PathBuf::from("tests/resources/html/with-comments.html");
-        let result = HTML::default().find(path);
+        let result = HTML::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 6);
@@ -234,7 +234,7 @@ mod languages {
     #[test]
     fn html__find__without_comments() {
         let path = PathBuf::from("tests/resources/html/without-comments.html");
-        let result = HTML::default().find(path);
+        let result = HTML::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -242,7 +242,7 @@ mod languages {
     #[test]
     fn c__find__with_comments() {
         let path = PathBuf::from("tests/resources/c/with-comments.c");
-        let result = C::default().find(path);
+        let result = C::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 8);
@@ -252,7 +252,7 @@ mod languages {
     #[test]
     fn c__find__without_comments() {
         let path = PathBuf::from("tests/resources/c/without-comments.c");
-        let result = C::default().find(path);
+        let result = C::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -260,7 +260,7 @@ mod languages {
     #[test]
     fn cpp__find__with_comments() {
         let path = PathBuf::from("tests/resources/cpp/with-comments.cpp");
-        let result = Cpp::default().find(path);
+        let result = Cpp::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 11);
@@ -270,7 +270,7 @@ mod languages {
     #[test]
     fn cpp__find__without_comments() {
         let path = PathBuf::from("tests/resources/cpp/without-comments.cpp");
-        let result = Cpp::default().find(path);
+        let result = Cpp::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -278,7 +278,7 @@ mod languages {
     #[test]
     fn lua__find__with_comments() {
         let path = PathBuf::from("tests/resources/lua/with-comments.lua");
-        let result = Lua::default().find(path);
+        let result = Lua::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         let lines = result.unwrap().lines;
         assert_eq!(lines.len(), 13);
@@ -288,7 +288,7 @@ mod languages {
     #[test]
     fn lua__find__without_comments() {
         let path = PathBuf::from("tests/resources/lua/without-comments.lua");
-        let result = Lua::default().find(path);
+        let result = Lua::with_finder(Finder {}).find(path);
         assert!(result.is_ok());
         assert_eq!(result.unwrap().lines.len(), 0);
     }
@@ -296,7 +296,8 @@ mod languages {
 
 #[cfg(test)]
 mod flags {
-    use commentective::OptsCli;
+    use commentective::language::Finder;
+    use commentective::{Commentative, CommentativeOpts};
     use std::path::PathBuf;
 
     #[test]
@@ -305,15 +306,18 @@ mod flags {
         let path_python = PathBuf::from("tests/resources/python/with-comments.py");
         let paths = vec![path_javascript, path_python];
 
-        let opts_no_ext = OptsCli {
+        let opts_no_ext = CommentativeOpts {
             extension: None,
             short: false,
             ignore_empty: false,
         };
-        for (i, result) in commentective::run(paths.clone(), &opts_no_ext)
-            .iter()
-            .enumerate()
-        {
+
+        let commentative = Commentative {
+            paths,
+            finder: Finder {},
+        };
+
+        for (i, result) in commentative.run(&opts_no_ext).iter().enumerate() {
             assert!(result.is_ok());
 
             if i == 0 {
@@ -331,12 +335,12 @@ mod flags {
             }
         }
 
-        let opts_with_ext = OptsCli {
+        let opts_with_ext = CommentativeOpts {
             extension: Some("js".to_string()),
             short: false,
             ignore_empty: false,
         };
-        for (i, result) in commentective::run(paths, &opts_with_ext).iter().enumerate() {
+        for (i, result) in commentative.run(&opts_with_ext).iter().enumerate() {
             assert!(result.is_ok());
 
             if i == 0 {
@@ -360,7 +364,8 @@ mod flags {
 mod utils {
     #![allow(non_snake_case)]
 
-    use commentective::OptsCli;
+    use commentective::language::Finder;
+    use commentective::{Commentative, CommentativeOpts};
     use std::path::PathBuf;
 
     const EXISTING_FILE: &'static str = "tests/resources/javascript/with-comments.js";
@@ -369,9 +374,14 @@ mod utils {
     #[test]
     fn resolve_type__with_comments() {
         let path = PathBuf::from(EXISTING_FILE);
-        let result = commentective::resolve_type_and_run(
+        let commentative = Commentative {
+            paths: vec![path.clone()],
+            finder: Finder {},
+        };
+
+        let result = commentative.resolve_type_and_run(
             path,
-            &OptsCli {
+            &CommentativeOpts {
                 extension: None,
                 short: false,
                 ignore_empty: false,
@@ -383,9 +393,14 @@ mod utils {
     #[test]
     fn resolve_type__without_comments() {
         let path = PathBuf::from(UNSUPPORTED_FILE);
-        let result = commentective::resolve_type_and_run(
+        let commentative = Commentative {
+            paths: vec![path.clone()],
+            finder: Finder {},
+        };
+
+        let result = commentative.resolve_type_and_run(
             path,
-            &OptsCli {
+            &CommentativeOpts {
                 extension: None,
                 short: false,
                 ignore_empty: false,

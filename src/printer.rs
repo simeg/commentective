@@ -4,7 +4,7 @@ use self::colored::ColoredString;
 use self::colored::*;
 use crate::language::FindResult;
 use crate::printer::Color::{Green, Red, White, Yellow};
-use crate::OptsCli;
+use crate::CommentativeOpts;
 use console::Term;
 use std::io::Error;
 use std::io::Write;
@@ -18,7 +18,7 @@ enum Color {
 
 pub struct Printer<'a, W> {
     pub writer: W,
-    pub options: &'a OptsCli,
+    pub options: &'a CommentativeOpts,
 }
 
 impl<'a, W> Printer<'a, W>

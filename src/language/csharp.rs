@@ -1,41 +1,31 @@
-use crate::language::FindComment;
-use crate::language::FindResult;
-use crate::utils::comments::find_comments;
-use crate::utils::comments::OptsMultiComments;
-use crate::utils::path::file_name;
+use crate::language::{FindResult, OptsMultiComments, SimpleFindComments};
 use crate::utils::string::contains_all;
 use crate::utils::string::contains_any_of;
 use crate::utils::string::str;
 
-use std::fs::File;
 use std::io::Error;
 use std::path::PathBuf;
 
-pub struct CSharp {}
-
-impl Default for CSharp {
-    fn default() -> Self {
-        Self {}
-    }
+pub struct CSharp<F: SimpleFindComments> {
+    finder: F,
 }
 
-impl FindComment for CSharp {
-    fn find(&self, path: PathBuf) -> Result<FindResult, Error> {
-        let file = File::open(&path)?;
-        let file_name = file_name(&path)?;
+impl<F> CSharp<F>
+where
+    F: SimpleFindComments,
+{
+    pub fn with_finder(finder: F) -> Self {
+        Self { finder }
+    }
 
+    pub fn find(&self, path: PathBuf) -> Result<FindResult, Error> {
         let multi_opts = OptsMultiComments {
             starts: vec![str("/*")],
             ends: vec![str("*/")],
         };
 
-        let comments = find_comments(&file, &multi_opts, &is_single_line_comment);
-
-        Ok(FindResult {
-            file_name,
-            lines: comments,
-            ..Default::default()
-        })
+        self.finder
+            .find_comments(path, &multi_opts, is_single_line_comment)
     }
 }
 
