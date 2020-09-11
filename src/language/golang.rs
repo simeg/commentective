@@ -1,7 +1,7 @@
 use crate::language::FindResult;
 use crate::language::Language;
 use crate::utils::path::filename;
-use crate::utils::string::string_contains_any_of;
+use crate::utils::string::contains_any_of;
 use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
@@ -53,5 +53,5 @@ impl Language for Go {
 }
 
 fn is_comment(line: String) -> bool {
-    string_contains_any_of(line, vec!["//"])
+    contains_any_of(&line, vec!["//"])
 }
