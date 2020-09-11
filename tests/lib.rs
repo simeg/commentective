@@ -2,7 +2,6 @@ extern crate commentective;
 
 #[cfg(test)]
 mod languages {
-    use commentective::language as l;
     use commentective::language::bash::Bash;
     use commentective::language::c::C;
     use commentective::language::cpp::Cpp;
@@ -18,7 +17,9 @@ mod languages {
     use commentective::language::ruby::Ruby;
     use commentective::language::rust::Rust;
     use commentective::language::scala::Scala;
-    use commentective::language::Language;
+    use commentective::language::{
+        bash, c, cpp, csharp, css, html, java, javascript, php, ruby, rust, scala, Language,
+    };
     use commentective::utils::string::str;
     use std::fs::File;
     use std::path::Path;
@@ -31,7 +32,7 @@ mod languages {
         let result = JavaScript {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-            multi_opts: l::javascript::multi_opts(),
+            multi_opts: javascript::multi_opts(),
         }
         .find();
         assert!(result.is_ok());
@@ -46,7 +47,7 @@ mod languages {
         let result = JavaScript {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-            multi_opts: l::javascript::multi_opts(),
+            multi_opts: javascript::multi_opts(),
         }
         .find();
         assert!(result.is_ok());
@@ -59,7 +60,7 @@ mod languages {
         let result = Java {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-            multi_opts: l::java::multi_opts(),
+            multi_opts: java::multi_opts(),
         }
         .find();
         assert!(result.is_ok());
@@ -77,7 +78,7 @@ mod languages {
         let result = Java {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-            multi_opts: l::java::multi_opts(),
+            multi_opts: java::multi_opts(),
         }
         .find();
         assert!(result.is_ok());
@@ -90,7 +91,7 @@ mod languages {
         let result = Rust {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-            multi_opts: l::rust::multi_opts(),
+            multi_opts: rust::multi_opts(),
         }
         .find();
         assert!(result.is_ok());
@@ -105,7 +106,7 @@ mod languages {
         let result = Rust {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-            multi_opts: l::rust::multi_opts(),
+            multi_opts: rust::multi_opts(),
         }
         .find();
         assert!(result.is_ok());
@@ -144,7 +145,7 @@ mod languages {
         let result = CSharp {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-            multi_opts: l::csharp::multi_opts(),
+            multi_opts: csharp::multi_opts(),
         }
         .find();
         assert!(result.is_ok());
@@ -159,7 +160,7 @@ mod languages {
         let result = CSharp {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-            multi_opts: l::csharp::multi_opts(),
+            multi_opts: csharp::multi_opts(),
         }
         .find();
         assert!(result.is_ok());
@@ -172,7 +173,7 @@ mod languages {
         let result = Bash {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-            multi_opts: l::bash::multi_opts(),
+            multi_opts: bash::multi_opts(),
         }
         .find();
         assert!(result.is_ok());
@@ -187,7 +188,7 @@ mod languages {
         let result = Bash {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-            multi_opts: l::bash::multi_opts(),
+            multi_opts: bash::multi_opts(),
         }
         .find();
         assert!(result.is_ok());
@@ -200,7 +201,7 @@ mod languages {
         let result = PHP {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-            multi_opts: l::php::multi_opts(),
+            multi_opts: php::multi_opts(),
         }
         .find();
         assert!(result.is_ok());
@@ -215,7 +216,7 @@ mod languages {
         let result = PHP {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-            multi_opts: l::php::multi_opts(),
+            multi_opts: php::multi_opts(),
         }
         .find();
         assert!(result.is_ok());
@@ -228,7 +229,7 @@ mod languages {
         let result = Ruby {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-            multi_opts: l::ruby::multi_opts(),
+            multi_opts: ruby::multi_opts(),
         }
         .find();
         assert!(result.is_ok());
@@ -243,7 +244,7 @@ mod languages {
         let result = Ruby {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-            multi_opts: l::ruby::multi_opts(),
+            multi_opts: ruby::multi_opts(),
         }
         .find();
         assert!(result.is_ok());
@@ -282,7 +283,7 @@ mod languages {
         let result = Scala {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-            multi_opts: l::scala::multi_opts(),
+            multi_opts: scala::multi_opts(),
         }
         .find();
         assert!(result.is_ok());
@@ -297,7 +298,7 @@ mod languages {
         let result = Scala {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-            multi_opts: l::scala::multi_opts(),
+            multi_opts: scala::multi_opts(),
         }
         .find();
         assert!(result.is_ok());
@@ -310,7 +311,7 @@ mod languages {
         let result = CSS {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-            multi_opts: l::css::multi_opts(),
+            multi_opts: css::multi_opts(),
         }
         .find();
         assert!(result.is_ok());
@@ -325,7 +326,7 @@ mod languages {
         let result = CSS {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-            multi_opts: l::css::multi_opts(),
+            multi_opts: css::multi_opts(),
         }
         .find();
         assert!(result.is_ok());
@@ -338,7 +339,7 @@ mod languages {
         let result = HTML {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-            multi_opts: l::html::multi_opts(),
+            multi_opts: html::multi_opts(),
         }
         .find();
         assert!(result.is_ok());
@@ -353,7 +354,7 @@ mod languages {
         let result = HTML {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-            multi_opts: l::html::multi_opts(),
+            multi_opts: html::multi_opts(),
         }
         .find();
         assert!(result.is_ok());
@@ -366,7 +367,7 @@ mod languages {
         let result = C {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-            multi_opts: l::c::multi_opts(),
+            multi_opts: c::multi_opts(),
         }
         .find();
         assert!(result.is_ok());
@@ -381,7 +382,7 @@ mod languages {
         let result = C {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-            multi_opts: l::c::multi_opts(),
+            multi_opts: c::multi_opts(),
         }
         .find();
         assert!(result.is_ok());
@@ -394,7 +395,7 @@ mod languages {
         let result = Cpp {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-            multi_opts: l::cpp::multi_opts(),
+            multi_opts: cpp::multi_opts(),
         }
         .find();
         assert!(result.is_ok());
@@ -409,7 +410,7 @@ mod languages {
         let result = Cpp {
             maybe_file: File::open(path),
             file_name: str(IRRELEVANT),
-            multi_opts: l::cpp::multi_opts(),
+            multi_opts: cpp::multi_opts(),
         }
         .find();
         assert!(result.is_ok());
