@@ -296,7 +296,6 @@ mod languages {
 
 #[cfg(test)]
 mod flags {
-    use commentective::language::Finder;
     use commentective::{Commentative, CommentativeOpts};
     use std::path::PathBuf;
 
@@ -312,10 +311,7 @@ mod flags {
             ignore_empty: false,
         };
 
-        let commentative = Commentative {
-            paths,
-            finder: Finder {},
-        };
+        let commentative = Commentative::with_paths(paths);
 
         for (i, result) in commentative.run(&opts_no_ext).iter().enumerate() {
             assert!(result.is_ok());
@@ -364,7 +360,6 @@ mod flags {
 mod utils {
     #![allow(non_snake_case)]
 
-    use commentective::language::Finder;
     use commentective::{Commentative, CommentativeOpts};
     use std::path::PathBuf;
 
@@ -374,10 +369,7 @@ mod utils {
     #[test]
     fn resolve_type__with_comments() {
         let path = PathBuf::from(EXISTING_FILE);
-        let commentative = Commentative {
-            paths: vec![path.clone()],
-            finder: Finder {},
-        };
+        let commentative = Commentative::with_paths(vec![path.clone()]);
 
         let result = commentative.resolve_type_and_run(
             path,
@@ -393,10 +385,7 @@ mod utils {
     #[test]
     fn resolve_type__without_comments() {
         let path = PathBuf::from(UNSUPPORTED_FILE);
-        let commentative = Commentative {
-            paths: vec![path.clone()],
-            finder: Finder {},
-        };
+        let commentative = Commentative::with_paths(vec![path.clone()]);
 
         let result = commentative.resolve_type_and_run(
             path,

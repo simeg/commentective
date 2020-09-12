@@ -31,8 +31,8 @@ pub mod printer;
 pub mod utils;
 
 pub struct Commentative {
-    pub paths: Vec<PathBuf>,
-    pub finder: Finder,
+    paths: Vec<PathBuf>,
+    finder: Finder,
 }
 
 pub struct CommentativeOpts {
@@ -42,6 +42,13 @@ pub struct CommentativeOpts {
 }
 
 impl Commentative {
+    pub fn with_paths(paths: Vec<PathBuf>) -> Self {
+        Self {
+            paths,
+            finder: Finder {},
+        }
+    }
+
     pub fn run(&self, opts: &CommentativeOpts) -> Vec<Result<FindResult, Error>> {
         self.paths
             .par_iter()

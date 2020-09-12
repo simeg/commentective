@@ -5,7 +5,6 @@ extern crate colored;
 use clap::App;
 use clap::Arg;
 use clap::Values;
-use commentective::language::Finder;
 use commentective::printer::Printer;
 use commentective::utils::path::exists_on_filesystem;
 use commentective::utils::string::first_char;
@@ -67,8 +66,8 @@ fn main() {
         writer: io::stdout(),
         options: &opts_cli,
     };
-    let finder = Finder {};
-    let commentective = Commentative { paths, finder };
+
+    let commentective = Commentative::with_paths(paths);
 
     let was_successful = commentective
         .run(&opts_cli)
