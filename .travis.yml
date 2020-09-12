@@ -1,24 +1,14 @@
 language: rust
-sudo: required
+
+rust:
+  - stable
+
+script: make ci
+
 cache:
   cargo: true
   directories:
   - "${HOME}/kcov-build/"
-rust:
-#  - stable
-#  - beta
-  - nightly
-
-script: make ci
-
-env:
-  global:
-  - RUSTFLAGS="-C link-dead-code"
-
-matrix:
-  allow_failures:
-    - rust: nightly
-  fast_finish: true
 
 before_install:
   - sudo apt-get update
@@ -39,7 +29,7 @@ addons:
 jobs:
   include:
     - stage: coverage
-      rust: nightly
+      rust: stable
       script:
         - ./scripts/code_coverage.sh
 
