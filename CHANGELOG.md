@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.0
+* Silently ignore directories
+* Include the file name for unsupported files
+* Big code refactor
+* Use Rust 2018 edition
+
 ## 0.5.0
 * Add flag to ignore outputting files without any comments in them
 
@@ -7,7 +13,6 @@
 * Run evaluation of files in parallel, increasing speed ~50%
 
 ## 0.3.0
-
 * The language Lua is now supported (`.lua`)
 * If something goes wrong in the execution - status `1` is returned
 * Flags:
@@ -17,5 +22,4 @@
 (thanks @tversteeg)
 
 ## 0.2.0
-
 * Initial release
