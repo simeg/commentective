@@ -36,7 +36,7 @@ impl Go {
         }
 
         Ok(FindResult {
-            file_name,
+            file_name: file_name.to_string(),
             lines: comments,
             ..Default::default()
         })

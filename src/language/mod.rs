@@ -1,5 +1,4 @@
 use crate::utils::path::file_name;
-use crate::utils::string::str;
 
 use std::fs::File;
 use std::io;
@@ -45,7 +44,7 @@ pub struct FindResult {
 impl Default for FindResult {
     fn default() -> FindResult {
         FindResult {
-            file_name: str("DEFAULT_FILE_NAME"),
+            file_name: "DEFAULT_FILE_NAME".to_string(),
             lines: [].to_vec(),
             print: true,
         }
@@ -102,7 +101,7 @@ impl SimpleFindComments for Finder {
         }
 
         Ok(FindResult {
-            file_name,
+            file_name: file_name.to_string(),
             lines: comment_lines,
             ..Default::default()
         })
@@ -112,7 +111,7 @@ impl SimpleFindComments for Finder {
 impl Finder {
     pub fn noop_find_result(&self) -> FindResult {
         FindResult {
-            file_name: str("SHOULD_NOT_BE_PRINTED"),
+            file_name: "SHOULD_NOT_BE_PRINTED".to_string(),
             lines: [].to_vec(),
             print: false,
         }
@@ -157,7 +156,7 @@ mod test {
     type TestResult = Result<(), Box<dyn std::error::Error>>;
 
     #[test]
-    fn test_finder__in_list__true() {
+    fn finder__in_list__true() {
         let finder = Finder {};
         let needle = "needle";
         let haystack = vec!["arbitrary", "needle", "arbitrary-2"]
@@ -172,7 +171,7 @@ mod test {
     }
 
     #[test]
-    fn test_finder__in_list__false() {
+    fn finder__in_list__false() {
         let finder = Finder {};
         let needle = "needle";
         let haystack = vec!["arbitrary", "arbitrary-2", "arbitrary-3"]
@@ -187,7 +186,7 @@ mod test {
     }
 
     #[test]
-    fn test_finder__file_to_lines() -> TestResult {
+    fn finder__file_to_lines() -> TestResult {
         let finder = Finder {};
         let mut temp_file = tempfile::NamedTempFile::new()?;
         temp_file.write_all("line1\nline2\nline3\n".as_bytes())?;

@@ -4,13 +4,14 @@ mod cli {
 
     use assert_cmd::prelude::*;
     use predicates::str::{similar, starts_with};
+    use std::ffi::OsStr;
     use std::io::Write;
     use std::process::Command;
 
     type TestResult = Result<(), Box<dyn std::error::Error>>;
 
     #[test]
-    fn test_output__no_args__shows_error() -> TestResult {
+    fn output__no_args__shows_error() -> TestResult {
         let mut cmd = Command::cargo_bin("commentective")?;
 
         let expected = "error: The following required arguments were not provided:
@@ -21,7 +22,7 @@ mod cli {
     }
 
     #[test]
-    fn test_output__finds_comments() -> TestResult {
+    fn output__finds_comments() -> TestResult {
         let mut file = tempfile::Builder::new()
             .prefix("arbitrary")
             .suffix(".js")
@@ -35,7 +36,11 @@ mod cli {
         cmd.arg(file.path());
 
         let path_buf = file.path().to_path_buf();
-        let file_name = path_buf.file_name().unwrap().to_str().unwrap();
+        let file_name = path_buf
+            .file_name()
+            .map(OsStr::to_str)
+            .flatten()
+            .unwrap_or("something went wrong");
         let expected = format!(
             "────────────────────────────────────────────────────────────────────────────────\nFile: {}\n────────────────────────────────────────────────────────────────────────────────\nL2\nL3\nL4\nL5\n", file_name);
 
@@ -44,7 +49,7 @@ mod cli {
     }
 
     #[test]
-    fn test_output__only_processes_specified_extension_type() -> TestResult {
+    fn output__only_processes_specified_extension_type() -> TestResult {
         let mut js_file = tempfile::Builder::new()
             .prefix("arbitrary")
             .suffix(".js")
@@ -70,7 +75,11 @@ mod cli {
         cmd.arg("rs");
 
         let path_buf = rs_file.path().to_path_buf();
-        let rs_file_name = path_buf.file_name().unwrap().to_str().unwrap().clone();
+        let rs_file_name = path_buf
+            .file_name()
+            .map(OsStr::to_str)
+            .flatten()
+            .unwrap_or("something went wrong");
         let expected = format!(
             "────────────────────────────────────────────────────────────────────────────────\nFile: {}\n────────────────────────────────────────────────────────────────────────────────\nL2\nL3\nL4\nL5\n", rs_file_name);
 
@@ -79,7 +88,7 @@ mod cli {
     }
 
     #[test]
-    fn test_output__with_short_flag() -> TestResult {
+    fn output__with_short_flag() -> TestResult {
         let mut file = tempfile::Builder::new()
             .prefix("arbitrary")
             .suffix(".js")
@@ -94,7 +103,11 @@ mod cli {
         cmd.arg("--short");
 
         let path_buf = file.path().to_path_buf();
-        let file_name = path_buf.file_name().unwrap().to_str().unwrap().clone();
+        let file_name = path_buf
+            .file_name()
+            .map(OsStr::to_str)
+            .flatten()
+            .unwrap_or("something went wrong");
         let expected = format!(
             "{}:2\n{}:3\n{}:4\n{}:5\n",
             file_name, file_name, file_name, file_name
@@ -105,7 +118,7 @@ mod cli {
     }
 
     #[test]
-    fn test_output__with_ignore_empty_flag() -> TestResult {
+    fn output__with_ignore_empty_flag() -> TestResult {
         let mut file = tempfile::Builder::new()
             .prefix("arbitrary")
             .suffix(".js")
@@ -126,7 +139,11 @@ mod cli {
         cmd.arg("--ignore-empty");
 
         let path_buf = file.path().to_path_buf();
-        let file_name = path_buf.file_name().unwrap().to_str().unwrap().clone();
+        let file_name = path_buf
+            .file_name()
+            .map(OsStr::to_str)
+            .flatten()
+            .unwrap_or("something went wrong");
         let expected = format!("────────────────────────────────────────────────────────────────────────────────\nFile: {}\n────────────────────────────────────────────────────────────────────────────────\nL2\nL3\nL4\nL5\n", file_name);
 
         cmd.assert().success().stdout(similar(expected));
@@ -134,7 +151,7 @@ mod cli {
     }
 
     #[test]
-    fn test_output__with_unsupported_file() -> TestResult {
+    fn output__with_unsupported_file() -> TestResult {
         let unsupported_file = tempfile::Builder::new()
             .prefix("arbitrary")
             .suffix(".unsupported")

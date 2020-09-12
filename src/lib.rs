@@ -104,7 +104,7 @@ impl Commentative {
         match &opts.extension {
             None => false,
             Some(ext_options) => match extension(path) {
-                Ok(ext_file) => ext_options != &ext_file,
+                Ok(ext_file) => ext_options != ext_file,
                 Err(e) => panic!("{:?}", e),
             },
         }
