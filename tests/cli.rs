@@ -7,6 +7,7 @@ mod cli {
     use std::ffi::OsStr;
     use std::io::Write;
     use std::process::Command;
+    use tempfile::NamedTempFile;
 
     type TestResult = Result<(), Box<dyn std::error::Error>>;
 
@@ -35,12 +36,7 @@ mod cli {
         let mut cmd = Command::cargo_bin("commentective")?;
         cmd.arg(file.path());
 
-        let path_buf = file.path().to_path_buf();
-        let file_name = path_buf
-            .file_name()
-            .map(OsStr::to_str)
-            .flatten()
-            .unwrap_or("something went wrong");
+        let file_name = get_file_name(&mut file);
         let expected = format!(
             "────────────────────────────────────────────────────────────────────────────────\nFile: {}\n────────────────────────────────────────────────────────────────────────────────\nL2\nL3\nL4\nL5\n", file_name);
 
@@ -74,12 +70,7 @@ mod cli {
         cmd.arg("--extension");
         cmd.arg("rs");
 
-        let path_buf = rs_file.path().to_path_buf();
-        let rs_file_name = path_buf
-            .file_name()
-            .map(OsStr::to_str)
-            .flatten()
-            .unwrap_or("something went wrong");
+        let rs_file_name = get_file_name(&mut rs_file);
         let expected = format!(
             "────────────────────────────────────────────────────────────────────────────────\nFile: {}\n────────────────────────────────────────────────────────────────────────────────\nL2\nL3\nL4\nL5\n", rs_file_name);
 
@@ -102,12 +93,7 @@ mod cli {
         cmd.arg(file.path());
         cmd.arg("--short");
 
-        let path_buf = file.path().to_path_buf();
-        let file_name = path_buf
-            .file_name()
-            .map(OsStr::to_str)
-            .flatten()
-            .unwrap_or("something went wrong");
+        let file_name = get_file_name(&mut file);
         let expected = format!(
             "{}:2\n{}:3\n{}:4\n{}:5\n",
             file_name, file_name, file_name, file_name
@@ -138,12 +124,7 @@ mod cli {
         cmd.arg(empty_file.path());
         cmd.arg("--ignore-empty");
 
-        let path_buf = file.path().to_path_buf();
-        let file_name = path_buf
-            .file_name()
-            .map(OsStr::to_str)
-            .flatten()
-            .unwrap_or("something went wrong");
+        let file_name = get_file_name(&mut file);
         let expected = format!("────────────────────────────────────────────────────────────────────────────────\nFile: {}\n────────────────────────────────────────────────────────────────────────────────\nL2\nL3\nL4\nL5\n", file_name);
 
         cmd.assert().success().stdout(similar(expected));
@@ -161,10 +142,20 @@ mod cli {
         cmd.arg(unsupported_file.path());
 
         let buf = unsupported_file.path().to_path_buf();
-        let file_name = buf.to_str().unwrap_or("something went wrong");
-        let expected = format!("────────────────────────────────────────────────────────────────────────────────\nError: Unsupported file extension for path: {}\n────────────────────────────────────────────────────────────────────────────────\n", file_name);
+        let full_path = buf.to_str().unwrap_or("something went wrong");
+        let expected = format!("────────────────────────────────────────────────────────────────────────────────\nError: Unsupported file extension for path: {}\n────────────────────────────────────────────────────────────────────────────────\n", full_path);
 
         cmd.assert().failure().stdout(similar(expected));
         Ok(())
+    }
+
+    fn get_file_name(file: &mut NamedTempFile) -> String {
+        let path_buf = file.path().to_path_buf();
+        path_buf
+            .file_name()
+            .map(OsStr::to_str)
+            .flatten()
+            .unwrap_or("something went wrong")
+            .to_string()
     }
 }
