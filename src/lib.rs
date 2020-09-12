@@ -57,7 +57,7 @@ impl Commentative {
             .collect::<Vec<Result<FindResult, Error>>>()
     }
 
-    pub fn resolve_type_and_run(
+    fn resolve_type_and_run(
         &self,
         path: PathBuf,
         opts: &CommentativeOpts,
