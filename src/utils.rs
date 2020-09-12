@@ -1,24 +1,21 @@
 pub mod path {
-    use crate::utils::string::str;
     use std::ffi::OsStr;
     use std::io;
     use std::io::Error;
     use std::io::ErrorKind;
     use std::path::Path;
 
-    pub fn file_name(path: &Path) -> io::Result<String> {
+    pub fn file_name(path: &Path) -> io::Result<&str> {
         path.file_name()
             .map(OsStr::to_str)
             .flatten()
-            .map(str)
             .ok_or_else(|| Error::new(ErrorKind::InvalidData, "Unable to get file name from path"))
     }
 
-    pub fn extension(path: &Path) -> io::Result<String> {
+    pub fn extension(path: &Path) -> io::Result<&str> {
         path.extension()
             .map(|oss| oss.to_str())
             .flatten()
-            .map(str)
             .ok_or_else(|| Error::new(ErrorKind::InvalidData, "Unable to get extension from path"))
     }
 
@@ -69,7 +66,7 @@ mod test {
     type TestResult = Result<(), Box<dyn std::error::Error>>;
 
     #[test]
-    fn test_path__filename__ok() {
+    fn path__file_name__ok() {
         let path = Path::new("dir/dir/some_file.js");
 
         let actual = file_name(path).unwrap();
@@ -79,7 +76,7 @@ mod test {
     }
 
     #[test]
-    fn test_path__filename__err() {
+    fn path__file_name__err() {
         let path = Path::new("");
 
         let actual = file_name(path);
@@ -88,7 +85,7 @@ mod test {
     }
 
     #[test]
-    fn test_path__extension__ok() {
+    fn path__extension__ok() {
         let path = Path::new("dir/dir/some_file.js");
 
         let actual = extension(path).unwrap();
@@ -98,7 +95,7 @@ mod test {
     }
 
     #[test]
-    fn test_path__extension__err() {
+    fn path__extension__err() {
         let path = Path::new("dir/dir/file_without_extension");
 
         let actual = extension(path);
@@ -107,7 +104,7 @@ mod test {
     }
 
     #[test]
-    fn test_path__exists_on_filesystem__true() -> TestResult {
+    fn path__exists_on_filesystem__true() -> TestResult {
         let file = tempfile::NamedTempFile::new()?;
 
         let actual = exists_on_filesystem(file.path().as_ref());
@@ -117,7 +114,7 @@ mod test {
     }
 
     #[test]
-    fn test_path__exists_on_filesystem__false() {
+    fn path__exists_on_filesystem__false() {
         let path = Path::new("/tmp/dev/null");
 
         let actual = exists_on_filesystem(path.as_ref());
@@ -126,7 +123,7 @@ mod test {
     }
 
     #[test]
-    fn test_string__contains_all__true() {
+    fn string__contains_all__true() {
         let input = "/* arbitrary */";
         let matches = vec!["/*", "*/"];
 
@@ -137,7 +134,7 @@ mod test {
     }
 
     #[test]
-    fn test_string__contains_all__false() {
+    fn string__contains_all__false() {
         let input = "/* arbitrary */";
         let matches = vec!["/*", "not exist"];
 
@@ -148,7 +145,7 @@ mod test {
     }
 
     #[test]
-    fn test_string__contains_any_of__true() {
+    fn string__contains_any_of__true() {
         let input = "/* arbitrary */";
         let matches = vec!["not exist", "*/"];
 
@@ -159,7 +156,7 @@ mod test {
     }
 
     #[test]
-    fn test_string__contains_any_of__false() {
+    fn string__contains_any_of__false() {
         let input = "/* arbitrary */";
         let matches = vec!["not exist-1", "not exist-2"];
 
@@ -170,7 +167,7 @@ mod test {
     }
 
     #[test]
-    fn test_string__first_char() {
+    fn string__first_char() {
         let input = "abcde";
 
         let actual = first_char(input);
