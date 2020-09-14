@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.7.0
+* Add flag to also output the code with the comment (-c / --code)
+
 ## 0.6.0
 * Silently ignore directories
 * Include the file name for unsupported files
