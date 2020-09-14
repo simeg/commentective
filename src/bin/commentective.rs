@@ -13,6 +13,7 @@ use std::io;
 use std::path::PathBuf;
 
 static ARG_NAME_SHORT: &str = "short";
+static ARG_NAME_CODE: &str = "code";
 static ARG_NAME_EXTENSION: &str = "extension";
 static ARG_NAME_IGNORE_EMPTY: &str = "ignore-empty";
 static OPT_NAME_FILES: &str = "FILES";
@@ -22,6 +23,11 @@ fn main() {
         .short(first_char(ARG_NAME_SHORT))
         .long(ARG_NAME_SHORT)
         .about("Formats output with \"file.ext:line\" without colors. Only outputs files with comments.");
+
+    let arg_code = Arg::with_name(ARG_NAME_CODE)
+        .short(first_char(ARG_NAME_CODE))
+        .long(ARG_NAME_CODE)
+        .about("Print the code with comments");
 
     let arg_extension = Arg::with_name(ARG_NAME_EXTENSION)
         .short(first_char(ARG_NAME_EXTENSION))
@@ -49,6 +55,7 @@ fn main() {
         .arg(arg_extension)
         .arg(arg_ignore_empty)
         .arg(arg_short)
+        .arg(arg_code)
         .get_matches();
 
     let files: Values = matches.values_of(OPT_NAME_FILES).unwrap();
@@ -60,6 +67,7 @@ fn main() {
         extension,
         short: matches.is_present(ARG_NAME_SHORT),
         ignore_empty: matches.is_present(ARG_NAME_IGNORE_EMPTY),
+        code: matches.is_present(ARG_NAME_CODE),
     };
 
     let mut printer = Printer {

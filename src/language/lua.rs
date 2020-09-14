@@ -27,7 +27,7 @@ impl Lua {
 
     pub fn find(&self, path: PathBuf) -> Result<FindResult, Error> {
         let mut counter = 1; // Lines begin on index 1
-        let mut comments = Vec::<u32>::new();
+        let mut comments = Vec::<(u32, String)>::new();
         let mut in_multiline = false;
 
         let file = File::open(&path)?;
@@ -39,14 +39,14 @@ impl Lua {
                     let comment_type = self.get_comment_type(&l);
                     if in_multiline {
                         // Ignore everything except MultiLineEnd when in a multiline-comment
-                        comments.push(counter);
+                        comments.push((counter, l.to_string()));
                         in_multiline = comment_type != LuaCommentType::MultiLineEnd;
                     } else {
                         match self.get_comment_type(&l) {
-                            LuaCommentType::SingleLine => comments.push(counter),
+                            LuaCommentType::SingleLine => comments.push((counter, l.to_string())),
                             LuaCommentType::MultiLineStart => {
                                 in_multiline = true;
-                                comments.push(counter);
+                                comments.push((counter, l.to_string()));
                             }
                             _ => (),
                         }

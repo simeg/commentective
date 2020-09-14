@@ -18,7 +18,7 @@ impl Python {
 
     pub fn find(&self, path: PathBuf) -> Result<FindResult, Error> {
         let mut counter = 1; // Lines begin on index 1
-        let mut comments = Vec::<u32>::new();
+        let mut comments = Vec::<(u32, String)>::new();
 
         let file = File::open(&path)?;
         let file_name = file_name(&path)?;
@@ -26,8 +26,8 @@ impl Python {
         for line in BufReader::new(file).lines() {
             match line {
                 Ok(l) => {
-                    if self.is_comment(l) {
-                        comments.push(counter);
+                    if self.is_comment(&l) {
+                        comments.push((counter, l.to_string()));
                     }
                 }
                 Err(_) => panic!("Could not read line"),
@@ -42,7 +42,7 @@ impl Python {
         })
     }
 
-    fn is_comment(&self, line: String) -> bool {
-        contains_any_of(&line, vec!["#"])
+    fn is_comment(&self, line: &str) -> bool {
+        contains_any_of(line, vec!["#"])
     }
 }
