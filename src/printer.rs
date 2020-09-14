@@ -84,13 +84,21 @@ where
         self.print_colored_line(Yellow);
     }
 
-    fn print_comments(&mut self, line_number: u32, file_name: &str) {
-        if !self.options.short {
-            let msg = format!("L{}", line_number.to_string());
-            self.print_colored(msg, Green);
-        } else {
-            let msg = format!("{}:{}", file_name, line_number.to_string());
+    fn print_comments(&mut self, line: (u32, String), file_name: &str) {
+        if self.options.short {
+            let msg = if self.options.code {
+                format!("{}:{}:{}", file_name, line.0, line.1)
+            } else {
+                format!("{}:{}", file_name, line.0)
+            };
             writeln!(&mut self.writer, "{}", msg).expect("Unable to write")
+        } else {
+            let msg = if self.options.code {
+                format!("L{} - {}", line.0, line.1)
+            } else {
+                format!("L{}", line.0)
+            };
+            self.print_colored(msg, Green);
         }
     }
 

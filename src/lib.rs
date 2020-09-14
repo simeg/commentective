@@ -39,6 +39,7 @@ pub struct CommentativeOpts {
     pub extension: Option<String>,
     pub short: bool,
     pub ignore_empty: bool,
+    pub code: bool,
 }
 
 impl Commentative {

@@ -37,7 +37,7 @@ pub trait SimpleFindComments {
 
 pub struct FindResult {
     pub file_name: String,
-    pub lines: Vec<u32>,
+    pub lines: Vec<(u32, String)>,
     pub print: bool,
 }
 
@@ -75,7 +75,7 @@ impl SimpleFindComments for Finder {
         let file = File::open(&path)?;
         let file_name = file_name(&path)?;
 
-        let mut comment_lines = Vec::<u32>::new();
+        let mut comment_lines = Vec::<(u32, String)>::new();
         let mut is_multi = false;
 
         for line in self.file_to_lines(&file) {
@@ -83,19 +83,19 @@ impl SimpleFindComments for Finder {
             let line_number = line.index;
 
             if is_single_line_comment(content) {
-                comment_lines.push(line_number);
+                comment_lines.push((line_number, content.to_string()));
             } else {
                 let is_multi_comment_start = self.in_list(content, multi_opts.starts.clone());
                 let is_multi_comment_end = self.in_list(content, multi_opts.ends.clone());
 
                 if is_multi_comment_start {
                     is_multi = true;
-                    comment_lines.push(line_number);
+                    comment_lines.push((line_number, content.to_string()));
                 } else if is_multi_comment_end {
                     is_multi = false;
-                    comment_lines.push(line_number);
+                    comment_lines.push((line_number, content.to_string()));
                 } else if is_multi {
-                    comment_lines.push(line_number);
+                    comment_lines.push((line_number, content.to_string()));
                 }
             }
         }
