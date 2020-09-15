@@ -21,6 +21,7 @@ use crate::language::scala::Scala;
 use crate::language::{FindResult, Finder};
 use crate::utils::path::extension;
 
+use std::ffi::OsStr;
 use std::fs::metadata;
 use std::io::Error;
 use std::io::ErrorKind;
@@ -40,6 +41,7 @@ pub struct CommentativeOpts {
     pub short: bool,
     pub ignore_empty: bool,
     pub code: bool,
+    pub language: Option<String>,
 }
 
 impl Commentative {
@@ -75,28 +77,31 @@ impl Commentative {
             return Ok(self.finder.noop_find_result());
         }
 
-        match path.extension() {
+        let extension = if let Some(provided_extension) = &opts.language {
+            Some(provided_extension.as_str())
+        } else {
+            path.extension().map(OsStr::to_str).flatten()
+        };
+
+        match extension {
             None => unsupported_err,
-            Some(ext) => match ext.to_str() {
-                None => panic!("Could not convert OsStr -> str"),
-                Some(extension) => match extension {
-                    "c" => C::with_finder(self.finder).find(path),
-                    "cpp" => Cpp::with_finder(self.finder).find(path),
-                    "cs" => CSharp::with_finder(self.finder).find(path),
-                    "css" => CSS::with_finder(self.finder).find(path),
-                    "go" => Go::with_finder(self.finder).find(path),
-                    "html" => HTML::with_finder(self.finder).find(path),
-                    "java" => Java::with_finder(self.finder).find(path),
-                    "js" => JavaScript::with_finder(self.finder).find(path),
-                    "lua" => Lua::with_finder(self.finder).find(path),
-                    "php" => PHP::with_finder(self.finder).find(path),
-                    "py" => Python::with_finder(self.finder).find(path),
-                    "rb" => Ruby::with_finder(self.finder).find(path),
-                    "rs" => Rust::with_finder(self.finder).find(path),
-                    "scala" => Scala::with_finder(self.finder).find(path),
-                    "sh" => Bash::with_finder(self.finder).find(path),
-                    _ => unsupported_err,
-                },
+            Some(extension) => match extension {
+                "c" => C::with_finder(self.finder).find(path),
+                "cpp" => Cpp::with_finder(self.finder).find(path),
+                "cs" => CSharp::with_finder(self.finder).find(path),
+                "css" => CSS::with_finder(self.finder).find(path),
+                "go" => Go::with_finder(self.finder).find(path),
+                "html" => HTML::with_finder(self.finder).find(path),
+                "java" => Java::with_finder(self.finder).find(path),
+                "js" => JavaScript::with_finder(self.finder).find(path),
+                "lua" => Lua::with_finder(self.finder).find(path),
+                "php" => PHP::with_finder(self.finder).find(path),
+                "py" => Python::with_finder(self.finder).find(path),
+                "rb" => Ruby::with_finder(self.finder).find(path),
+                "rs" => Rust::with_finder(self.finder).find(path),
+                "scala" => Scala::with_finder(self.finder).find(path),
+                "sh" => Bash::with_finder(self.finder).find(path),
+                _ => unsupported_err,
             },
         }
     }

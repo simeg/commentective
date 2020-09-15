@@ -171,6 +171,29 @@ mod cli {
         Ok(())
     }
 
+    #[test]
+    fn output__with_lang_option() -> TestResult {
+        let mut file = tempfile::Builder::new()
+            .prefix("arbitrary")
+            .suffix(".some_other_extension")
+            .tempfile()?;
+        file.write_all(
+            "const someVar = true;\n// comment\n/* multi comment\nanother line\nend line*/"
+                .as_bytes(),
+        )?;
+
+        let mut cmd = Command::cargo_bin("commentective")?;
+        cmd.arg(file.path());
+        cmd.arg("--lang");
+        cmd.arg("js");
+
+        let file_name = get_file_name(&mut file);
+        let expected = format!("────────────────────────────────────────────────────────────────────────────────\nFile: {}\n────────────────────────────────────────────────────────────────────────────────\nL2\nL3\nL4\nL5\n", file_name);
+
+        cmd.assert().success().stdout(similar(expected));
+        Ok(())
+    }
+
     fn get_file_name(file: &mut NamedTempFile) -> String {
         let path_buf = file.path().to_path_buf();
         path_buf
