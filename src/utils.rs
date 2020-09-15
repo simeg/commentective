@@ -1,8 +1,7 @@
 pub mod path {
     use std::ffi::OsStr;
     use std::io;
-    use std::io::Error;
-    use std::io::ErrorKind;
+    use std::io::{Error, ErrorKind};
     use std::path::Path;
 
     pub fn file_name(path: &Path) -> io::Result<&str> {
@@ -14,7 +13,7 @@ pub mod path {
 
     pub fn extension(path: &Path) -> io::Result<&str> {
         path.extension()
-            .map(|oss| oss.to_str())
+            .map(OsStr::to_str)
             .flatten()
             .ok_or_else(|| Error::new(ErrorKind::InvalidData, "Unable to get extension from path"))
     }
