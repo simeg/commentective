@@ -23,8 +23,7 @@ use crate::utils::path::extension;
 
 use std::ffi::OsStr;
 use std::fs::metadata;
-use std::io::Error;
-use std::io::ErrorKind;
+use std::io::{Error, ErrorKind};
 use std::path::{Path, PathBuf};
 
 pub mod language;
