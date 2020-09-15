@@ -15,7 +15,11 @@ written in. It will look at the extension of the files and act accordingly.
 USAGE:
     commentective [FLAGS] [OPTIONS] <FILES>...
 
+ARGS:
+    <FILES>...    Files to analyze
+
 FLAGS:
+    -c, --code            Print the code with comments
     -h, --help            Prints help information
     -i, --ignore-empty    Ignore printing files without comments
     -s, --short           Formats output with "file.ext:line" without colors. Only outputs files with comments.
@@ -23,9 +27,7 @@ FLAGS:
 
 OPTIONS:
     -e, --extension <extension>    Only analyze files with this extension
-
-ARGS:
-    <FILES>...    Files to analyze
+    -l, --lang <lang>              Analyze as this language. Pass the extension, e.g. 'js', 'py', 'sh'
 ```
 
 
