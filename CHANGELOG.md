@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.8.0
+* Add flag to analyze files as specified language (-l / --lang)
+
 ## 0.7.0
 * Add flag to also output the code with the comment (-c / --code)
 
