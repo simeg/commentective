@@ -149,6 +149,28 @@ mod cli {
         Ok(())
     }
 
+    #[test]
+    fn output__with_code_flag() -> TestResult {
+        let mut file = tempfile::Builder::new()
+            .prefix("arbitrary")
+            .suffix(".js")
+            .tempfile()?;
+        file.write_all(
+            "const someVar = true;\n// comment\n/* multi comment\nanother line\nend line*/"
+                .as_bytes(),
+        )?;
+
+        let mut cmd = Command::cargo_bin("commentective")?;
+        cmd.arg(file.path());
+        cmd.arg("--code");
+
+        let file_name = get_file_name(&mut file);
+        let expected = format!("────────────────────────────────────────────────────────────────────────────────\nFile: {}\n────────────────────────────────────────────────────────────────────────────────\nL2 - // comment\nL3 - /* multi comment\nL4 - another line\nL5 - end line*/\n", file_name);
+
+        cmd.assert().success().stdout(similar(expected));
+        Ok(())
+    }
+
     fn get_file_name(file: &mut NamedTempFile) -> String {
         let path_buf = file.path().to_path_buf();
         path_buf
