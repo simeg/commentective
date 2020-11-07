@@ -8,6 +8,7 @@ keywords = ["command-line-tool", "cli", "rust", "comments"]
 
 documentation = "https://github.com/simeg/commentective/blob/master/README.md"
 homepage = "https://github.com/simeg/commentective"
+repository = "https://github.com/simeg/commentective"
 readme = "README.md"
 license = "MIT"
 edition = "2018"
@@ -24,8 +25,8 @@ codecov = { repository = "simeg/commentective", branch = "master", service = "gi
 [dependencies]
 clap = "3.0.0-beta.2"
 colored = "2.0.0"
-console = "0.12.0"
-rayon = "1.4.0"
+console = "0.13.0"
+rayon = "1.5.0"
 
 [dev-dependencies]
 tempfile = "3.1.0"
