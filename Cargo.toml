@@ -1,6 +1,6 @@
 [package]
 name = "commentective"
-version = "0.8.0"
+version = "0.8.1"
 description = "CLI tool to locate comments and commented out code in your source code"
 authors = ["Simon Egersand <s.egersand@gmail.com>"]
 categories = ["command-line-interface", "command-line-utilities", "development-tools"]

@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.8.1
+* Bug fix: Clap updated the API and needed updating
+
 ## 0.8.0
 * Add flag to analyze files as specified language (-l / --lang)
 
