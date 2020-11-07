@@ -20,34 +20,34 @@ static ARG_NAME_IGNORE_EMPTY: &str = "ignore-empty";
 static OPT_NAME_FILES: &str = "FILES";
 
 fn main() {
-    let arg_short = Arg::with_name(ARG_NAME_SHORT)
+    let arg_short = Arg::new(ARG_NAME_SHORT)
         .short(first_char(ARG_NAME_SHORT))
         .long(ARG_NAME_SHORT)
         .about("Formats output with \"file.ext:line\" without colors. Only outputs files with comments.");
 
-    let arg_code = Arg::with_name(ARG_NAME_CODE)
+    let arg_code = Arg::new(ARG_NAME_CODE)
         .short(first_char(ARG_NAME_CODE))
         .long(ARG_NAME_CODE)
         .about("Print the code with comments");
 
-    let arg_lang = Arg::with_name(ARG_NAME_LANG)
+    let arg_lang = Arg::new(ARG_NAME_LANG)
         .short(first_char(ARG_NAME_LANG))
         .long(ARG_NAME_LANG)
         .about("Analyze as this language. Pass the extension, e.g. 'js', 'py', 'sh'")
         .takes_value(true);
 
-    let arg_extension = Arg::with_name(ARG_NAME_EXTENSION)
+    let arg_extension = Arg::new(ARG_NAME_EXTENSION)
         .short(first_char(ARG_NAME_EXTENSION))
         .long(ARG_NAME_EXTENSION)
         .about("Only analyze files with this extension")
         .takes_value(true);
 
-    let arg_ignore_empty = Arg::with_name(ARG_NAME_IGNORE_EMPTY)
+    let arg_ignore_empty = Arg::new(ARG_NAME_IGNORE_EMPTY)
         .short(first_char(ARG_NAME_IGNORE_EMPTY))
         .long(ARG_NAME_IGNORE_EMPTY)
         .about("Ignore printing files without comments");
 
-    let opt_files = Arg::with_name(OPT_NAME_FILES)
+    let opt_files = Arg::new(OPT_NAME_FILES)
         .about("Files to analyze")
         .required(true)
         .multiple(true)
