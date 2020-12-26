@@ -12,7 +12,7 @@ check:
 clippy:
 	$(CARGO) clippy
 
-ci: install-rustfmt lint check test
+ci: lint check test
 
 clean:
 	rm -rf ./target
@@ -23,17 +23,12 @@ fmt:
 install:
 	@cp ./target/release/$(BIN_NAME) /usr/local/bin/$(BIN_NAME)
 
-install-rustfmt:
-	@rustup component add rustfmt-preview
-
 link:
 	@ln -sf ./target/debug/$(BIN_NAME) .
 
 lint:
-	cargo fmt --all -- --check
+	$(CARGO) fmt --all -- --check
 
-# TODO: In CI - verify that packaged
-# .cargo file has reasonable size
 package:
 	@$(CARGO) package
 
