@@ -1,5 +1,6 @@
 pub mod path {
     use std::ffi::OsStr;
+    use std::fs::metadata;
     use std::io;
     use std::io::{Error, ErrorKind};
     use std::path::Path;
@@ -9,13 +10,6 @@ pub mod path {
             .map(OsStr::to_str)
             .flatten()
             .ok_or_else(|| Error::new(ErrorKind::InvalidData, "Unable to get file name from path"))
-    }
-
-    pub fn extension(path: &Path) -> io::Result<&str> {
-        path.extension()
-            .map(OsStr::to_str)
-            .flatten()
-            .ok_or_else(|| Error::new(ErrorKind::InvalidData, "Unable to get extension from path"))
     }
 
     pub fn exists_on_filesystem(path: &OsStr) -> Result<(), String> {
@@ -28,6 +22,10 @@ pub mod path {
                     "Unable to determine if file exists on file system",
                 ))
             })
+    }
+
+    pub fn is_file(path: &OsStr) -> Result<(), String> {
+        metadata(path).map(|_| ()).map_err(|e| e.to_string())
     }
 }
 
@@ -45,10 +43,6 @@ pub mod string {
         &found_matches == actual_matches
     }
 
-    pub fn str(input: &str) -> String {
-        String::from(input)
-    }
-
     pub fn first_char(input: &str) -> char {
         input.chars().next().unwrap()
     }
@@ -58,7 +52,7 @@ pub mod string {
 mod test {
     #![allow(non_snake_case)]
 
-    use crate::utils::path::{exists_on_filesystem, extension, file_name};
+    use crate::utils::path::{exists_on_filesystem, file_name};
     use crate::utils::string::{contains_all, contains_any_of, first_char};
     use std::path::Path;
 
@@ -79,25 +73,6 @@ mod test {
         let path = Path::new("");
 
         let actual = file_name(path);
-
-        assert!(actual.is_err())
-    }
-
-    #[test]
-    fn path__extension__ok() {
-        let path = Path::new("dir/dir/some_file.js");
-
-        let actual = extension(path).unwrap();
-        let expected = "js".to_string();
-
-        assert_eq!(actual, expected)
-    }
-
-    #[test]
-    fn path__extension__err() {
-        let path = Path::new("dir/dir/file_without_extension");
-
-        let actual = extension(path);
 
         assert!(actual.is_err())
     }

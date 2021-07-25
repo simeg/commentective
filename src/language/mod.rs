@@ -30,31 +30,29 @@ pub trait SimpleFindComments {
         path: PathBuf,
         multi_opts: &OptsMultiComments,
         is_single_line_comment: F,
-    ) -> Result<FindResult, io::Error>
+    ) -> io::Result<FindResult>
     where
         F: Fn(&str) -> bool;
 }
 
 pub struct FindResult {
     pub file_name: String,
-    pub lines: Vec<(u32, String)>,
-    pub print: bool,
+    pub comments: Vec<Comment>,
 }
 
-impl Default for FindResult {
-    fn default() -> FindResult {
-        FindResult {
-            file_name: "DEFAULT_FILE_NAME".to_string(),
-            lines: [].to_vec(),
-            print: true,
+#[derive(Hash, Eq, PartialEq, Clone)]
+pub struct Comment {
+    pub line_number: u32,
+    pub content: String,
+}
+
+impl Comment {
+    pub fn new(line_number: u32, content: String) -> Self {
+        Self {
+            line_number,
+            content,
         }
     }
-}
-
-#[derive(Hash, Eq, PartialEq)]
-pub struct Line {
-    pub index: u32,
-    pub content: String,
 }
 
 pub struct OptsMultiComments {
@@ -68,74 +66,63 @@ impl SimpleFindComments for Finder {
         path: PathBuf,
         multi_opts: &OptsMultiComments,
         is_single_line_comment: F,
-    ) -> Result<FindResult, io::Error>
+    ) -> io::Result<FindResult>
     where
         F: Fn(&str) -> bool,
     {
         let file = File::open(&path)?;
         let file_name = file_name(&path)?;
 
-        let mut comment_lines = Vec::<(u32, String)>::new();
+        let mut comments = Vec::<Comment>::new();
         let mut is_multi = false;
 
         for line in self.file_to_lines(&file) {
             let content = line.content.trim();
-            let line_number = line.index;
+            let line_number = line.line_number;
 
             if is_single_line_comment(content) {
-                comment_lines.push((line_number, content.to_string()));
+                comments.push(Comment::new(line_number, content.to_string()));
             } else {
-                let is_multi_comment_start = self.in_list(content, multi_opts.starts.clone());
-                let is_multi_comment_end = self.in_list(content, multi_opts.ends.clone());
+                let is_multi_comment_start = self.is_in_list(content, multi_opts.starts.clone());
+                let is_multi_comment_end = self.is_in_list(content, multi_opts.ends.clone());
 
                 if is_multi_comment_start {
                     is_multi = true;
-                    comment_lines.push((line_number, content.to_string()));
+                    comments.push(Comment::new(line_number, content.to_string()));
                 } else if is_multi_comment_end {
                     is_multi = false;
-                    comment_lines.push((line_number, content.to_string()));
+                    comments.push(Comment::new(line_number, content.to_string()));
                 } else if is_multi {
-                    comment_lines.push((line_number, content.to_string()));
+                    comments.push(Comment::new(line_number, content.to_string()));
                 }
             }
         }
 
         Ok(FindResult {
             file_name: file_name.to_string(),
-            lines: comment_lines,
-            ..Default::default()
+            comments,
         })
     }
 }
 
 impl Finder {
-    pub fn noop_find_result(&self) -> FindResult {
-        FindResult {
-            file_name: "SHOULD_NOT_BE_PRINTED".to_string(),
-            lines: [].to_vec(),
-            print: false,
-        }
-    }
-
-    fn file_to_lines(&self, file: &File) -> Vec<Line> {
+    fn file_to_lines(&self, file: &File) -> Vec<Comment> {
         let mut counter: u32 = 1;
         BufReader::new(file)
             .lines()
-            .map(|line| match line {
-                Ok(content) => {
-                    let line = Line {
-                        index: counter,
-                        content,
-                    };
-                    counter += 1;
-                    line
-                }
-                Err(_) => panic!("Could not read line"),
+            .map(|line| {
+                let content = line.expect("Could not read line");
+                let line = Comment {
+                    line_number: counter,
+                    content,
+                };
+                counter += 1;
+                line
             })
             .collect()
     }
 
-    fn in_list(&self, needle: &str, haystack: Vec<String>) -> bool {
+    fn is_in_list(&self, needle: &str, haystack: Vec<String>) -> bool {
         haystack
             .into_iter()
             .rfind(|ele| needle.contains(ele))
@@ -147,7 +134,7 @@ impl Finder {
 mod test {
     #![allow(non_snake_case)]
 
-    use crate::language::{Finder, Line};
+    use crate::language::{Comment, Finder};
     use std::collections::HashSet;
     use std::fs::File;
     use std::hash::Hash;
@@ -156,7 +143,7 @@ mod test {
     type TestResult = Result<(), Box<dyn std::error::Error>>;
 
     #[test]
-    fn finder__in_list__true() {
+    fn finder__is_in_list__true() {
         let finder = Finder {};
         let needle = "needle";
         let haystack = vec!["arbitrary", "needle", "arbitrary-2"]
@@ -164,14 +151,13 @@ mod test {
             .map(String::from)
             .collect();
 
-        let actual = finder.in_list(needle, haystack);
-        let expected = true;
+        let actual = finder.is_in_list(needle, haystack);
 
-        assert_eq!(actual, expected);
+        assert!(actual);
     }
 
     #[test]
-    fn finder__in_list__false() {
+    fn finder__is_in_list__false() {
         let finder = Finder {};
         let needle = "needle";
         let haystack = vec!["arbitrary", "arbitrary-2", "arbitrary-3"]
@@ -179,10 +165,9 @@ mod test {
             .map(String::from)
             .collect();
 
-        let actual = finder.in_list(needle, haystack);
-        let expected = false;
+        let actual = finder.is_in_list(needle, haystack);
 
-        assert_eq!(actual, expected);
+        assert!(!actual);
     }
 
     #[test]
@@ -195,16 +180,16 @@ mod test {
         let actual = finder.file_to_lines(&file.unwrap());
 
         let expected = vec![
-            Line {
-                index: 1,
+            Comment {
+                line_number: 1,
                 content: "line1".to_string(),
             },
-            Line {
-                index: 2,
+            Comment {
+                line_number: 2,
                 content: "line2".to_string(),
             },
-            Line {
-                index: 3,
+            Comment {
+                line_number: 3,
                 content: "line3".to_string(),
             },
         ];

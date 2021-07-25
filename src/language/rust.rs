@@ -1,9 +1,8 @@
 use crate::language::{FindResult, OptsMultiComments, SimpleFindComments};
 use crate::utils::string::contains_all;
 use crate::utils::string::contains_any_of;
-use crate::utils::string::str;
 
-use std::io::Error;
+use std::io;
 use std::path::PathBuf;
 
 pub struct Rust<F: SimpleFindComments> {
@@ -18,10 +17,10 @@ where
         Self { finder }
     }
 
-    pub fn find(&self, path: PathBuf) -> Result<FindResult, Error> {
+    pub fn find(&self, path: PathBuf) -> io::Result<FindResult> {
         let multi_opts = OptsMultiComments {
-            starts: vec![str("/*")],
-            ends: vec![str("*/")],
+            starts: vec!["/*".to_string()],
+            ends: vec!["*/".to_string()],
         };
 
         self.finder
@@ -29,6 +28,6 @@ where
     }
 }
 
-fn is_single_line_comment(line: &str) -> bool {
-    contains_any_of(line, vec!["//"]) || contains_all(line, vec!["/*", "*/"])
+fn is_single_line_comment(comment: &str) -> bool {
+    contains_any_of(comment, vec!["//"]) || contains_all(comment, vec!["/*", "*/"])
 }

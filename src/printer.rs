@@ -2,12 +2,13 @@ extern crate colored;
 
 use self::colored::ColoredString;
 use self::colored::*;
-use crate::language::FindResult;
-use crate::printer::Color::{Green, Red, White, Yellow};
-use crate::CommentativeOpts;
 use console::Term;
-use std::io::Error;
-use std::io::Write;
+
+use crate::language::Comment;
+use crate::printer::Color::{Green, Yellow};
+
+use std::io;
+use std::io::{Error, Write};
 
 enum Color {
     Green,
@@ -16,108 +17,71 @@ enum Color {
     Yellow,
 }
 
-pub struct Printer<'a, W> {
+pub struct Printer<W> {
     pub writer: W,
-    pub options: &'a CommentativeOpts,
 }
 
-impl<'a, W> Printer<'a, W>
+impl<W> Printer<W>
 where
     W: Write,
 {
-    pub fn terminal(&mut self, maybe_result: Result<FindResult, Error>) -> Result<(), Error> {
-        match maybe_result {
-            Ok(result) => {
-                if !result.print {
-                    return Ok(());
-                }
-                match result.lines.len() {
-                    0 => {
-                        if self.options.short || self.options.ignore_empty {
-                            // Don't print if nothing found
-                        } else {
-                            self.print_file_name(&result.file_name);
-                            self.print_colored(String::from("> No comments found"), White);
-                        }
-                        Ok(())
-                    }
-                    _ => {
-                        self.result(result);
-                        Ok(())
-                    }
-                }
-            }
-            Err(e) => {
-                self.error(&e);
-                Err(e)
-            }
-        }
+    pub fn print_file_name(&mut self, file_name: &str) -> io::Result<()> {
+        self.print_colored_line(Yellow)?;
+        self.print_colored_text(format!("{} {}", "File:", file_name), Yellow)?;
+        self.print_colored_line(Yellow)
     }
 
-    fn error(&mut self, err: &Error) {
-        if !self.options.short {
-            self.print_colored_line(Red);
-        }
-        let msg = format!("Error: {}", err.to_string());
-        if !self.options.short {
-            self.print_colored(msg, Red);
-            self.print_colored_line(Red);
-        }
-    }
-
-    fn result(&mut self, result: FindResult) {
-        let file_name = result.file_name;
-        if !self.options.short {
-            self.print_file_name(&file_name);
-        }
-        result
-            .lines
-            .into_iter()
-            .map(|line| self.print_comments(line, &file_name))
-            .for_each(drop);
-    }
-
-    fn print_file_name(&mut self, file_name: &str) {
-        self.print_colored_line(Yellow);
-        let msg = format!("{} {}", "File:", file_name);
-        self.print_colored(msg, Yellow);
-        self.print_colored_line(Yellow);
-    }
-
-    fn print_comments(&mut self, line: (u32, String), file_name: &str) {
-        if self.options.short {
-            let msg = if self.options.code {
-                format!("{}:{}:{}", file_name, line.0, line.1)
+    pub fn print_comments(
+        &mut self,
+        comment: Comment,
+        file_name: &str,
+        is_short: bool,
+        is_code: bool,
+    ) -> io::Result<()> {
+        if is_short {
+            let msg = if is_code {
+                format!("{}:{}:{}", file_name, comment.line_number, comment.content)
             } else {
-                format!("{}:{}", file_name, line.0)
+                format!("{}:{}", file_name, comment.line_number)
             };
-            writeln!(&mut self.writer, "{}", msg).expect("Unable to write")
+            writeln!(&mut self.writer, "{}", msg)
         } else {
-            let msg = if self.options.code {
-                format!("L{} - {}", line.0, line.1)
+            let msg = if is_code {
+                format!("L{} - {}", comment.line_number, comment.content)
             } else {
-                format!("L{}", line.0)
+                format!("L{}", comment.line_number)
             };
-            self.print_colored(msg, Green);
+            self.print_colored_text(msg, Green)
         }
     }
 
-    fn print_colored_line(&mut self, color: Color) {
+    pub fn print_no_comments_found(&mut self, file_name: String) -> Result<(), Error> {
+        self.print_file_name(file_name.as_str())?;
+        self.print_colored_text(String::from("> No comments found"), Color::White)
+    }
+
+    pub fn print_error(&mut self, err: &Error) -> io::Result<()> {
+        self.print_colored_line(Color::Red)?;
+        self.print_colored_text(format!("Error: {}", err.to_string()), Color::Red)?;
+        self.print_colored_line(Color::Red)
+    }
+
+    fn print_colored_line(&mut self, color: Color) -> io::Result<()> {
         let term_width = Term::stdout().size().1 as usize;
         let line = "─".repeat(term_width);
-        self.print_colored(line, color);
+        self.print_colored_text(line, color)
     }
 
-    fn print_colored(&mut self, text: String, color: Color) {
+    fn print_colored_text(&mut self, text: String, color: Color) -> io::Result<()> {
         match color {
-            Color::Yellow => self.writeln(text.yellow()),
-            Color::Green => self.writeln(text.green()),
-            Color::Red => self.writeln(text.red()),
-            Color::White => self.writeln(text.white()),
+            Color::Yellow => self.println(text.yellow()),
+            Color::Green => self.println(text.green()),
+            Color::Red => self.println(text.red()),
+            Color::White => self.println(text.white()),
         }
     }
 
-    fn writeln(&mut self, output: ColoredString) {
-        writeln!(&mut self.writer, "{}", output).expect("Unable to write")
+    fn println(&mut self, output: ColoredString) -> io::Result<()> {
+        writeln!(&mut self.writer, "{}", output)
     }
 }

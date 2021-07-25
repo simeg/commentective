@@ -1,48 +1,32 @@
-use crate::language::{FindResult, Finder};
-use crate::utils::path::file_name;
+use crate::language::{FindResult, OptsMultiComments, SimpleFindComments};
 use crate::utils::string::contains_any_of;
 
-use std::fs::File;
-use std::io::{BufRead, BufReader, Error};
+use std::io;
 use std::path::PathBuf;
-use std::vec::Vec;
 
-pub struct Python {
-    _finder: Finder,
+pub struct Python<F: SimpleFindComments> {
+    finder: F,
 }
 
-impl Python {
-    pub fn with_finder(finder: Finder) -> Self {
-        Self { _finder: finder }
+impl<F> Python<F>
+where
+    F: SimpleFindComments,
+{
+    pub fn with_finder(finder: F) -> Self {
+        Self { finder }
     }
 
-    pub fn find(&self, path: PathBuf) -> Result<FindResult, Error> {
-        let mut counter = 1; // Lines begin on index 1
-        let mut comments = Vec::<(u32, String)>::new();
+    pub fn find(&self, path: PathBuf) -> io::Result<FindResult> {
+        let multi_opts = OptsMultiComments {
+            starts: vec!["/*".to_string()],
+            ends: vec!["*/".to_string()],
+        };
 
-        let file = File::open(&path)?;
-        let file_name = file_name(&path)?;
-
-        for line in BufReader::new(file).lines() {
-            match line {
-                Ok(l) => {
-                    if self.is_comment(&l) {
-                        comments.push((counter, l.to_string()));
-                    }
-                }
-                Err(_) => panic!("Could not read line"),
-            }
-            counter += 1;
-        }
-
-        Ok(FindResult {
-            file_name: file_name.to_string(),
-            lines: comments,
-            ..Default::default()
-        })
+        self.finder
+            .find_comments(path, &multi_opts, is_single_line_comment)
     }
+}
 
-    fn is_comment(&self, line: &str) -> bool {
-        contains_any_of(line, vec!["#"])
-    }
+fn is_single_line_comment(comment: &str) -> bool {
+    contains_any_of(comment, vec!["#"])
 }

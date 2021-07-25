@@ -19,71 +19,73 @@ use crate::language::ruby::Ruby;
 use crate::language::rust::Rust;
 use crate::language::scala::Scala;
 use crate::language::{FindResult, Finder};
-use crate::utils::path::extension;
+
+use crate::printer::Printer;
 
 use std::ffi::OsStr;
-use std::fs::metadata;
-use std::io::{Error, ErrorKind};
-use std::path::{Path, PathBuf};
+use std::io;
+use std::io::{Error, ErrorKind, Write};
+use std::path::PathBuf;
 
 pub mod language;
 pub mod printer;
 pub mod utils;
 
-pub struct Commentative {
-    paths: Vec<PathBuf>,
+pub struct Commentative<W> {
     finder: Finder,
+    printer: Printer<W>,
 }
 
 pub struct CommentativeOpts {
-    pub extension: Option<String>,
     pub short: bool,
     pub ignore_empty: bool,
     pub code: bool,
     pub language: Option<String>,
 }
 
-impl Commentative {
-    pub fn with_paths(paths: Vec<PathBuf>) -> Self {
+impl<W> Commentative<W>
+where
+    W: Write + std::marker::Sync + std::marker::Send,
+{
+    pub fn new(printer: Printer<W>) -> Self {
         Self {
-            paths,
             finder: Finder {},
+            printer,
         }
     }
 
-    pub fn run(&self, opts: &CommentativeOpts) -> Vec<Result<FindResult, Error>> {
-        self.paths
+    pub fn run(&mut self, paths: Vec<PathBuf>, opts: &CommentativeOpts) -> Vec<io::Result<()>> {
+        let find_results = paths
+            // Cannot parallelize both finding and printing because printing mutates state,
+            // so we do it in two steps
             .par_iter()
-            .filter(|path| metadata(path).unwrap().is_file()) // File presence has been verified so we can unwrap here
             .map(|path| self.resolve_type_and_run(path.to_path_buf(), &opts))
-            .collect::<Vec<Result<FindResult, Error>>>()
+            .collect::<Vec<io::Result<FindResult>>>();
+
+        find_results
+            .into_iter()
+            .map(|find_result| self.print_results(find_result, &opts))
+            .collect()
     }
 
     fn resolve_type_and_run(
         &self,
         path: PathBuf,
         opts: &CommentativeOpts,
-    ) -> Result<FindResult, Error> {
-        let unsupported_err = Err(Error::new(
-            ErrorKind::NotFound,
-            format!(
-                "Unsupported file extension for path: {}",
-                path.to_str().unwrap()
-            ),
-        ));
-
-        if self.exclude_file(&path, opts) {
-            return Ok(self.finder.noop_find_result());
-        }
-
-        let extension = if let Some(provided_extension) = &opts.language {
-            Some(provided_extension.as_str())
+    ) -> io::Result<FindResult> {
+        let extension_file = if let Some(extension_from_opts) = &opts.language {
+            Some(extension_from_opts.as_str())
         } else {
             path.extension().map(OsStr::to_str).flatten()
         };
 
-        match extension {
-            None => unsupported_err,
+        let err_unsupported = Err(Error::new(
+            ErrorKind::NotFound,
+            format!("Unsupported file extension for path: {}", path.display()),
+        ));
+
+        match extension_file {
+            None => err_unsupported,
             Some(extension) => match extension {
                 "c" => C::with_finder(self.finder).find(path),
                 "cpp" => Cpp::with_finder(self.finder).find(path),
@@ -100,18 +102,46 @@ impl Commentative {
                 "rs" => Rust::with_finder(self.finder).find(path),
                 "scala" => Scala::with_finder(self.finder).find(path),
                 "sh" => Bash::with_finder(self.finder).find(path),
-                _ => unsupported_err,
+                _ => err_unsupported,
             },
         }
     }
 
-    fn exclude_file(&self, path: &Path, opts: &CommentativeOpts) -> bool {
-        match &opts.extension {
-            None => false,
-            Some(ext_options) => match extension(path) {
-                Ok(ext_file) => ext_options != ext_file,
-                Err(e) => panic!("{:?}", e),
-            },
+    fn print_results(
+        &mut self,
+        find_result: io::Result<FindResult>,
+        opts: &CommentativeOpts,
+    ) -> io::Result<()> {
+        match find_result {
+            Ok(result) => {
+                match result.comments.len() {
+                    0 => {
+                        if opts.short || opts.ignore_empty {
+                            // Don't print if nothing found
+                            Ok(())
+                        } else {
+                            self.printer.print_no_comments_found(result.file_name)
+                        }
+                    }
+                    _ => {
+                        let file_name = result.file_name;
+                        if !opts.short {
+                            self.printer.print_file_name(&file_name)?;
+                        }
+
+                        result.comments.into_iter().try_for_each(|line| {
+                            self.printer
+                                .print_comments(line, &file_name, opts.short, opts.code)
+                        })
+                    }
+                }
+            }
+            Err(e) => {
+                if !opts.short {
+                    self.printer.print_error(&e)?;
+                }
+                Err(e)
+            }
         }
     }
 }
