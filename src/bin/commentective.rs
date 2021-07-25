@@ -74,9 +74,7 @@ fn main() {
         language: matches.value_of(OPT_NAME_LANG).map(String::from),
     };
 
-    let printer = Printer {
-        writer: io::stdout(),
-    };
+    let printer = Printer::new(io::stdout());
 
     let mut result = Commentative::new(printer)
         .run(paths, &opts_cli)
