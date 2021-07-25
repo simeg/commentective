@@ -25,7 +25,14 @@ pub mod path {
     }
 
     pub fn is_file(path: &OsStr) -> Result<(), String> {
-        metadata(path).map(|_| ()).map_err(|e| e.to_string())
+        let is_file = metadata(path)
+            .map(|metadata| metadata.is_file())
+            .unwrap_or(false);
+        if is_file {
+            Ok(())
+        } else {
+            Err(format!("Not a file: {:?}", path))
+        }
     }
 }
 
@@ -52,9 +59,10 @@ pub mod string {
 mod test {
     #![allow(non_snake_case)]
 
-    use crate::utils::path::{exists_on_filesystem, file_name};
+    use crate::utils::path::{exists_on_filesystem, file_name, is_file};
     use crate::utils::string::{contains_all, contains_any_of, first_char};
     use std::path::Path;
+    use tempfile::tempdir;
 
     type TestResult = Result<(), Box<dyn std::error::Error>>;
 
@@ -94,6 +102,26 @@ mod test {
         let actual = exists_on_filesystem(path.as_ref());
 
         assert!(actual.is_err())
+    }
+
+    #[test]
+    fn path__is_file__true() -> TestResult {
+        let file = tempfile::NamedTempFile::new()?;
+
+        let actual = is_file(file.path().as_os_str());
+
+        assert!(actual.is_ok());
+        Ok(())
+    }
+
+    #[test]
+    fn path__is_file__false() -> TestResult {
+        let not_file = tempdir()?;
+
+        let actual = is_file(not_file.path().as_os_str());
+
+        assert!(actual.is_err());
+        Ok(())
     }
 
     #[test]
