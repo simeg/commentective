@@ -45,40 +45,6 @@ mod cli {
     }
 
     #[test]
-    fn output__only_processes_specified_extension_type() -> TestResult {
-        let mut js_file = tempfile::Builder::new()
-            .prefix("arbitrary")
-            .suffix(".js")
-            .tempfile()?;
-        js_file.write_all(
-            "const someVar = true;\n// comment\n/* multi comment\nanother line\nend line*/"
-                .as_bytes(),
-        )?;
-
-        let mut rs_file = tempfile::Builder::new()
-            .prefix("arbitrary")
-            .suffix(".rs")
-            .tempfile()?;
-        rs_file.write_all(
-            "let some_var = true;\n// comment\n/* multi comment\nanother line\nend line*/"
-                .as_bytes(),
-        )?;
-
-        let mut cmd = Command::cargo_bin("commentective")?;
-        cmd.arg(js_file.path());
-        cmd.arg(rs_file.path());
-        cmd.arg("--extension");
-        cmd.arg("rs");
-
-        let rs_file_name = get_file_name(&mut rs_file);
-        let expected = format!(
-            "────────────────────────────────────────────────────────────────────────────────\nFile: {}\n────────────────────────────────────────────────────────────────────────────────\nL2\nL3\nL4\nL5\n", rs_file_name);
-
-        cmd.assert().success().stdout(diff(expected));
-        Ok(())
-    }
-
-    #[test]
     fn output__with_short_flag() -> TestResult {
         let mut file = tempfile::Builder::new()
             .prefix("arbitrary")

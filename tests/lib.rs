@@ -41,7 +41,7 @@ mod languages {
         let result = JavaScript::with_finder(Finder {}).find(path);
 
         assert!(result.is_ok());
-        assert!(result.unwrap().lines.is_empty());
+        assert!(result.unwrap().comments.is_empty());
     }
 
     #[test]
@@ -66,7 +66,7 @@ mod languages {
         let result = Java::with_finder(Finder {}).find(path);
 
         assert!(result.is_ok());
-        assert!(result.unwrap().lines.is_empty());
+        assert!(result.unwrap().comments.is_empty());
     }
 
     #[test]
@@ -89,7 +89,7 @@ mod languages {
         let result = Rust::with_finder(Finder {}).find(path);
 
         assert!(result.is_ok());
-        assert!(result.unwrap().lines.is_empty());
+        assert!(result.unwrap().comments.is_empty());
     }
 
     #[test]
@@ -112,7 +112,7 @@ mod languages {
         let result = Python::with_finder(Finder {}).find(path);
 
         assert!(result.is_ok());
-        assert!(result.unwrap().lines.is_empty());
+        assert!(result.unwrap().comments.is_empty());
     }
 
     #[test]
@@ -135,7 +135,7 @@ mod languages {
         let result = CSharp::with_finder(Finder {}).find(path);
 
         assert!(result.is_ok());
-        assert!(result.unwrap().lines.is_empty());
+        assert!(result.unwrap().comments.is_empty());
     }
 
     #[test]
@@ -158,7 +158,7 @@ mod languages {
         let result = Bash::with_finder(Finder {}).find(path);
 
         assert!(result.is_ok());
-        assert!(result.unwrap().lines.is_empty());
+        assert!(result.unwrap().comments.is_empty());
     }
 
     #[test]
@@ -181,7 +181,7 @@ mod languages {
         let result = PHP::with_finder(Finder {}).find(path);
 
         assert!(result.is_ok());
-        assert!(result.unwrap().lines.is_empty());
+        assert!(result.unwrap().comments.is_empty());
     }
 
     #[test]
@@ -204,7 +204,7 @@ mod languages {
         let result = Ruby::with_finder(Finder {}).find(path);
 
         assert!(result.is_ok());
-        assert!(result.unwrap().lines.is_empty());
+        assert!(result.unwrap().comments.is_empty());
     }
 
     #[test]
@@ -215,9 +215,9 @@ mod languages {
         assert!(result.is_ok());
 
         let actual = only_line_numbers(result);
-        let expected = [1, 2];
+        let expected = [1, 2, 6, 7, 8, 9];
 
-        assert_eq!(actual.len(), 2);
+        assert_eq!(actual.len(), 6);
         assert_eq!(actual, expected);
     }
 
@@ -227,7 +227,7 @@ mod languages {
         let result = Go::with_finder(Finder {}).find(path);
 
         assert!(result.is_ok());
-        assert!(result.unwrap().lines.is_empty());
+        assert!(result.unwrap().comments.is_empty());
     }
 
     #[test]
@@ -250,7 +250,7 @@ mod languages {
         let result = Scala::with_finder(Finder {}).find(path);
 
         assert!(result.is_ok());
-        assert!(result.unwrap().lines.is_empty());
+        assert!(result.unwrap().comments.is_empty());
     }
 
     #[test]
@@ -273,7 +273,7 @@ mod languages {
         let result = CSS::with_finder(Finder {}).find(path);
 
         assert!(result.is_ok());
-        assert!(result.unwrap().lines.is_empty());
+        assert!(result.unwrap().comments.is_empty());
     }
 
     #[test]
@@ -296,7 +296,7 @@ mod languages {
         let result = HTML::with_finder(Finder {}).find(path);
 
         assert!(result.is_ok());
-        assert!(result.unwrap().lines.is_empty());
+        assert!(result.unwrap().comments.is_empty());
     }
 
     #[test]
@@ -319,7 +319,7 @@ mod languages {
         let result = C::with_finder(Finder {}).find(path);
 
         assert!(result.is_ok());
-        assert!(result.unwrap().lines.is_empty());
+        assert!(result.unwrap().comments.is_empty());
     }
 
     #[test]
@@ -342,7 +342,7 @@ mod languages {
         let result = Cpp::with_finder(Finder {}).find(path);
 
         assert!(result.is_ok());
-        assert!(result.unwrap().lines.is_empty());
+        assert!(result.unwrap().comments.is_empty());
     }
 
     #[test]
@@ -365,10 +365,15 @@ mod languages {
         let result = Lua::with_finder(Finder {}).find(path);
 
         assert!(result.is_ok());
-        assert_eq!(result.unwrap().lines.len(), 0);
+        assert_eq!(result.unwrap().comments.len(), 0);
     }
 
-    fn only_line_numbers(result: Result<FindResult, io::Error>) -> Vec<u32> {
-        result.unwrap().lines.into_iter().map(|l| l.0).collect()
+    fn only_line_numbers(result: io::Result<FindResult>) -> Vec<u32> {
+        result
+            .unwrap()
+            .comments
+            .into_iter()
+            .map(|c| c.line_number)
+            .collect()
     }
 }
