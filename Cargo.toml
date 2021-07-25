@@ -22,6 +22,11 @@ exclude = [
 travis-ci = { repository = "simeg/commentective" }
 codecov = { repository = "simeg/commentective", branch = "master", service = "github" }
 
+[features]
+# this effectively enable the feature `no-color` of colored when testing with
+# `cargo test --feature dumb_terminal`
+dumb_terminal = ["colored/no-color"]
+
 [dependencies]
 clap = "3.0.0-beta.2"
 colored = "2.0.0"

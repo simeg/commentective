@@ -42,4 +42,4 @@ run:
 	@RUST_BACKTRACE=1 $(CARGO) run
 
 test:
-	@$(CARGO) test -- --nocapture
+	@$(CARGO) test --features dumb_terminal -- --nocapture
