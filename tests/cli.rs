@@ -3,7 +3,7 @@ mod cli {
     #![allow(non_snake_case)]
 
     use assert_cmd::prelude::*;
-    use predicates::str::{similar, starts_with};
+    use predicates::str::{diff, starts_with};
     use std::ffi::OsStr;
     use std::io::Write;
     use std::process::Command;
@@ -40,7 +40,7 @@ mod cli {
         let expected = format!(
             "────────────────────────────────────────────────────────────────────────────────\nFile: {}\n────────────────────────────────────────────────────────────────────────────────\nL2\nL3\nL4\nL5\n", file_name);
 
-        cmd.assert().success().stdout(similar(expected));
+        cmd.assert().success().stdout(diff(expected));
         Ok(())
     }
 
@@ -74,7 +74,7 @@ mod cli {
         let expected = format!(
             "────────────────────────────────────────────────────────────────────────────────\nFile: {}\n────────────────────────────────────────────────────────────────────────────────\nL2\nL3\nL4\nL5\n", rs_file_name);
 
-        cmd.assert().success().stdout(similar(expected));
+        cmd.assert().success().stdout(diff(expected));
         Ok(())
     }
 
@@ -99,7 +99,7 @@ mod cli {
             file_name, file_name, file_name, file_name
         );
 
-        cmd.assert().success().stdout(similar(expected));
+        cmd.assert().success().stdout(diff(expected));
         Ok(())
     }
 
@@ -127,7 +127,7 @@ mod cli {
         let file_name = get_file_name(&mut file);
         let expected = format!("────────────────────────────────────────────────────────────────────────────────\nFile: {}\n────────────────────────────────────────────────────────────────────────────────\nL2\nL3\nL4\nL5\n", file_name);
 
-        cmd.assert().success().stdout(similar(expected));
+        cmd.assert().success().stdout(diff(expected));
         Ok(())
     }
 
@@ -145,7 +145,7 @@ mod cli {
         let full_path = buf.to_str().unwrap_or("something went wrong");
         let expected = format!("────────────────────────────────────────────────────────────────────────────────\nError: Unsupported file extension for path: {}\n────────────────────────────────────────────────────────────────────────────────\n", full_path);
 
-        cmd.assert().failure().stdout(similar(expected));
+        cmd.assert().failure().stdout(diff(expected));
         Ok(())
     }
 
@@ -167,7 +167,7 @@ mod cli {
         let file_name = get_file_name(&mut file);
         let expected = format!("────────────────────────────────────────────────────────────────────────────────\nFile: {}\n────────────────────────────────────────────────────────────────────────────────\nL2 - // comment\nL3 - /* multi comment\nL4 - another line\nL5 - end line*/\n", file_name);
 
-        cmd.assert().success().stdout(similar(expected));
+        cmd.assert().success().stdout(diff(expected));
         Ok(())
     }
 
@@ -190,7 +190,7 @@ mod cli {
         let file_name = get_file_name(&mut file);
         let expected = format!("────────────────────────────────────────────────────────────────────────────────\nFile: {}\n────────────────────────────────────────────────────────────────────────────────\nL2\nL3\nL4\nL5\n", file_name);
 
-        cmd.assert().success().stdout(similar(expected));
+        cmd.assert().success().stdout(diff(expected));
         Ok(())
     }
 
