@@ -11,7 +11,7 @@ homepage = "https://github.com/simeg/commentective"
 repository = "https://github.com/simeg/commentective"
 readme = "README.md"
 license = "MIT"
-edition = "2018"
+edition = "2021"
 
 exclude = [
     "tests/*",
