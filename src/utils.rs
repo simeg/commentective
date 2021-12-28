@@ -1,5 +1,5 @@
 pub mod path {
-    use std::ffi::OsStr;
+    use std::ffi::{OsStr, OsString};
     use std::fs::metadata;
     use std::io;
     use std::io::{Error, ErrorKind};
@@ -12,26 +12,20 @@ pub mod path {
             .ok_or_else(|| Error::new(ErrorKind::InvalidData, "Unable to get file name from path"))
     }
 
-    pub fn exists_on_filesystem(path: &OsStr) -> Result<(), String> {
-        path.to_str()
-            .map(Path::new)
-            .map(Path::exists)
-            .and_then(|exists| if exists { Some(Ok(())) } else { None })
-            .unwrap_or_else(|| {
-                Err(String::from(
-                    "Unable to determine if file exists on file system",
-                ))
-            })
+    pub fn exists_on_filesystem(path: &OsStr) -> Result<(), OsString> {
+        match Some(path).map(Path::new).map(Path::exists).unwrap_or(false) {
+            true => Ok(()),
+            false => Err(OsString::from(format!("File not found [{:?}]", path))),
+        }
     }
 
-    pub fn is_file(path: &OsStr) -> Result<(), String> {
-        let is_file = metadata(path)
+    pub fn is_file(path: &OsStr) -> Result<(), OsString> {
+        match metadata(path)
             .map(|metadata| metadata.is_file())
-            .unwrap_or(false);
-        if is_file {
-            Ok(())
-        } else {
-            Err(format!("Not a file: {:?}", path))
+            .unwrap_or(false)
+        {
+            true => Ok(()),
+            false => Err(OsString::from(format!("Not a file [{:?}]", path))),
         }
     }
 }
@@ -50,8 +44,8 @@ pub mod string {
         &found_matches == actual_matches
     }
 
-    pub fn first_char(input: &str) -> char {
-        input.chars().next().unwrap()
+    pub fn first_char(input: &str) -> String {
+        input.chars().next().unwrap().to_string()
     }
 }
 
@@ -173,7 +167,7 @@ mod test {
         let input = "abcde";
 
         let actual = first_char(input);
-        let expected = 'a';
+        let expected = "a".to_string();
 
         assert_eq!(actual, expected);
     }

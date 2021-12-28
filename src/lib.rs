@@ -59,12 +59,12 @@ where
             // Cannot parallelize both finding and printing because printing mutates state,
             // so we do it in two steps
             .par_iter()
-            .map(|path| self.resolve_type_and_run(path.to_path_buf(), &opts))
+            .map(|path| self.resolve_type_and_run(path.to_path_buf(), opts))
             .collect::<Vec<io::Result<FindResult>>>();
 
         find_results
             .into_iter()
-            .map(|find_result| self.print_results(find_result, &opts))
+            .map(|find_result| self.print_results(find_result, opts))
             .collect()
     }
 
