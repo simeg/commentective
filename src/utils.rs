@@ -1,5 +1,5 @@
 pub mod path {
-    use std::ffi::{OsStr, OsString};
+    use std::ffi::OsStr;
     use std::fs::metadata;
     use std::io;
     use std::io::{Error, ErrorKind};
@@ -12,20 +12,20 @@ pub mod path {
             .ok_or_else(|| Error::new(ErrorKind::InvalidData, "Unable to get file name from path"))
     }
 
-    pub fn exists_on_filesystem(path: &OsStr) -> Result<(), OsString> {
+    pub fn exists_on_filesystem(path: &OsStr) -> Result<(), String> {
         match Some(path).map(Path::new).map(Path::exists).unwrap_or(false) {
             true => Ok(()),
-            false => Err(OsString::from(format!("File not found [{:?}]", path))),
+            false => Err(format!("File not found [{:?}]", path)),
         }
     }
 
-    pub fn is_file(path: &OsStr) -> Result<(), OsString> {
+    pub fn is_file(path: &OsStr) -> Result<(), String> {
         match metadata(path)
             .map(|metadata| metadata.is_file())
             .unwrap_or(false)
         {
             true => Ok(()),
-            false => Err(OsString::from(format!("Not a file [{:?}]", path))),
+            false => Err(format!("Not a file [{:?}]", path)),
         }
     }
 }
@@ -44,8 +44,8 @@ pub mod string {
         &found_matches == actual_matches
     }
 
-    pub fn first_char(input: &str) -> String {
-        input.chars().next().unwrap().to_string()
+    pub fn first_char(input: &str) -> char {
+        input.chars().next().unwrap()
     }
 }
 
@@ -167,7 +167,7 @@ mod test {
         let input = "abcde";
 
         let actual = first_char(input);
-        let expected = "a".to_string();
+        let expected = 'a';
 
         assert_eq!(actual, expected);
     }

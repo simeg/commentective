@@ -66,7 +66,7 @@ where
 
     pub fn print_error(&mut self, err: &Error) -> io::Result<()> {
         self.print_colored_line(Color::Red)?;
-        self.print_colored_text(format!("Error: {}", err.to_string()), Color::Red)?;
+        self.print_colored_text(format!("Error: {}", err), Color::Red)?;
         self.print_colored_line(Color::Red)
     }
 
