@@ -7,8 +7,7 @@ pub mod path {
 
     pub fn file_name(path: &Path) -> io::Result<&str> {
         path.file_name()
-            .map(OsStr::to_str)
-            .flatten()
+            .and_then(OsStr::to_str)
             .ok_or_else(|| Error::new(ErrorKind::InvalidData, "Unable to get file name from path"))
     }
 

@@ -76,7 +76,7 @@ where
         let extension_file = if let Some(extension_from_opts) = &opts.language {
             Some(extension_from_opts.as_str())
         } else {
-            path.extension().map(OsStr::to_str).flatten()
+            path.extension().and_then(OsStr::to_str)
         };
 
         let err_unsupported = Err(Error::new(
