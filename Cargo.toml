@@ -27,7 +27,7 @@ codecov = { repository = "simeg/commentective", branch = "master", service = "gi
 dumb_terminal = ["colored/no-color"]
 
 [dependencies]
-clap = { version = "3.1.6", default-features = false, features = ["std", "cargo"] }
+clap = { version = "3.1.8", default-features = false, features = ["std", "cargo"] }
 colored = "2.0.0"
 console = "0.15.0"
 rayon = "1.5.1"

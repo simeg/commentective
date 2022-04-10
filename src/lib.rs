@@ -79,13 +79,11 @@ where
             path.extension().and_then(OsStr::to_str)
         };
 
-        let err_unsupported = Err(Error::new(
-            ErrorKind::NotFound,
-            format!("Unsupported file extension for path: {}", path.display()),
-        ));
-
         match extension_file {
-            None => err_unsupported,
+            None => Err(Error::new(
+                ErrorKind::NotFound,
+                format!("Could not identify extension for file: {}", path.display()),
+            )),
             Some(extension) => match extension {
                 "c" => C::with_finder(self.finder).find(path),
                 "cpp" => Cpp::with_finder(self.finder).find(path),
@@ -102,7 +100,10 @@ where
                 "rs" => Rust::with_finder(self.finder).find(path),
                 "scala" => Scala::with_finder(self.finder).find(path),
                 "sh" => Bash::with_finder(self.finder).find(path),
-                _ => err_unsupported,
+                _ => Err(Error::new(
+                    ErrorKind::NotFound,
+                    format!("Unsupported file extension for path: {}", path.display()),
+                )),
             },
         }
     }

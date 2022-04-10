@@ -54,7 +54,7 @@ fn main() {
     let matches = Command::new("commentective")
         .author(crate_authors!())
         .version(crate_version!())
-        .override_help("CLI tool to find comments and commented out code")
+        .about("CLI tool to find comments and commented out code")
         .arg(arg_files)
         .arg(arg_ignore_empty)
         .arg(arg_short)
